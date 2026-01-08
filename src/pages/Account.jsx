@@ -5,17 +5,27 @@ import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import Badge from '../components/common/Badge';
 import { CardExpiryPicker } from '../components/ui/date-picker';
+import AddressAutocomplete from '../components/common/AddressAutocomplete';
 import { CreditCard, Trash2, Plus } from 'lucide-react';
 
 const Account = () => {
   const { isAuthenticated, user, logout } = useCart();
   const [activeTab, setActiveTab] = useState('profile');
-  const [formData, setFormData] = useState({
-    firstName: user?.firstName || '',
-    lastName: user?.lastName || '',
-    email: user?.email || '',
-    phone: '',
-    company: '',
+  const [formData, setFormData] = useState(() => {
+    const saved = localStorage.getItem('cyna_user_address');
+    const savedData = saved ? JSON.parse(saved) : {};
+    return {
+      firstName: user?.firstName || savedData.firstName || '',
+      lastName: user?.lastName || savedData.lastName || '',
+      email: user?.email || savedData.email || '',
+      phone: savedData.phone || '',
+      company: savedData.company || '',
+      address: savedData.address || '',
+      street: savedData.street || '',
+      city: savedData.city || '',
+      postalCode: savedData.postalCode || '',
+      country: savedData.country || 'France',
+    };
   });
   
   // États pour les moyens de paiement
@@ -45,14 +55,25 @@ const Account = () => {
     { id: 'profile', label: 'Mes informations' },
     { id: 'subscriptions', label: 'Mes abonnements' },
     { id: 'orders', label: 'Mes commandes' },
-    { id: 'addresses', label: 'Carnet d\'adresses' },
     { id: 'payment', label: 'Méthodes de paiement' },
   ];
   
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Sauvegarder l'adresse dans localStorage
+    localStorage.setItem('cyna_user_address', JSON.stringify(formData));
     // Simuler la sauvegarde
     alert('Informations mises à jour avec succès !');
+  };
+  
+  const handleAddressSelect = (addressData) => {
+    setFormData(prev => ({
+      ...prev,
+      address: addressData.address,
+      street: addressData.street,
+      city: addressData.city,
+      postalCode: addressData.postalCode,
+    }));
   };
   
   const mockSubscriptions = [
@@ -154,8 +175,47 @@ const Account = () => {
                     name="company"
                     value={formData.company}
                     onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))}
-                    className="mb-6"
+                    className="mb-4"
                   />
+                  
+                  {/* Section Adresse de facturation */}
+                  <div className="mb-6 pt-4 border-t border-gray-200">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Adresse de facturation</h3>
+                    
+                    <AddressAutocomplete
+                      label="Adresse"
+                      value={formData.address}
+                      onChange={(value) => setFormData(prev => ({ ...prev, address: value }))}
+                      onAddressSelect={handleAddressSelect}
+                      placeholder="Commencez à taper votre adresse (ex: 123 rue de la République, Paris)"
+                      className="mb-4"
+                    />
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                      <Input
+                        label="Code postal"
+                        type="text"
+                        name="postalCode"
+                        value={formData.postalCode}
+                        onChange={(e) => setFormData(prev => ({ ...prev, postalCode: e.target.value }))}
+                      />
+                      <Input
+                        label="Ville"
+                        type="text"
+                        name="city"
+                        value={formData.city}
+                        onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
+                      />
+                      <Input
+                        label="Pays"
+                        type="text"
+                        name="country"
+                        value={formData.country}
+                        onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
+                      />
+                    </div>
+                  </div>
+                  
                   <Button type="submit" variant="primary">
                     Enregistrer les modifications
                   </Button>
@@ -232,13 +292,7 @@ const Account = () => {
                 )}
               </div>
             )}
-            
-            {activeTab === 'addresses' && (
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Carnet d'adresses</h2>
-                <p className="text-gray-600">Aucune adresse enregistrée.</p>
-              </div>
-            )}
+          
             
             {activeTab === 'payment' && (
               <div className="bg-white rounded-lg shadow-md p-6">
