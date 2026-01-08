@@ -20,6 +20,7 @@ import Account from './pages/Account';
 import Contact from './pages/Contact';
 import CGU from './pages/CGU';
 import MentionsLegales from './pages/MentionsLegales';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import About from './pages/About';
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/cgu" element={<CGU />} />
                 <Route path="/mentions-legales" element={<MentionsLegales />} />
+                <Route path="/politique-confidentialite" element={<PrivacyPolicy />} />
                 <Route path="/about" element={<About />} />
               </Routes>
             </main>
