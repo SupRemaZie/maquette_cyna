@@ -106,36 +106,65 @@ const Account = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           {/* Navigation par onglets */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-4">
-              <nav className="space-y-2">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                      activeTab === tab.id
-                        ? 'bg-primary-100 text-primary-700 font-semibold'
-                        : 'text-gray-700 hover:bg-gray-100'
-                    }`}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
+            {/* Mobile: onglets horizontaux */}
+            <div className="lg:hidden mb-6">
+              <div className="bg-white rounded-lg shadow-md p-2">
+                <nav className="flex space-x-2 overflow-x-auto">
+                  {tabs.map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex-shrink-0 px-4 py-2 rounded-lg transition-colors whitespace-nowrap ${
+                        activeTab === tab.id
+                          ? 'bg-primary-100 text-primary-700 font-semibold'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </nav>
                 <button
                   onClick={logout}
-                  className="w-full text-left px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors mt-4"
+                  className="w-full mt-4 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors text-sm"
                 >
                   Se déconnecter
                 </button>
-              </nav>
+              </div>
+            </div>
+            {/* Desktop: sidebar verticale */}
+            <div className="hidden lg:block">
+              <div className="bg-white rounded-lg shadow-md p-4">
+                <nav className="space-y-2">
+                  {tabs.map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                        activeTab === tab.id
+                          ? 'bg-primary-100 text-primary-700 font-semibold'
+                          : 'text-gray-700 hover:bg-gray-100'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                  <button
+                    onClick={logout}
+                    className="w-full text-left px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors mt-4"
+                  >
+                    Se déconnecter
+                  </button>
+                </nav>
+              </div>
             </div>
           </div>
           
           {/* Contenu */}
           <div className="lg:col-span-3">
             {activeTab === 'profile' && (
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Mes informations</h2>
+              <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">Mes informations</h2>
                 <form onSubmit={handleSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <Input
@@ -224,8 +253,8 @@ const Account = () => {
             )}
             
             {activeTab === 'subscriptions' && (
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Mes abonnements</h2>
+              <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">Mes abonnements</h2>
                 {mockSubscriptions.length > 0 ? (
                   <div className="space-y-4">
                     {mockSubscriptions.map((sub) => (
@@ -258,8 +287,8 @@ const Account = () => {
             )}
             
             {activeTab === 'orders' && (
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Mes commandes</h2>
+              <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">Mes commandes</h2>
                 {mockOrders.length > 0 ? (
                   <div className="space-y-4">
                     {mockOrders.map((order) => (
@@ -295,15 +324,25 @@ const Account = () => {
           
             
             {activeTab === 'payment' && (
-              <div className="bg-white rounded-lg shadow-md p-6">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900">Méthodes de paiement</h2>
+              <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                  <h2 className="text-xl md:text-2xl font-bold text-gray-900">Méthodes de paiement</h2>
+                  {!showAddForm && paymentMethods.length > 0 && (
+                    <Button
+                      variant="primary"
+                      onClick={() => setShowAddForm(true)}
+                      className="flex items-center gap-2 w-full sm:w-auto"
+                    >
+                      <Plus className="h-4 w-4" />
+                      Ajouter une carte
+                    </Button>
+                  )}
                 </div>
                 
                 {/* Formulaire d'ajout */}
                 {showAddForm && (
-                  <div className="mb-6 p-6 bg-gray-50 rounded-lg border border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Ajouter une carte bancaire</h3>
+                  <div className="mb-6 p-4 md:p-6 bg-gray-50 rounded-lg border border-gray-200">
+                    <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-4">Ajouter une carte bancaire</h3>
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
@@ -370,7 +409,7 @@ const Account = () => {
                         required
                         className="mb-4"
                       />
-                      <div className="grid grid-cols-2 gap-4 mb-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                         <CardExpiryPicker
                           label="Date d'expiration"
                           value={newPaymentMethod.cardExpiry}
@@ -402,7 +441,7 @@ const Account = () => {
                           Définir comme carte par défaut
                         </label>
                       </div>
-                      <div className="flex gap-4">
+                      <div className="flex flex-col sm:flex-row gap-4">
                         <Button
                           type="button"
                           variant="outline"
@@ -416,10 +455,11 @@ const Account = () => {
                               isDefault: false,
                             });
                           }}
+                          className="w-full sm:w-auto"
                         >
                           Annuler
                         </Button>
-                        <Button type="submit" variant="primary" className="flex-1">
+                        <Button type="submit" variant="primary" className="flex-1 w-full sm:w-auto">
                           Ajouter la carte
                         </Button>
                       </div>
@@ -433,25 +473,25 @@ const Account = () => {
                     {paymentMethods.map((method) => (
                       <div
                         key={method.id}
-                        className="border border-gray-200 rounded-lg p-4 flex items-center justify-between"
+                        className="border border-gray-200 rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
                       >
-                        <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                        <div className="flex items-center gap-4 flex-1">
+                          <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
                             <CreditCard className="h-6 w-6 text-primary-600" />
                           </div>
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <p className="font-semibold text-gray-900">{method.cardNumber}</p>
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <p className="font-semibold text-gray-900 break-all">{method.cardNumber}</p>
                               {method.isDefault && (
                                 <Badge variant="primary">Par défaut</Badge>
                               )}
                             </div>
-                            <p className="text-sm text-gray-600 mt-1">
+                            <p className="text-sm text-gray-600 mt-1 break-words">
                               {method.cardName} • Expire le {method.cardExpiry}
                             </p>
                           </div>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 w-full sm:w-auto">
                           {!method.isDefault && (
                             <Button
                               variant="outline"
@@ -464,6 +504,7 @@ const Account = () => {
                                 setPaymentMethods(updated);
                                 alert('Carte définie comme carte par défaut');
                               }}
+                              className="flex-1 sm:flex-none"
                             >
                               Définir par défaut
                             </Button>
@@ -475,7 +516,7 @@ const Account = () => {
                                 alert('Carte supprimée');
                               }
                             }}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors flex-shrink-0"
                             aria-label="Supprimer"
                           >
                             <Trash2 className="h-5 w-5" />

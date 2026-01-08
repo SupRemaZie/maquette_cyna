@@ -104,7 +104,7 @@ const Cart = () => {
                     </div>
                     
                     {/* Quantité et prix */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                       <div className="flex items-center space-x-2">
                         <label className="text-sm font-medium text-gray-700">Quantité:</label>
                         <div className="flex items-center border border-gray-300 rounded-lg">
@@ -124,11 +124,11 @@ const Cart = () => {
                           </button>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-lg font-semibold text-gray-900">
+                      <div className="text-left sm:text-right">
+                        <p className="text-base sm:text-lg font-semibold text-gray-900">
                           {formatPrice(item.price * item.quantity)}
                         </p>
-                        <p className="text-sm text-gray-500">
+                        <p className="text-xs sm:text-sm text-gray-500">
                           {formatPrice(item.price)} × {item.quantity}
                         </p>
                       </div>
@@ -141,7 +141,7 @@ const Cart = () => {
           
           {/* Récapitulatif */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-6 sticky top-24">
+            <div className="bg-white rounded-lg shadow-md p-4 md:p-6 lg:sticky lg:top-24">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Récapitulatif</h2>
               
               <div className="space-y-3 mb-6">

@@ -99,20 +99,20 @@ const Product = () => {
             <div className="mb-6">
               <div className="flex items-baseline space-x-4 mb-4">
                 <div>
-                  <span className="text-4xl font-bold text-primary-600">
+                  <span className="text-3xl sm:text-4xl font-bold text-primary-600">
                     {formatPrice(product.price[subscriptionType])}
                   </span>
-                  <span className="text-gray-500 ml-2">
+                  <span className="text-gray-500 ml-2 text-sm sm:text-base">
                     /{subscriptionType === 'monthly' ? 'mois' : 'an'}
                   </span>
                 </div>
               </div>
               
               {/* Sélection abonnement */}
-              <div className="flex space-x-2 mb-6">
+              <div className="flex flex-col sm:flex-row gap-2 mb-6">
                 <button
                   onClick={() => setSubscriptionType('monthly')}
-                  className={`px-4 py-2 rounded-lg border-2 transition-all ${
+                  className={`px-4 py-2 rounded-lg border-2 transition-all text-sm sm:text-base ${
                     subscriptionType === 'monthly'
                       ? 'border-primary-600 bg-primary-50 text-primary-700'
                       : 'border-gray-300 text-gray-700 hover:border-primary-400'
@@ -122,14 +122,14 @@ const Product = () => {
                 </button>
                 <button
                   onClick={() => setSubscriptionType('annual')}
-                  className={`px-4 py-2 rounded-lg border-2 transition-all ${
+                  className={`px-4 py-2 rounded-lg border-2 transition-all text-sm sm:text-base ${
                     subscriptionType === 'annual'
                       ? 'border-primary-600 bg-primary-50 text-primary-700'
                       : 'border-gray-300 text-gray-700 hover:border-primary-400'
                   }`}
                 >
                   Annuel
-                  <span className="ml-2 text-sm text-accent-600 font-semibold">
+                  <span className="ml-2 text-xs sm:text-sm text-accent-600 font-semibold">
                     (Économisez {formatPrice(product.price.monthly * 12 - product.price.annual)})
                   </span>
                 </button>

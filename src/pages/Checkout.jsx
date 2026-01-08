@@ -99,12 +99,12 @@ const Checkout = () => {
         
         {/* Indicateur de progression */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between overflow-x-auto pb-2">
             {steps.map((step, index) => (
               <React.Fragment key={step.number}>
-                <div className="flex items-center">
+                <div className="flex flex-col items-center min-w-0 flex-1">
                   <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
+                    className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-semibold text-sm md:text-base flex-shrink-0 ${
                       currentStep >= step.number
                         ? 'bg-primary-600 text-white'
                         : 'bg-gray-200 text-gray-600'
@@ -112,15 +112,15 @@ const Checkout = () => {
                   >
                     {step.number}
                   </div>
-                  <span className={`ml-2 hidden md:block ${
-                    currentStep >= step.number ? 'text-primary-600' : 'text-gray-600'
+                  <span className={`mt-2 text-xs md:text-sm text-center hidden sm:block px-1 ${
+                    currentStep >= step.number ? 'text-primary-600 font-medium' : 'text-gray-600'
                   }`}>
                     {step.title}
                   </span>
                 </div>
                 {index < steps.length - 1 && (
                   <div
-                    className={`flex-1 h-1 mx-2 ${
+                    className={`flex-1 h-1 mx-1 md:mx-2 min-w-[20px] ${
                       currentStep > step.number ? 'bg-primary-600' : 'bg-gray-200'
                     }`}
                   />
@@ -134,8 +134,8 @@ const Checkout = () => {
           {/* Formulaire */}
           <div className="lg:col-span-2">
             {currentStep === 1 && (
-              <form onSubmit={handleStep1Submit} className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Connexion / Inscription</h2>
+              <form onSubmit={handleStep1Submit} className="bg-white rounded-lg shadow-md p-4 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">Connexion / Inscription</h2>
                 {!isAuthenticated ? (
                   <>
                     <Input
@@ -183,8 +183,8 @@ const Checkout = () => {
             )}
             
             {currentStep === 2 && (
-              <form onSubmit={handleStep2Submit} className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Adresse de facturation</h2>
+              <form onSubmit={handleStep2Submit} className="bg-white rounded-lg shadow-md p-4 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">Adresse de facturation</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <Input
                     label="Prénom"
@@ -258,8 +258,8 @@ const Checkout = () => {
             )}
             
             {currentStep === 3 && (
-              <form onSubmit={handleStep3Submit} className="bg-white rounded-lg shadow-md p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Informations de paiement</h2>
+              <form onSubmit={handleStep3Submit} className="bg-white rounded-lg shadow-md p-4 md:p-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">Informations de paiement</h2>
                 <Input
                   label="Numéro de carte"
                   type="text"
@@ -279,7 +279,7 @@ const Checkout = () => {
                   required
                   className="mb-4"
                 />
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                   <CardExpiryPicker
                     label="Date d'expiration"
                     value={formData.cardExpiry}
@@ -296,11 +296,11 @@ const Checkout = () => {
                     required
                   />
                 </div>
-                <div className="flex gap-4">
-                  <Button type="button" variant="outline" onClick={() => setCurrentStep(2)}>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button type="button" variant="outline" onClick={() => setCurrentStep(2)} className="w-full sm:w-auto">
                     Retour
                   </Button>
-                  <Button type="submit" variant="accent" className="flex-1">
+                  <Button type="submit" variant="accent" className="flex-1 w-full sm:w-auto">
                     Confirmer le paiement
                   </Button>
                 </div>
@@ -308,17 +308,17 @@ const Checkout = () => {
             )}
             
             {currentStep === 4 && (
-              <div className="bg-white rounded-lg shadow-md p-6 text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="bg-white rounded-lg shadow-md p-4 md:p-6 text-center">
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-6 h-6 md:w-8 md:h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Commande confirmée !</h2>
-                <p className="text-gray-600 mb-6">
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Commande confirmée !</h2>
+                <p className="text-sm md:text-base text-gray-600 mb-6">
                   Merci pour votre commande. Vous recevrez un email de confirmation sous peu.
                 </p>
-                <Button onClick={() => navigate('/account?tab=orders')} variant="primary">
+                <Button onClick={() => navigate('/account?tab=orders')} variant="primary" className="w-full sm:w-auto">
                   Accéder à ma commande
                 </Button>
               </div>
@@ -328,7 +328,7 @@ const Checkout = () => {
           {/* Récapitulatif */}
           {currentStep < 4 && (
             <div className="lg:col-span-1">
-              <div className="bg-white rounded-lg shadow-md p-6 sticky top-24">
+              <div className="bg-white rounded-lg shadow-md p-4 md:p-6 lg:sticky lg:top-24">
                 <h2 className="text-xl font-bold text-gray-900 mb-4">Récapitulatif</h2>
                 <div className="space-y-2 mb-4">
                   {cart.map((item) => (
