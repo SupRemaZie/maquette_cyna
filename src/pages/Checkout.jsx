@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import Input from '../components/common/Input';
 import Button from '../components/common/Button';
 import Badge from '../components/common/Badge';
+import { CardExpiryPicker } from '../components/ui/date-picker';
 
 const Checkout = () => {
   const { cart, getCartTotal, clearCart, isAuthenticated } = useCart();
@@ -279,13 +280,10 @@ const Checkout = () => {
                   className="mb-4"
                 />
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                  <Input
+                  <CardExpiryPicker
                     label="Date d'expiration"
-                    type="text"
-                    name="cardExpiry"
                     value={formData.cardExpiry}
-                    onChange={handleInputChange}
-                    placeholder="MM/AA"
+                    onChange={(value) => setFormData(prev => ({ ...prev, cardExpiry: value }))}
                     required
                   />
                   <Input
