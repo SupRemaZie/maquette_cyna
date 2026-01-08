@@ -9,6 +9,7 @@ import { cn } from './lib/utils';
 // Pages
 import Home from './pages/Home';
 import Category from './pages/Category';
+import Catalogue from './pages/Catalogue';
 import Product from './pages/Product';
 import Search from './pages/Search';
 import Cart from './pages/Cart';
@@ -54,6 +55,7 @@ function App() {
             <main className="flex-1">
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/catalogue" element={<Catalogue />} />
                 <Route path="/category/:id" element={<Category />} />
                 <Route path="/product/:id" element={<Product />} />
                 <Route path="/search" element={<Search />} />

@@ -38,7 +38,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
 
   const mainNavItems = [
     { icon: Home, label: "Accueil", path: "/" },
-    { icon: ShoppingBag, label: "Catalogue", path: "/category/edr" },
+    { icon: ShoppingBag, label: "Catalogue", path: "/catalogue" },
   ]
 
   const accountNavItems = isAuthenticated

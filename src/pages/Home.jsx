@@ -88,9 +88,20 @@ const Home = () => {
         
         {/* Catégories */}
         <section className="mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 md:mb-8">
-            Nos Catégories
-          </h2>
+          <div className="flex justify-between items-center mb-6 md:mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+              Nos Catégories
+            </h2>
+            <Link
+              to="/catalogue"
+              className="text-primary-600 hover:text-primary-700 font-semibold text-sm md:text-base flex items-center gap-2"
+            >
+              Voir tout le catalogue
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
             {categories.map((category) => (
               <Link
