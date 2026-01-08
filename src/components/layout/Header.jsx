@@ -25,14 +25,6 @@ const Header = ({ onSidebarToggle }) => {
           <div className="flex items-center gap-4">
             {/* Sidebar Trigger - Mobile */}
             <SidebarTrigger onClick={onSidebarToggle} />
-            
-            {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg md:text-xl">C</span>
-              </div>
-              <span className="text-xl md:text-2xl font-bold text-foreground hidden sm:inline">CYNA</span>
-            </Link>
           </div>
           
           {/* Search Bar - Desktop */}

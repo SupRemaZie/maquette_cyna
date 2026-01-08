@@ -318,8 +318,8 @@ const Checkout = () => {
                 <p className="text-gray-600 mb-6">
                   Merci pour votre commande. Vous recevrez un email de confirmation sous peu.
                 </p>
-                <Button onClick={() => navigate('/')} variant="primary">
-                  Retour à l'accueil
+                <Button onClick={() => navigate('/account?tab=orders')} variant="primary">
+                  Accéder à ma commande
                 </Button>
               </div>
             )}
