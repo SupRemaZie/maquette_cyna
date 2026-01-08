@@ -244,16 +244,6 @@ const Account = () => {
               <div className="bg-white rounded-lg shadow-md p-6">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-2xl font-bold text-gray-900">Méthodes de paiement</h2>
-                  {!showAddForm && (
-                    <Button
-                      variant="primary"
-                      onClick={() => setShowAddForm(true)}
-                      className="flex items-center gap-2"
-                    >
-                      <Plus className="h-4 w-4" />
-                      Ajouter une carte
-                    </Button>
-                  )}
                 </div>
                 
                 {/* Formulaire d'ajout */}
