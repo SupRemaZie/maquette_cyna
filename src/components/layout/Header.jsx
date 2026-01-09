@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import { Search, User, LogOut, Settings } from 'lucide-react';
+import { Search, User, LogOut } from 'lucide-react';
 import { SidebarTrigger } from '../ui/sidebar';
 import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 
@@ -104,13 +104,6 @@ const Header = ({ onSidebarToggle }) => {
                       >
                         <User className="h-4 w-4" />
                         Mon compte
-                      </Link>
-                      <Link
-                        to="/account?tab=profile"
-                        className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-accent rounded-sm transition-colors"
-                      >
-                        <Settings className="h-4 w-4" />
-                        Paramètres
                       </Link>
                       <button
                         onClick={() => {

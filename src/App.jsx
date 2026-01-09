@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import Header from './components/layout/Header';
-import Footer from './components/layout/Footer';
 import Sidebar from './components/ui/sidebar';
 import { cn } from './lib/utils';
 
@@ -89,7 +88,6 @@ function AppContent() {
             <Route path="/about" element={<About />} />
           </Routes>
         </main>
-        <Footer />
       </div>
     </div>
   );
