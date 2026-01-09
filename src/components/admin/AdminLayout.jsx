@@ -25,8 +25,6 @@ import { mockOrders, mockMessages, mockChatbotConversations } from '../../data/a
 
 const AdminSidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { logout } = useAdmin();
   
   const unreadMessages = mockMessages.filter(m => m.status === 'Non lu').length;
   const newOrders = mockOrders.filter(o => o.status === 'En attente').length;
@@ -49,11 +47,6 @@ const AdminSidebar = ({ isOpen, onClose }) => {
       return location.pathname === '/admin/dashboard';
     }
     return location.pathname.startsWith(path);
-  };
-  
-  const handleLogout = () => {
-    logout();
-    navigate('/admin/login');
   };
   
   return (
@@ -119,17 +112,6 @@ const AdminSidebar = ({ isOpen, onClose }) => {
               );
             })}
           </nav>
-          
-          {/* Footer sidebar */}
-          <div className="p-4 border-t">
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
-            >
-              <LogOut className="h-5 w-5" />
-              <span className="font-medium">Se déconnecter</span>
-            </button>
-          </div>
         </div>
       </aside>
     </>
@@ -138,9 +120,15 @@ const AdminSidebar = ({ isOpen, onClose }) => {
 
 const AdminHeader = ({ onMenuToggle }) => {
   const location = useLocation();
-  const { admin } = useAdmin();
+  const navigate = useNavigate();
+  const { admin, logout } = useAdmin();
   const [searchQuery, setSearchQuery] = useState('');
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  
+  const handleLogout = () => {
+    logout();
+    navigate('/admin/login');
+  };
   
   const pageTitles = {
     '/admin/dashboard': 'Dashboard',
@@ -263,6 +251,13 @@ const AdminHeader = ({ onMenuToggle }) => {
                       <User className="h-4 w-4" />
                       Mon profil
                     </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-destructive/10 hover:text-destructive rounded-sm transition-colors"
+                    >
+                      <LogOut className="h-4 w-4" />
+                      Se déconnecter
+                    </button>
                   </div>
                 </div>
               </PopoverContent>

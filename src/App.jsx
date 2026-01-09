@@ -5,6 +5,7 @@ import { AdminProvider } from './context/AdminContext';
 import ToastProvider from './context/ToastContext';
 import Header from './components/layout/Header';
 import Sidebar from './components/ui/sidebar';
+import ClientChatbot from './components/common/Chatbot';
 import { AdminLayout } from './components/admin/AdminLayout';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 import { cn } from './lib/utils';
@@ -283,6 +284,7 @@ function AppContent() {
             <Route path="/about" element={<About />} />
           </Routes>
         </main>
+        <ClientChatbot />
       </div>
     </div>
   );

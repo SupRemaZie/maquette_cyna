@@ -103,28 +103,28 @@ const Toast = ({ toast, removeToast }) => {
 
   const colors = {
     success: {
-      bg: 'bg-accent/20',
+      bg: 'bg-accent/95',
       border: 'border-accent',
-      text: 'text-accent',
-      icon: 'text-accent',
+      text: 'text-accent-foreground',
+      icon: 'text-accent-foreground',
     },
     error: {
-      bg: 'bg-destructive/20',
+      bg: 'bg-destructive/95',
       border: 'border-destructive',
-      text: 'text-destructive',
-      icon: 'text-destructive',
+      text: 'text-destructive-foreground',
+      icon: 'text-destructive-foreground',
     },
     warning: {
-      bg: 'bg-yellow-100',
-      border: 'border-yellow-400',
-      text: 'text-yellow-800',
-      icon: 'text-yellow-600',
+      bg: 'bg-yellow-500',
+      border: 'border-yellow-600',
+      text: 'text-yellow-900',
+      icon: 'text-yellow-900',
     },
     info: {
-      bg: 'bg-primary/20',
+      bg: 'bg-primary/95',
       border: 'border-primary',
-      text: 'text-primary',
-      icon: 'text-primary',
+      text: 'text-primary-foreground',
+      icon: 'text-primary-foreground',
     },
   };
 
