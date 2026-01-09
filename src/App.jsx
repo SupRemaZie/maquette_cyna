@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { AdminProvider } from './context/AdminContext';
+import { ProductsProvider } from './context/ProductsContext';
 import ToastProvider from './context/ToastContext';
 import Header from './components/layout/Header';
 import Sidebar from './components/ui/sidebar';
@@ -295,9 +296,11 @@ function App() {
     <ToastProvider>
       <CartProvider>
         <AdminProvider>
-          <Router>
-            <AppContent />
-          </Router>
+          <ProductsProvider>
+            <Router>
+              <AppContent />
+            </Router>
+          </ProductsProvider>
         </AdminProvider>
       </CartProvider>
     </ToastProvider>

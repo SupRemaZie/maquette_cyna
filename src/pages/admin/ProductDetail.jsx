@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { mockProducts } from '../../data/adminMockData';
 import { ArrowLeft, Edit, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
 import Modal from '../../components/common/Modal';
 import { useToast } from '../../context/ToastContext';
+import { useProducts } from '../../context/ProductsContext';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [products] = useState(mockProducts);
+  const { getProduct, deleteProduct } = useProducts();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [deleteModal, setDeleteModal] = useState(false);
   const { success } = useToast();
   
-  const product = products.find(p => p.id === parseInt(id));
+  const product = getProduct(id);
   
   if (!product) {
     return (
@@ -49,7 +49,7 @@ const ProductDetail = () => {
   };
   
   const handleDelete = () => {
-    // Simuler la suppression
+    deleteProduct(parseInt(id));
     success('Produit supprimé avec succès !');
     setTimeout(() => {
       navigate('/admin/products');

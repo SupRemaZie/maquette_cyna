@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { mockProducts } from '../../data/adminMockData';
 import { ArrowLeft, X, Plus } from 'lucide-react';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import { useToast } from '../../context/ToastContext';
+import { useProducts } from '../../context/ProductsContext';
 
 const ProductForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEdit = !!id;
-  const [products] = useState(mockProducts);
+  const { getProduct, addProduct, updateProduct } = useProducts();
   const { success, error: showError } = useToast();
   
-  const existingProduct = isEdit ? products.find(p => p.id === parseInt(id)) : null;
+  const existingProduct = isEdit ? getProduct(id) : null;
   
   const [formData, setFormData] = useState({
     name: existingProduct?.name || '',
@@ -140,8 +140,29 @@ const ProductForm = () => {
       return;
     }
     
-    // Simuler la sauvegarde
-    success(isEdit ? 'Produit modifié avec succès !' : 'Produit créé avec succès !');
+    // Préparer les données du produit
+    const productData = {
+      name: formData.name.trim(),
+      category: formData.category,
+      shortDescription: formData.shortDescription.trim(),
+      fullDescription: formData.fullDescription.trim(),
+      features: formData.features.filter(f => f.trim()),
+      priceMonthly: parseFloat(formData.priceMonthly),
+      priceYearly: parseFloat(formData.priceYearly),
+      available: formData.available,
+      priority: parseInt(formData.priority) || 0,
+      images: formData.images,
+    };
+    
+    // Sauvegarder le produit
+    if (isEdit) {
+      updateProduct(parseInt(id), productData);
+      success('Produit modifié avec succès !');
+    } else {
+      addProduct(productData);
+      success('Produit créé avec succès !');
+    }
+    
     setTimeout(() => {
       navigate('/admin/products');
     }, 1000);

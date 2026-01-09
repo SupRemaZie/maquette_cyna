@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { mockProducts } from '../../data/adminMockData';
 import { Plus, Eye, Edit, Trash2, Search, Filter } from 'lucide-react';
 import Modal from '../../components/common/Modal';
 import { useToast } from '../../context/ToastContext';
+import { useProducts } from '../../context/ProductsContext';
 
 const Products = () => {
-  const [products, setProducts] = useState(mockProducts);
+  const { products, deleteProduct, deleteProducts } = useProducts();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedAvailability, setSelectedAvailability] = useState('all');
@@ -86,7 +86,7 @@ const Products = () => {
   };
   
   const handleDelete = (productId) => {
-    setProducts(prev => prev.filter(p => p.id !== productId));
+    deleteProduct(productId);
     setDeleteModal({ open: false, productId: null });
     setSelectedProducts(prev => prev.filter(id => id !== productId));
     success('Produit supprimé avec succès !');
@@ -97,7 +97,7 @@ const Products = () => {
       showError('Aucun produit sélectionné');
       return;
     }
-    setProducts(prev => prev.filter(p => !selectedProducts.includes(p.id)));
+    deleteProducts(selectedProducts);
     setSelectedProducts([]);
     success(`${selectedProducts.length} produit(s) supprimé(s) avec succès !`);
   };
