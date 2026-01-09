@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
+import { AdminProvider } from './context/AdminContext';
 import Header from './components/layout/Header';
 import Sidebar from './components/ui/sidebar';
+import { AdminLayout } from './components/admin/AdminLayout';
+import ProtectedRoute from './components/admin/ProtectedRoute';
 import { cn } from './lib/utils';
 
 // Pages
@@ -22,6 +25,18 @@ import CGU from './pages/CGU';
 import MentionsLegales from './pages/MentionsLegales';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import About from './pages/About';
+
+// Admin Pages
+import AdminLogin from './pages/admin/Login';
+import Dashboard from './pages/admin/Dashboard';
+import Products from './pages/admin/Products';
+import Categories from './pages/admin/Categories';
+import Orders from './pages/admin/Orders';
+import Users from './pages/admin/Users';
+import Messages from './pages/admin/Messages';
+import Chatbot from './pages/admin/Chatbot';
+import Content from './pages/admin/Content';
+import Settings from './pages/admin/Settings';
 
 function AppContent() {
   const location = useLocation();
@@ -44,6 +59,109 @@ function AppContent() {
   // Routes qui doivent être en full screen sans Header/Footer
   const fullScreenRoutes = ['/login', '/register', '/forgot-password'];
   const isFullScreen = fullScreenRoutes.includes(location.pathname);
+  
+  // Routes admin
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
+  // Si c'est une route admin, utiliser le layout admin
+  if (isAdminRoute) {
+    return (
+      <Routes>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <Dashboard />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/products"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <Products />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/categories"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <Categories />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <Orders />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <Users />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/messages"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <Messages />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/chatbot"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <Chatbot />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/content"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <Content />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/settings"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <Settings />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/admin/*" element={<AdminLogin />} />
+      </Routes>
+    );
+  }
 
   // Si c'est une route full screen, afficher uniquement le contenu
   if (isFullScreen) {
@@ -96,9 +214,11 @@ function AppContent() {
 function App() {
   return (
     <CartProvider>
-      <Router>
-        <AppContent />
-      </Router>
+      <AdminProvider>
+        <Router>
+          <AppContent />
+        </Router>
+      </AdminProvider>
     </CartProvider>
   );
 }
