@@ -77,7 +77,7 @@ const Register = () => {
   };
   
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-background">
       <div className="max-w-md w-full">
         <div className="bg-white rounded-lg shadow-md p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">Inscription</h1>

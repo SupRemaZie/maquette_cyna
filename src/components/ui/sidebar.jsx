@@ -2,30 +2,18 @@ import React, { useState, useEffect } from "react"
 import { Link, useLocation } from "react-router-dom"
 import { cn } from "../../lib/utils"
 import {
-  LayoutDashboard,
   ShoppingBag,
-  Search,
-  ShoppingCart,
-  User,
-  Settings,
-  LogOut,
   Menu,
   X,
   Shield,
-  Lock,
-  Eye,
-  FileText,
   Mail,
-  Info,
   Home,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react"
-import { useCart } from "../../context/CartContext"
 
 const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
   const location = useLocation()
-  const { isAuthenticated, logout, getCartItemsCount } = useCart()
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1024)
 
   useEffect(() => {
@@ -41,15 +29,6 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
     { icon: ShoppingBag, label: "Catalogue", path: "/catalogue" },
   ]
 
-  const accountNavItems = isAuthenticated
-    ? [
-        { icon: User, label: "Mon compte", path: "/account" },
-        { icon: Settings, label: "Paramètres", path: "/account?tab=profile" },
-      ]
-    : [
-        { icon: User, label: "Connexion", path: "/login" },
-        { icon: User, label: "Inscription", path: "/register" },
-      ]
 
   const infoNavItems = [
     { icon: Mail, label: "Contact", path: "/contact" },
@@ -165,36 +144,6 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
           {mainNavItems.map((item) => (
             <NavItem key={item.path} item={item} onClick={isMobile ? onClose : undefined} />
           ))}
-        </div>
-
-        {/* Compte */}
-        {!isCollapsed && (
-          <div className="mb-6">
-            <h3 className="px-4 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-              Compte
-            </h3>
-          </div>
-        )}
-        <div className={cn("space-y-1", isCollapsed && "mb-6")}>
-          {accountNavItems.map((item) => (
-            <NavItem key={item.path} item={item} onClick={isMobile ? onClose : undefined} />
-          ))}
-          {isAuthenticated && (
-            <button
-              onClick={() => {
-                logout()
-                if (isMobile) onClose()
-              }}
-              className={cn(
-                "w-full flex items-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors",
-                isCollapsed ? "px-3 py-3 justify-center" : "px-4 py-3 gap-3"
-              )}
-              title={isCollapsed ? "Déconnexion" : undefined}
-            >
-              <LogOut className="h-5 w-5 flex-shrink-0" />
-              {!isCollapsed && <span className="font-medium">Déconnexion</span>}
-            </button>
-          )}
         </div>
 
         {/* Informations */}
