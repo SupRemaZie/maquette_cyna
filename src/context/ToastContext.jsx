@@ -83,7 +83,7 @@ const ToastProvider = ({ children }) => {
 
 const ToastContainer = ({ toasts, removeToast }) => {
   return (
-    <div className="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-md w-full">
+    <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2 max-w-md w-full">
       {toasts.map((toast) => (
         <Toast key={toast.id} toast={toast} removeToast={removeToast} />
       ))}
@@ -139,7 +139,7 @@ const Toast = ({ toast, removeToast }) => {
         transform transition-all duration-300 ease-in-out
       `}
       style={{
-        animation: 'slideInRight 0.3s ease-out',
+        animation: 'slideInUp 0.3s ease-out',
       }}
       role="alert"
     >
