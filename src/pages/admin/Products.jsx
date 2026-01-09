@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { mockProducts } from '../../data/adminMockData';
 import { Plus, Eye, Edit, Trash2, Search, Filter } from 'lucide-react';
 import Modal from '../../components/common/Modal';
+import { useToast } from '../../context/ToastContext';
 
 const Products = () => {
   const [products, setProducts] = useState(mockProducts);
@@ -15,6 +16,7 @@ const Products = () => {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteModal, setDeleteModal] = useState({ open: false, productId: null });
+  const { success, error: showError } = useToast();
   
   const categories = ['EDR', 'XDR', 'SOC', 'Threat Intelligence', 'SIEM'];
   
@@ -87,11 +89,17 @@ const Products = () => {
     setProducts(prev => prev.filter(p => p.id !== productId));
     setDeleteModal({ open: false, productId: null });
     setSelectedProducts(prev => prev.filter(id => id !== productId));
+    success('Produit supprimé avec succès !');
   };
   
   const handleBulkDelete = () => {
+    if (selectedProducts.length === 0) {
+      showError('Aucun produit sélectionné');
+      return;
+    }
     setProducts(prev => prev.filter(p => !selectedProducts.includes(p.id)));
     setSelectedProducts([]);
+    success(`${selectedProducts.length} produit(s) supprimé(s) avec succès !`);
   };
   
   const SortIcon = ({ columnKey }) => {

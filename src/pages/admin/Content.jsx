@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { mockHomeContent, mockProducts } from '../../data/adminMockData';
 import { Edit } from 'lucide-react';
+import { useToast } from '../../context/ToastContext';
 
 const Content = () => {
   const [carousel] = useState(mockHomeContent.carousel);
   const [staticText] = useState(mockHomeContent.staticText);
   const [featuredProducts] = useState(mockHomeContent.featuredProducts);
+  const { success } = useToast();
+  
+  const handleSave = () => {
+    success('Contenu enregistré avec succès !');
+  };
   
   return (
     <div className="space-y-6">
@@ -15,7 +21,10 @@ const Content = () => {
       <div className="bg-white rounded-lg shadow-md p-6 border border-border">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-foreground">Carrousel Page d'Accueil</h3>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm">
+          <button
+            onClick={handleSave}
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm"
+          >
             <Edit className="h-4 w-4" />
             Modifier
           </button>
@@ -38,7 +47,10 @@ const Content = () => {
       <div className="bg-white rounded-lg shadow-md p-6 border border-border">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-foreground">Texte Fixe Page d'Accueil</h3>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm">
+          <button
+            onClick={handleSave}
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm"
+          >
             <Edit className="h-4 w-4" />
             Modifier
           </button>
@@ -50,7 +62,10 @@ const Content = () => {
       <div className="bg-white rounded-lg shadow-md p-6 border border-border">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-foreground">Top Produits du Moment</h3>
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm">
+          <button
+            onClick={handleSave}
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm"
+          >
             <Edit className="h-4 w-4" />
             Modifier
           </button>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { AdminProvider } from './context/AdminContext';
+import ToastProvider from './context/ToastContext';
 import Header from './components/layout/Header';
 import Sidebar from './components/ui/sidebar';
 import { AdminLayout } from './components/admin/AdminLayout';
@@ -30,11 +31,17 @@ import About from './pages/About';
 import AdminLogin from './pages/admin/Login';
 import Dashboard from './pages/admin/Dashboard';
 import Products from './pages/admin/Products';
+import ProductDetail from './pages/admin/ProductDetail';
+import ProductForm from './pages/admin/ProductForm';
 import Categories from './pages/admin/Categories';
 import Orders from './pages/admin/Orders';
+import OrderDetail from './pages/admin/OrderDetail';
 import Users from './pages/admin/Users';
+import UserDetail from './pages/admin/UserDetail';
 import Messages from './pages/admin/Messages';
+import MessageDetail from './pages/admin/MessageDetail';
 import Chatbot from './pages/admin/Chatbot';
+import ChatbotDetail from './pages/admin/ChatbotDetail';
 import Content from './pages/admin/Content';
 import Settings from './pages/admin/Settings';
 
@@ -89,6 +96,36 @@ function AppContent() {
           }
         />
         <Route
+          path="/admin/products/new"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <ProductForm />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/products/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <ProductDetail />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/products/:id/edit"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <ProductForm />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/admin/categories"
           element={
             <ProtectedRoute>
@@ -109,11 +146,31 @@ function AppContent() {
           }
         />
         <Route
+          path="/admin/orders/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <OrderDetail />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/admin/users"
           element={
             <ProtectedRoute>
               <AdminLayout>
                 <Users />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <UserDetail />
               </AdminLayout>
             </ProtectedRoute>
           }
@@ -129,11 +186,31 @@ function AppContent() {
           }
         />
         <Route
+          path="/admin/messages/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <MessageDetail />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/admin/chatbot"
           element={
             <ProtectedRoute>
               <AdminLayout>
                 <Chatbot />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/chatbot/:id"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <ChatbotDetail />
               </AdminLayout>
             </ProtectedRoute>
           }
@@ -213,13 +290,15 @@ function AppContent() {
 
 function App() {
   return (
-    <CartProvider>
-      <AdminProvider>
-        <Router>
-          <AppContent />
-        </Router>
-      </AdminProvider>
-    </CartProvider>
+    <ToastProvider>
+      <CartProvider>
+        <AdminProvider>
+          <Router>
+            <AppContent />
+          </Router>
+        </AdminProvider>
+      </CartProvider>
+    </ToastProvider>
   );
 }
 

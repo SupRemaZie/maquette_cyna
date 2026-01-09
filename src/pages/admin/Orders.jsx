@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { mockOrders } from '../../data/adminMockData';
 import { Search, Download } from 'lucide-react';
+import { useToast } from '../../context/ToastContext';
 
 const Orders = () => {
   const [orders] = useState(mockOrders);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const { info } = useToast();
+  
+  const handleExportCSV = () => {
+    info('Export CSV démarré');
+  };
   
   const filteredOrders = orders.filter(order => {
     const matchesSearch = order.orderNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -54,7 +60,10 @@ const Orders = () => {
             <option value="Terminée">Terminée</option>
             <option value="Annulée">Annulée</option>
           </select>
-          <button className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
+          <button
+            onClick={handleExportCSV}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+          >
             <Download className="h-4 w-4" />
             Exporter CSV
           </button>

@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 import { mockSettings } from '../../data/adminMockData';
 import { Save } from 'lucide-react';
+import { useToast } from '../../context/ToastContext';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('general');
   const [settings, setSettings] = useState(mockSettings);
+  const { success } = useToast();
+  
+  const handleSave = () => {
+    success('Paramètres enregistrés avec succès !');
+  };
   
   const tabs = [
     { id: 'general', label: 'Général' },
@@ -174,7 +180,10 @@ const Settings = () => {
         )}
         
         <div className="mt-6 pt-6 border-t flex justify-end">
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors">
+          <button
+            onClick={handleSave}
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+          >
             <Save className="h-4 w-4" />
             Enregistrer les modifications
           </button>

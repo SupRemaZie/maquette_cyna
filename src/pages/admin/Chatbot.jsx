@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { mockChatbotConversations } from '../../data/adminMockData';
 import { Search, MessageSquare } from 'lucide-react';
 
@@ -89,10 +90,13 @@ const Chatbot = () => {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <button className="text-primary hover:text-primary-600 text-sm flex items-center gap-1">
+                    <Link
+                      to={`/admin/chatbot/${conv.id}`}
+                      className="text-primary hover:text-primary-600 text-sm flex items-center gap-1"
+                    >
                       <MessageSquare className="h-4 w-4" />
                       Voir conversation
-                    </button>
+                    </Link>
                   </td>
                 </tr>
               ))}

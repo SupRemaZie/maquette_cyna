@@ -4,6 +4,7 @@ import { useAdmin } from '../../context/AdminContext';
 import { Shield } from 'lucide-react';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
+import { useToast } from '../../context/ToastContext';
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const AdminLogin = () => {
   const { login } = useAdmin();
   const navigate = useNavigate();
   const location = useLocation();
+  const { success, error: showError } = useToast();
   
   const from = location.state?.from?.pathname || '/admin/dashboard';
   
@@ -26,9 +28,13 @@ const AdminLogin = () => {
     const result = login(formData.email, formData.password);
     
     if (result.success) {
-      navigate(from, { replace: true });
+      success('Connexion réussie !');
+      setTimeout(() => {
+        navigate(from, { replace: true });
+      }, 500);
     } else {
       setError(result.error);
+      showError(result.error);
     }
   };
   

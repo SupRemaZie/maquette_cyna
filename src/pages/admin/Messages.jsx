@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { mockMessages } from '../../data/adminMockData';
-import { Search, Mail } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 const Messages = () => {
   const [messages] = useState(mockMessages);
@@ -86,13 +87,12 @@ const Messages = () => {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <a
-                      href={`mailto:${message.email}?subject=Re: ${message.subject}`}
-                      className="text-primary hover:text-primary-600 text-sm flex items-center gap-1"
+                    <Link
+                      to={`/admin/messages/${message.id}`}
+                      className="text-primary hover:text-primary-600 text-sm"
                     >
-                      <Mail className="h-4 w-4" />
-                      Répondre
-                    </a>
+                      Voir message
+                    </Link>
                   </td>
                 </tr>
               ))}

@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 import { mockCategories } from '../../data/adminMockData';
 import { Plus, Edit, Trash2 } from 'lucide-react';
+import { useToast } from '../../context/ToastContext';
 
 const Categories = () => {
   const [categories] = useState(mockCategories);
+  const { success, error: showError } = useToast();
+  
+  const handleDelete = (category) => {
+    if (category.productCount > 0) {
+      showError('Impossible de supprimer une catégorie contenant des produits');
+      return;
+    }
+    success('Catégorie supprimée avec succès !');
+  };
   
   return (
     <div className="space-y-6">
@@ -55,7 +65,10 @@ const Categories = () => {
                         <Edit className="h-4 w-4" />
                       </button>
                       {category.productCount === 0 && (
-                        <button className="p-2 text-destructive hover:bg-destructive/10 rounded transition-colors">
+                        <button
+                          onClick={() => handleDelete(category)}
+                          className="p-2 text-destructive hover:bg-destructive/10 rounded transition-colors"
+                        >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       )}
