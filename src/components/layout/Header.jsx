@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import { Search } from 'lucide-react';
+import { Search, User, LogOut } from 'lucide-react';
 import { SidebarTrigger } from '../ui/sidebar';
+import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 
 const Header = ({ onSidebarToggle }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const navigate = useNavigate();
-  const { getCartItemsCount } = useCart();
+  const location = useLocation();
+  const { getCartItemsCount, isAuthenticated, user, logout } = useCart();
+  
+  // Routes qui ne doivent pas avoir le bouton sidebar
+  const noSidebarRoutes = ['/login', '/register', '/forgot-password'];
+  const showSidebarTrigger = !noSidebarRoutes.includes(location.pathname);
   
   const handleSearch = (e) => {
     e.preventDefault();
@@ -24,7 +30,7 @@ const Header = ({ onSidebarToggle }) => {
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="flex items-center gap-4">
             {/* Sidebar Trigger - Mobile */}
-            <SidebarTrigger onClick={onSidebarToggle} />
+            {showSidebarTrigger && <SidebarTrigger onClick={onSidebarToggle} />}
           </div>
           
           {/* Search Bar - Desktop */}
@@ -43,7 +49,7 @@ const Header = ({ onSidebarToggle }) => {
             </div>
           </form>
           
-          {/* Right side - Cart */}
+          {/* Right side - Cart & Account */}
           <div className="flex items-center space-x-4">
             {/* Search Icon - Mobile */}
             <Link
@@ -69,6 +75,66 @@ const Header = ({ onSidebarToggle }) => {
                 </span>
               )}
             </Link>
+            
+            {/* Account Menu */}
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                  aria-label="Compte utilisateur"
+                >
+                  <User className="h-6 w-6" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="end" className="w-56 p-0">
+                {isAuthenticated ? (
+                  <div className="p-2">
+                    <div className="px-3 py-2 border-b">
+                      <p className="text-sm font-semibold text-foreground">
+                        {user?.firstName} {user?.lastName}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate">
+                        {user?.email}
+                      </p>
+                    </div>
+                    <div className="py-1">
+                      <Link
+                        to="/account"
+                        className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-accent rounded-sm transition-colors"
+                      >
+                        <User className="h-4 w-4" />
+                        Mon compte
+                      </Link>
+                      <button
+                        onClick={() => {
+                          logout();
+                          navigate('/');
+                        }}
+                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-accent rounded-sm transition-colors"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        Se déconnecter
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="p-2">
+                    <Link
+                      to="/login"
+                      className="block w-full px-3 py-2 text-sm text-center text-foreground hover:bg-accent rounded-sm transition-colors"
+                    >
+                      Se connecter
+                    </Link>
+                    <Link
+                      to="/register"
+                      className="block w-full px-3 py-2 text-sm text-center text-primary hover:bg-primary/10 rounded-sm transition-colors mt-1"
+                    >
+                      S'inscrire
+                    </Link>
+                  </div>
+                )}
+              </PopoverContent>
+            </Popover>
           </div>
         </div>
         
