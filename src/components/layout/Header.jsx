@@ -20,7 +20,7 @@ const Header = ({ onSidebarToggle }) => {
     if (!isAdminAuthenticated) {
       adminLogin('admin@cyna-it.fr', 'Admin123!');
     }
-    navigate('/admin');
+    navigate('/admin/dashboard');
   };
   
   // Routes qui ne doivent pas avoir le bouton sidebar
