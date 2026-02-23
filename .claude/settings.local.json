@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cd:*)"
+      "Bash(cd:*)",
+      "Bash(cd /c/ecole/projet_etude/maquette_cyna && npx shadcn@latest add switch --yes 2>&1)"
     ]
   }
 }

@@ -2,11 +2,12 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Plus, Eye, Edit, Trash2, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 import Modal from '../../components/common/Modal';
+import { Switch } from '../../components/ui/switch';
 import { useToast } from '../../context/ToastContext';
 import { useProducts } from '../../context/ProductsContext';
 
 const Products = () => {
-  const { products, deleteProduct, deleteProducts } = useProducts();
+  const { products, deleteProduct, deleteProducts, updateProduct } = useProducts();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedAvailability, setSelectedAvailability] = useState('all');
@@ -92,6 +93,12 @@ const Products = () => {
     success('Produit supprimé avec succès !');
   };
   
+  const handleToggleAvailable = (product) => {
+    const next = !product.available;
+    updateProduct(product.id, { available: next });
+    success(`"${product.name}" ${next ? 'publié' : 'dépublié'} avec succès !`);
+  };
+
   const handleBulkDelete = () => {
     if (selectedProducts.length === 0) {
       showError('Aucun produit sélectionné');
@@ -158,8 +165,8 @@ const Products = () => {
             className="w-full px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
           >
             <option value="all">Tous les statuts</option>
-            <option value="available">Disponible</option>
-            <option value="unavailable">Indisponible</option>
+            <option value="available">Publié</option>
+            <option value="unavailable">Brouillon</option>
           </select>
           
           <div className="flex flex-col gap-2">
@@ -218,10 +225,12 @@ const Products = () => {
                   <div className="font-semibold text-foreground text-base">{product.name}</div>
                   <div className="text-sm text-muted-foreground mt-0.5">{product.category}</div>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full ${
-                      product.available ? 'bg-accent/20 text-accent' : 'bg-destructive/20 text-destructive'
-                    }`}>
-                      {product.available ? 'Disponible' : 'Indisponible'}
+                    <Switch
+                      checked={product.available}
+                      onCheckedChange={() => handleToggleAvailable(product)}
+                    />
+                    <span className={`text-xs font-medium ${product.available ? 'text-accent' : 'text-muted-foreground'}`}>
+                      {product.available ? 'Publié' : 'Brouillon'}
                     </span>
                   </div>
                 </div>
@@ -295,7 +304,7 @@ const Products = () => {
                   Catégorie <SortIcon columnKey="category" />
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Prix</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Disponibilité</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Publié</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Priorité</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Actions</th>
               </tr>
@@ -331,13 +340,15 @@ const Products = () => {
                     <div className="text-xs text-muted-foreground">{product.priceYearly}€/an</div>
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      product.available
-                        ? 'bg-accent/20 text-accent'
-                        : 'bg-destructive/20 text-destructive'
-                    }`}>
-                      {product.available ? 'Disponible' : 'Indisponible'}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        checked={product.available}
+                        onCheckedChange={() => handleToggleAvailable(product)}
+                      />
+                      <span className={`text-xs font-medium ${product.available ? 'text-accent' : 'text-muted-foreground'}`}>
+                        {product.available ? 'Publié' : 'Brouillon'}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-4 py-3 text-sm text-foreground">{product.priority}</td>
                   <td className="px-4 py-3">
