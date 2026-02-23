@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import { Search, User, LogOut } from 'lucide-react';
+import { useAdmin } from '../../context/AdminContext';
+import { Search, User, LogOut, LayoutDashboard } from 'lucide-react';
 import { SidebarTrigger } from '../ui/sidebar';
 import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 
@@ -11,6 +12,16 @@ const Header = ({ onSidebarToggle }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { getCartItemsCount, isAuthenticated, user, logout } = useCart();
+  const { login: adminLogin, isAuthenticated: isAdminAuthenticated } = useAdmin();
+
+  const isAdminUser = user?.email === 'admin@cyna-it.fr';
+
+  const handleSwitchToAdmin = () => {
+    if (!isAdminAuthenticated) {
+      adminLogin('admin@cyna-it.fr', 'Admin123!');
+    }
+    navigate('/admin');
+  };
   
   // Routes qui ne doivent pas avoir le bouton sidebar
   const noSidebarRoutes = ['/login', '/register', '/forgot-password'];
@@ -105,6 +116,15 @@ const Header = ({ onSidebarToggle }) => {
                         <User className="h-4 w-4" />
                         Mon compte
                       </Link>
+                      {isAdminUser && (
+                        <button
+                          onClick={handleSwitchToAdmin}
+                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-primary/10 rounded-sm transition-colors"
+                        >
+                          <LayoutDashboard className="h-4 w-4" />
+                          Basculer en admin
+                        </button>
+                      )}
                       <button
                         onClick={() => {
                           logout();
