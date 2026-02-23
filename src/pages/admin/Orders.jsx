@@ -8,18 +8,27 @@ const Orders = () => {
   const [orders] = useState(mockOrders);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('date_desc');
   const { info } = useToast();
-  
+
   const handleExportCSV = () => {
     info('Export CSV démarré');
   };
-  
-  const filteredOrders = orders.filter(order => {
-    const matchesSearch = order.orderNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         order.customer.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+
+  const filteredOrders = orders
+    .filter(order => {
+      const matchesSearch = order.orderNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           order.customer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           `${order.customer.firstName} ${order.customer.lastName}`.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => {
+      if (sortBy === 'total_desc')  return b.total - a.total;
+      if (sortBy === 'total_asc')   return a.total - b.total;
+      if (sortBy === 'date_asc')    return new Date(a.date) - new Date(b.date);
+      return new Date(b.date) - new Date(a.date); // date_desc par défaut
+    });
   
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(value);
@@ -37,14 +46,14 @@ const Orders = () => {
       </div>
       
       <div className="bg-white rounded-lg shadow-md p-4 border border-border">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Rechercher par N° ou email..."
+              placeholder="N°, email ou nom client..."
               className="w-full pl-10 pr-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
             />
           </div>
@@ -60,9 +69,19 @@ const Orders = () => {
             <option value="Terminée">Terminée</option>
             <option value="Annulée">Annulée</option>
           </select>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="w-full px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+          >
+            <option value="date_desc">Trier : Plus récentes</option>
+            <option value="date_asc">Trier : Plus anciennes</option>
+            <option value="total_desc">Trier : Montant décroissant</option>
+            <option value="total_asc">Trier : Montant croissant</option>
+          </select>
           <button
             onClick={handleExportCSV}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm"
           >
             <Download className="h-4 w-4" />
             Exporter CSV
@@ -70,12 +89,10 @@ const Orders = () => {
         </div>
       </div>
       
-      <div className="bg-white rounded-lg shadow-md border border-border overflow-hidden">
-
+      <div className="md:hidden space-y-3">
         {/* Mobile : cards */}
-        <div className="md:hidden divide-y divide-border">
-          {filteredOrders.map((order) => (
-            <div key={order.id} className="p-4 space-y-2">
+        {filteredOrders.map((order) => (
+          <div key={order.id} className="bg-white rounded-lg shadow-sm border border-border p-4 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="font-medium text-sm text-foreground">{order.orderNumber}</span>
                 <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
@@ -105,12 +122,12 @@ const Orders = () => {
               >
                 Voir détails
               </Link>
-            </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Desktop : table */}
-        <div className="hidden md:block overflow-x-auto">
+      {/* Desktop : table */}
+      <div className="hidden md:block bg-white rounded-lg shadow-md border border-border overflow-x-auto">
           <table className="w-full">
             <thead className="bg-muted">
               <tr>
@@ -163,7 +180,6 @@ const Orders = () => {
               ))}
             </tbody>
           </table>
-        </div>
       </div>
     </div>
   );

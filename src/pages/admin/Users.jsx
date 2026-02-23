@@ -7,13 +7,20 @@ const Users = () => {
   const [users] = useState(mockUsers);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  
-  const filteredUsers = users.filter(user => {
-    const matchesSearch = `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         user.email.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  const [sortBy, setSortBy] = useState('totalSpent');
+
+  const filteredUsers = users
+    .filter(user => {
+      const matchesSearch = `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                           user.email.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesStatus = statusFilter === 'all' || user.status === statusFilter;
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => {
+      if (sortBy === 'totalSpent') return b.totalSpent - a.totalSpent;
+      if (sortBy === 'orderCount') return b.orderCount - a.orderCount;
+      return 0;
+    });
   
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(value);
@@ -31,7 +38,7 @@ const Users = () => {
       </div>
       
       <div className="bg-white rounded-lg shadow-md p-4 border border-border">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
@@ -53,11 +60,69 @@ const Users = () => {
             <option value="Email non confirmé">Email non confirmé</option>
             <option value="Bloqué">Bloqué</option>
           </select>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="w-full px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+          >
+            <option value="totalSpent">Trier : Plus gros clients</option>
+            <option value="orderCount">Trier : Plus de commandes</option>
+          </select>
         </div>
       </div>
       
-      <div className="bg-white rounded-lg shadow-md border border-border overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* Mobile : cards */}
+      <div className="md:hidden space-y-3">
+        {filteredUsers.map((user, index) => (
+          <div key={user.id} className="bg-white rounded-lg shadow-sm border border-border p-4 space-y-2">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    {index < 3 && (
+                      <span className={`text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
+                        index === 0 ? 'bg-yellow-400 text-yellow-900' :
+                        index === 1 ? 'bg-gray-300 text-gray-700' :
+                        'bg-orange-300 text-orange-900'
+                      }`}>
+                        {index + 1}
+                      </span>
+                    )}
+                    <span className="font-medium text-sm text-foreground truncate">
+                      {user.firstName} {user.lastName}
+                    </span>
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{user.email}</div>
+                </div>
+                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full flex-shrink-0 ${
+                  user.status === 'Actif' ? 'bg-accent/20 text-accent' :
+                  user.status === 'Bloqué' ? 'bg-destructive/20 text-destructive' :
+                  'bg-muted text-muted-foreground'
+                }`}>
+                  {user.status}
+                </span>
+              </div>
+              <div className="flex items-center justify-between bg-muted/50 rounded-lg px-3 py-2">
+                <div>
+                  <p className="text-xs text-muted-foreground">Total dépensé</p>
+                  <p className="text-base font-bold text-foreground">{formatCurrency(user.totalSpent)}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-muted-foreground">Commandes</p>
+                  <p className="text-base font-bold text-foreground">{user.orderCount}</p>
+                </div>
+              </div>
+              <Link
+                to={`/admin/users/${user.id}`}
+                className="block text-center text-sm text-primary hover:text-primary/80 py-1.5 border border-primary/30 rounded-md"
+              >
+                Voir profil
+              </Link>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop : table */}
+      <div className="hidden md:block bg-white rounded-lg shadow-md border border-border overflow-x-auto">
           <table className="w-full">
             <thead className="bg-muted">
               <tr>
@@ -107,7 +172,6 @@ const Users = () => {
               ))}
             </tbody>
           </table>
-        </div>
       </div>
     </div>
   );

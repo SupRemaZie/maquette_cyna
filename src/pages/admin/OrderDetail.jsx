@@ -68,42 +68,42 @@ const OrderDetail = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
           <Link
             to="/admin/orders"
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h2 className="text-2xl font-bold text-foreground">Commande {order.orderNumber}</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">Commande {order.orderNumber}</h2>
             <p className="text-sm text-muted-foreground">
               {formatDate(order.date)}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setStatusModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm"
           >
             <Edit className="h-4 w-4" />
-            Changer statut
+            <span className="hidden sm:inline">Changer statut</span>
           </button>
           <button
             onClick={handleDownloadInvoice}
-            className="flex items-center gap-2 px-4 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors"
+            className="flex items-center gap-2 px-3 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors text-sm"
           >
             <Download className="h-4 w-4" />
-            Télécharger facture
+            <span className="hidden sm:inline">Facture</span>
           </button>
           <button
             onClick={handleSendEmail}
-            className="flex items-center gap-2 px-4 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors"
+            className="flex items-center gap-2 px-3 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors text-sm"
           >
             <Mail className="h-4 w-4" />
-            Envoyer email
+            <span className="hidden sm:inline">Email</span>
           </button>
         </div>
       </div>
@@ -130,10 +130,10 @@ const OrderDetail = () => {
                 <h4 className="text-sm font-medium text-foreground mb-2">Historique des changements</h4>
                 <div className="space-y-2">
                   {order.statusHistory.map((history, index) => (
-                    <div key={index} className="flex items-center justify-between text-sm">
-                      <span className="text-foreground">{history.status}</span>
-                      <span className="text-muted-foreground">
-                        {formatDate(history.date)} - {history.user}
+                    <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-0.5">
+                      <span className="text-foreground font-medium">{history.status}</span>
+                      <span className="text-muted-foreground text-xs">
+                        {formatDate(history.date)} — {history.user}
                       </span>
                     </div>
                   ))}
@@ -147,15 +147,15 @@ const OrderDetail = () => {
             <h3 className="text-lg font-semibold text-foreground mb-4">Services commandés</h3>
             <div className="space-y-4">
               {order.items.map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border rounded-lg gap-2">
                   <div>
                     <h4 className="font-medium text-foreground">{item.productName}</h4>
                     <p className="text-sm text-muted-foreground">
                       {item.subscriptionType === 'monthly' ? 'Abonnement mensuel' : 'Abonnement annuel'}
                     </p>
-                    <p className="text-sm text-muted-foreground">Quantité: {item.quantity}</p>
+                    <p className="text-sm text-muted-foreground">Quantité : {item.quantity}</p>
                   </div>
-                  <div className="text-right">
+                  <div className="sm:text-right">
                     <p className="font-semibold text-foreground">
                       {formatCurrency(item.subtotal)}
                     </p>

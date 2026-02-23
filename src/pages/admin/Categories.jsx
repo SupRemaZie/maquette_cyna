@@ -30,55 +30,65 @@ const Categories = () => {
         </button>
       </div>
       
-      <div className="bg-white rounded-lg shadow-md border border-border overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-muted">
-              <tr>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">ID</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Image</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Nom</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Description</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Produits</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Ordre</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories.map((category) => (
-                <tr key={category.id} className="border-b hover:bg-muted/50">
-                  <td className="px-4 py-3 text-sm text-foreground">{category.id}</td>
-                  <td className="px-4 py-3">
-                    <img
-                      src={category.image}
-                      alt={category.name}
-                      className="w-12 h-12 object-cover rounded"
-                    />
-                  </td>
-                  <td className="px-4 py-3 font-medium text-foreground">{category.name}</td>
-                  <td className="px-4 py-3 text-sm text-muted-foreground">{category.description}</td>
-                  <td className="px-4 py-3 text-sm text-foreground">{category.productCount}</td>
-                  <td className="px-4 py-3 text-sm text-foreground">{category.displayOrder}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <button className="p-2 text-primary hover:bg-primary/10 rounded transition-colors">
-                        <Edit className="h-4 w-4" />
+      {/* Mobile : cards */}
+      <div className="md:hidden space-y-3">
+        {categories.map((category) => (
+          <div key={category.id} className="bg-white rounded-lg shadow-sm border border-border p-4 flex items-center justify-between gap-3">
+            <div>
+              <p className="font-medium text-foreground">{category.name}</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{category.productCount} produit(s)</p>
+            </div>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <button className="p-2 text-primary hover:bg-primary/10 rounded transition-colors">
+                <Edit className="h-4 w-4" />
+              </button>
+              {category.productCount === 0 && (
+                <button
+                  onClick={() => handleDelete(category)}
+                  className="p-2 text-destructive hover:bg-destructive/10 rounded transition-colors"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop : table */}
+      <div className="hidden md:block bg-white rounded-lg shadow-md border border-border overflow-x-auto">
+        <table className="w-full">
+          <thead className="bg-muted">
+            <tr>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Nom</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Produits</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.map((category) => (
+              <tr key={category.id} className="border-b hover:bg-muted/50">
+                <td className="px-4 py-3 font-medium text-foreground">{category.name}</td>
+                <td className="px-4 py-3 text-sm text-foreground">{category.productCount}</td>
+                <td className="px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <button className="p-2 text-primary hover:bg-primary/10 rounded transition-colors">
+                      <Edit className="h-4 w-4" />
+                    </button>
+                    {category.productCount === 0 && (
+                      <button
+                        onClick={() => handleDelete(category)}
+                        className="p-2 text-destructive hover:bg-destructive/10 rounded transition-colors"
+                      >
+                        <Trash2 className="h-4 w-4" />
                       </button>
-                      {category.productCount === 0 && (
-                        <button
-                          onClick={() => handleDelete(category)}
-                          className="p-2 text-destructive hover:bg-destructive/10 rounded transition-colors"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -52,8 +52,39 @@ const Chatbot = () => {
         </div>
       </div>
       
-      <div className="bg-white rounded-lg shadow-md border border-border overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* Mobile : cards */}
+      <div className="md:hidden space-y-3">
+        {filteredConversations.map((conv) => (
+          <div key={conv.id} className="bg-white rounded-lg shadow-sm border border-border p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-sm text-foreground">
+                  {conv.user ? conv.user.name : 'Anonyme'}
+                </span>
+                {conv.escalated ? (
+                  <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-destructive/20 text-destructive">
+                    Escaladé
+                  </span>
+                ) : (
+                  <span className="inline-flex px-2 py-1 text-xs font-medium rounded-full bg-muted text-muted-foreground">
+                    Normal
+                  </span>
+                )}
+              </div>
+              <div className="text-xs text-muted-foreground line-clamp-2">
+                {conv.firstMessage.substring(0, 80)}...
+              </div>
+              <Link
+                to={`/admin/chatbot/${conv.id}`}
+                className="block text-center text-sm text-primary hover:text-primary/80 py-1.5 border border-primary/30 rounded-md"
+              >
+                Voir conversation
+              </Link>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop : table */}
+      <div className="hidden md:block bg-white rounded-lg shadow-md border border-border overflow-x-auto">
           <table className="w-full">
             <thead className="bg-muted">
               <tr>
@@ -102,7 +133,6 @@ const Chatbot = () => {
               ))}
             </tbody>
           </table>
-        </div>
       </div>
     </div>
   );

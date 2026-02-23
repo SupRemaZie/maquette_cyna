@@ -50,39 +50,40 @@ const UserDetail = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
           <Link
             to="/admin/users"
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h2 className="text-2xl font-bold text-foreground">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">
               {user.firstName} {user.lastName}
             </h2>
-            <p className="text-sm text-muted-foreground">ID: {user.id}</p>
+            <p className="text-sm text-muted-foreground">ID : {user.id}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={handleBlockToggle}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm ${
               user.status === 'Bloqué'
                 ? 'bg-accent text-accent-foreground hover:bg-accent/90'
                 : 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
             }`}
           >
             {user.status === 'Bloqué' ? <Unlock className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
-            {user.status === 'Bloqué' ? 'Débloquer' : 'Bloquer'}
+            <span>{user.status === 'Bloqué' ? 'Débloquer' : 'Bloquer'}</span>
           </button>
           <button
             onClick={handleResetPassword}
-            className="flex items-center gap-2 px-4 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors"
+            className="flex items-center gap-2 px-3 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors text-sm"
           >
             <Mail className="h-4 w-4" />
-            Réinitialiser mot de passe
+            <span className="hidden sm:inline">Réinitialiser mot de passe</span>
+            <span className="sm:hidden">Réinit. MDP</span>
           </button>
         </div>
       </div>
@@ -158,19 +159,17 @@ const UserDetail = () => {
               <h3 className="text-lg font-semibold text-foreground mb-4">Abonnements actifs</h3>
               <div className="space-y-3">
                 {user.subscriptions.map((sub) => (
-                  <div key={sub.id} className="p-4 border rounded-lg">
-                    <div className="flex items-center justify-between">
+                  <div key={sub.id} className="p-4 border rounded-lg space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                       <div>
                         <h4 className="font-medium text-foreground">{sub.productName}</h4>
                         <p className="text-sm text-muted-foreground">
                           {formatCurrency(sub.price)} / {sub.type === 'monthly' ? 'mois' : 'an'}
                         </p>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm text-muted-foreground">Début</p>
-                        <p className="text-sm text-foreground">{formatDate(sub.startDate)}</p>
-                        <p className="text-sm text-muted-foreground mt-1">Prochain paiement</p>
-                        <p className="text-sm text-foreground">{formatDate(sub.nextBilling)}</p>
+                      <div className="sm:text-right text-sm">
+                        <p className="text-muted-foreground">Début : <span className="text-foreground">{formatDate(sub.startDate)}</span></p>
+                        <p className="text-muted-foreground">Prochain paiement : <span className="text-foreground">{formatDate(sub.nextBilling)}</span></p>
                       </div>
                     </div>
                   </div>
@@ -191,47 +190,77 @@ const UserDetail = () => {
               </Link>
             </div>
             {userOrders.length > 0 ? (
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-2 text-sm font-semibold text-foreground">N° Commande</th>
-                      <th className="text-left py-2 text-sm font-semibold text-foreground">Date</th>
-                      <th className="text-left py-2 text-sm font-semibold text-foreground">Montant</th>
-                      <th className="text-left py-2 text-sm font-semibold text-foreground">Statut</th>
-                      <th className="text-left py-2 text-sm font-semibold text-foreground">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {userOrders.slice(0, 10).map((order) => (
-                      <tr key={order.id} className="border-b">
-                        <td className="py-2 text-sm text-foreground">{order.orderNumber}</td>
-                        <td className="py-2 text-sm text-foreground">{formatDate(order.date)}</td>
-                        <td className="py-2 text-sm font-semibold text-foreground">
-                          {formatCurrency(order.total)}
-                        </td>
-                        <td className="py-2">
-                          <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                            order.status === 'Active' ? 'bg-accent/20 text-accent' :
-                            order.status === 'Confirmée' ? 'bg-primary/20 text-primary' :
-                            'bg-muted text-muted-foreground'
-                          }`}>
-                            {order.status}
-                          </span>
-                        </td>
-                        <td className="py-2">
-                          <Link
-                            to={`/admin/orders/${order.id}`}
-                            className="text-sm text-primary hover:text-primary-600"
-                          >
-                            Voir détails
-                          </Link>
-                        </td>
+              <>
+                {/* Mobile : cards */}
+                <div className="md:hidden divide-y divide-border -mx-6">
+                  {userOrders.slice(0, 10).map((order) => (
+                    <div key={order.id} className="px-6 py-3 space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-foreground">{order.orderNumber}</span>
+                        <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                          order.status === 'Active' ? 'bg-accent/20 text-accent' :
+                          order.status === 'Confirmée' ? 'bg-primary/20 text-primary' :
+                          'bg-muted text-muted-foreground'
+                        }`}>
+                          {order.status}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-muted-foreground">{formatDate(order.date)}</span>
+                        <span className="text-sm font-semibold text-foreground">{formatCurrency(order.total)}</span>
+                      </div>
+                      <Link
+                        to={`/admin/orders/${order.id}`}
+                        className="block text-center text-sm text-primary hover:text-primary/80 py-1 border border-primary/30 rounded-md mt-1"
+                      >
+                        Voir détails
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+                {/* Desktop : table */}
+                <div className="hidden md:block overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b">
+                        <th className="text-left py-2 text-sm font-semibold text-foreground">N° Commande</th>
+                        <th className="text-left py-2 text-sm font-semibold text-foreground">Date</th>
+                        <th className="text-left py-2 text-sm font-semibold text-foreground">Montant</th>
+                        <th className="text-left py-2 text-sm font-semibold text-foreground">Statut</th>
+                        <th className="text-left py-2 text-sm font-semibold text-foreground">Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {userOrders.slice(0, 10).map((order) => (
+                        <tr key={order.id} className="border-b">
+                          <td className="py-2 text-sm text-foreground">{order.orderNumber}</td>
+                          <td className="py-2 text-sm text-foreground">{formatDate(order.date)}</td>
+                          <td className="py-2 text-sm font-semibold text-foreground">
+                            {formatCurrency(order.total)}
+                          </td>
+                          <td className="py-2">
+                            <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                              order.status === 'Active' ? 'bg-accent/20 text-accent' :
+                              order.status === 'Confirmée' ? 'bg-primary/20 text-primary' :
+                              'bg-muted text-muted-foreground'
+                            }`}>
+                              {order.status}
+                            </span>
+                          </td>
+                          <td className="py-2">
+                            <Link
+                              to={`/admin/orders/${order.id}`}
+                              className="text-sm text-primary hover:text-primary-600"
+                            >
+                              Voir détails
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
             ) : (
               <p className="text-muted-foreground text-center py-8">Aucune commande</p>
             )}

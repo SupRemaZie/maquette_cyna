@@ -52,8 +52,34 @@ const Messages = () => {
         </div>
       </div>
       
-      <div className="bg-white rounded-lg shadow-md border border-border overflow-hidden">
-        <div className="overflow-x-auto">
+      {/* Mobile : cards */}
+      <div className="md:hidden space-y-3">
+        {filteredMessages.map((message) => (
+          <div key={message.id} className="bg-white rounded-lg shadow-sm border border-border p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-sm text-foreground">{message.subject}</span>
+                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                  message.status === 'Non lu' ? 'bg-yellow-100 text-yellow-800' :
+                  message.status === 'Répondu' ? 'bg-accent/20 text-accent' :
+                  message.status === 'Archivé' ? 'bg-muted text-muted-foreground' :
+                  'bg-primary/20 text-primary'
+                }`}>
+                  {message.status}
+                </span>
+              </div>
+              <div className="text-xs text-muted-foreground">{message.email}</div>
+              <Link
+                to={`/admin/messages/${message.id}`}
+                className="block text-center text-sm text-primary hover:text-primary/80 py-1.5 border border-primary/30 rounded-md"
+              >
+                Voir message
+              </Link>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop : table */}
+      <div className="hidden md:block bg-white rounded-lg shadow-md border border-border overflow-x-auto">
           <table className="w-full">
             <thead className="bg-muted">
               <tr>
@@ -98,7 +124,6 @@ const Messages = () => {
               ))}
             </tbody>
           </table>
-        </div>
       </div>
     </div>
   );

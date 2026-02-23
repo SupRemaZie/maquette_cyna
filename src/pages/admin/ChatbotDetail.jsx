@@ -77,23 +77,23 @@ const ChatbotDetail = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
           <Link
             to="/admin/chatbot"
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h2 className="text-2xl font-bold text-foreground">Conversation</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">Conversation</h2>
             <p className="text-sm text-muted-foreground">
-              {conversation.user ? `${conversation.user.name}` : 'Anonyme'} - {formatDate(conversation.date)}
+              {conversation.user ? conversation.user.name : 'Anonyme'} — {formatDate(conversation.date)}
             </p>
           </div>
         </div>
         {conversation.escalated && (
-          <span className="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-destructive/20 text-destructive">
+          <span className="inline-flex px-3 py-1 text-sm font-medium rounded-full bg-destructive/20 text-destructive self-start sm:self-auto">
             Escaladé vers humain
           </span>
         )}
@@ -163,7 +163,7 @@ const ChatbotDetail = () => {
                 </div>
               )}
               <div
-                className={`max-w-2xl rounded-lg p-4 ${
+                className={`max-w-[75vw] sm:max-w-xl rounded-lg p-3 sm:p-4 ${
                   msg.type === 'user'
                     ? 'bg-primary text-primary-foreground'
                     : msg.type === 'admin'
@@ -211,14 +211,14 @@ const ChatbotDetail = () => {
               className="w-full px-4 py-3 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm resize-none"
               disabled={isSending}
             />
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <p className="text-xs text-muted-foreground">
                 Cette réponse sera visible par l'utilisateur dans le chatbot
               </p>
               <button
                 type="submit"
                 disabled={!replyText.trim() || isSending}
-                className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm w-full sm:w-auto"
               >
                 <Send className="h-4 w-4" />
                 {isSending ? 'Envoi...' : 'Envoyer la réponse'}

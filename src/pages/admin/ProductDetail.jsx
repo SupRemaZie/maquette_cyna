@@ -59,33 +59,33 @@ const ProductDetail = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
           <Link
             to="/admin/products"
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h2 className="text-2xl font-bold text-foreground">{product.name}</h2>
-            <p className="text-sm text-muted-foreground">ID: {product.id}</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">{product.name}</h2>
+            <p className="text-sm text-muted-foreground">ID : {product.id}</p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Link
             to={`/admin/products/${product.id}/edit`}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm"
           >
             <Edit className="h-4 w-4" />
-            Modifier
+            <span>Modifier</span>
           </Link>
           <button
             onClick={() => setDeleteModal(true)}
-            className="flex items-center gap-2 px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors text-sm"
           >
             <Trash2 className="h-4 w-4" />
-            Supprimer
+            <span>Supprimer</span>
           </button>
         </div>
       </div>
@@ -98,7 +98,7 @@ const ProductDetail = () => {
             <img
               src={product.images[currentImageIndex] || '/api/placeholder/600/400'}
               alt={product.name}
-              className="w-full h-96 object-cover rounded-lg"
+              className="w-full h-56 sm:h-72 lg:h-96 object-cover rounded-lg"
             />
             {product.images.length > 1 && (
               <>

@@ -6,7 +6,11 @@ export const mockProducts = [
     id: 1,
     name: 'CYNA EDR Enterprise',
     category: 'EDR',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300', '/api/placeholder/400/300'],
+    images: [
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=300&fit=crop',
+    ],
     shortDescription: 'Solution EDR complète pour entreprises',
     fullDescription: 'CYNA EDR Enterprise offre une protection avancée contre les menaces avec détection en temps réel, analyse comportementale et réponse automatisée.',
     features: [
@@ -27,7 +31,10 @@ export const mockProducts = [
     id: 2,
     name: 'CYNA XDR Pro',
     category: 'XDR',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300'],
+    images: [
+      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=300&fit=crop',
+    ],
     shortDescription: 'Plateforme XDR nouvelle génération',
     fullDescription: 'CYNA XDR Pro intègre la détection et la réponse étendues sur tous vos environnements : endpoints, réseau, cloud et email.',
     features: [
@@ -48,7 +55,12 @@ export const mockProducts = [
     id: 3,
     name: 'CYNA SOC Managed',
     category: 'SOC',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300', '/api/placeholder/400/300', '/api/placeholder/400/300'],
+    images: [
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=300&fit=crop',
+    ],
     shortDescription: 'SOC managé 24/7',
     fullDescription: 'Notre équipe d\'experts surveille votre infrastructure 24/7 et répond aux incidents de sécurité.',
     features: [
@@ -69,7 +81,10 @@ export const mockProducts = [
     id: 4,
     name: 'CYNA Threat Intelligence',
     category: 'Threat Intelligence',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300'],
+    images: [
+      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop',
+    ],
     shortDescription: 'Intelligence sur les menaces en temps réel',
     fullDescription: 'Accédez à une base de données complète de menaces avec feeds en temps réel et analyses contextuelles.',
     features: [
@@ -90,7 +105,11 @@ export const mockProducts = [
     id: 5,
     name: 'CYNA SIEM Advanced',
     category: 'SIEM',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300', '/api/placeholder/400/300'],
+    images: [
+      'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=300&fit=crop',
+    ],
     shortDescription: 'SIEM nouvelle génération',
     fullDescription: 'Plateforme SIEM complète avec corrélation d\'événements, machine learning et automatisation.',
     features: [
@@ -111,7 +130,9 @@ export const mockProducts = [
     id: 6,
     name: 'CYNA EDR Starter',
     category: 'EDR',
-    images: ['/api/placeholder/400/300'],
+    images: [
+      'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=300&fit=crop',
+    ],
     shortDescription: 'EDR pour petites entreprises',
     fullDescription: 'Solution EDR abordable pour les petites et moyennes entreprises avec fonctionnalités essentielles.',
     features: [
@@ -132,7 +153,10 @@ export const mockProducts = [
     id: 7,
     name: 'CYNA XDR Basic',
     category: 'XDR',
-    images: ['/api/placeholder/400/300', '/api/placeholder/400/300'],
+    images: [
+      'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop',
+    ],
     shortDescription: 'XDR pour débuter',
     fullDescription: 'Version allégée de notre plateforme XDR pour les entreprises qui débutent en sécurité.',
     features: [
@@ -153,7 +177,7 @@ export const mockProducts = [
     id: 8,
     name: 'CYNA SOC Lite',
     category: 'SOC',
-    images: ['/api/placeholder/400/300'],
+    images: ['https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&h=300&fit=crop'],
     shortDescription: 'SOC managé allégé',
     fullDescription: 'Service SOC managé pour les entreprises avec besoins modérés en surveillance.',
     features: [

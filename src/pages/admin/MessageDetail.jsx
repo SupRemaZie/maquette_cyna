@@ -56,54 +56,56 @@ const MessageDetail = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex items-start gap-3">
           <Link
             to="/admin/messages"
-            className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="p-2 text-muted-foreground hover:text-foreground transition-colors flex-shrink-0 mt-0.5"
           >
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h2 className="text-2xl font-bold text-foreground">{message.subject}</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">{message.subject}</h2>
             <p className="text-sm text-muted-foreground">
               Reçu le {formatDate(message.date)}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {message.status === 'Non lu' && (
             <button
               onClick={handleMarkAsRead}
-              className="flex items-center gap-2 px-4 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors"
+              className="flex items-center gap-2 px-3 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors text-sm"
             >
               <Check className="h-4 w-4" />
-              Marquer comme lu
+              <span className="hidden sm:inline">Marquer comme lu</span>
+              <span className="sm:hidden">Lu</span>
             </button>
           )}
           {message.status !== 'Répondu' && (
             <button
               onClick={handleMarkAsReplied}
-              className="flex items-center gap-2 px-4 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors"
+              className="flex items-center gap-2 px-3 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors text-sm"
             >
               <Check className="h-4 w-4" />
-              Marquer comme répondu
+              <span className="hidden sm:inline">Marquer comme répondu</span>
+              <span className="sm:hidden">Répondu</span>
             </button>
           )}
           <button
             onClick={handleReply}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm"
           >
             <Mail className="h-4 w-4" />
-            Répondre
+            <span>Répondre</span>
           </button>
           {message.status !== 'Archivé' && (
             <button
               onClick={handleArchive}
-              className="flex items-center gap-2 px-4 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors"
+              className="flex items-center gap-2 px-3 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors text-sm"
             >
               <Archive className="h-4 w-4" />
-              Archiver
+              <span className="hidden sm:inline">Archiver</span>
             </button>
           )}
         </div>

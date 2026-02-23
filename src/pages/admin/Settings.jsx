@@ -1,22 +1,23 @@
 import React, { useState } from 'react';
 import { mockSettings } from '../../data/adminMockData';
-import { Save } from 'lucide-react';
+import { Save, Settings2, CreditCard, Mail, Shield } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
+import { cn } from '../../lib/utils';
 
 const Settings = () => {
   const [activeTab, setActiveTab] = useState('general');
   const [settings, setSettings] = useState(mockSettings);
   const { success } = useToast();
-  
+
   const handleSave = () => {
     success('Paramètres enregistrés avec succès !');
   };
-  
+
   const tabs = [
-    { id: 'general', label: 'Général' },
-    { id: 'payment', label: 'Paiement' },
-    { id: 'email', label: 'Email' },
-    { id: 'security', label: 'Sécurité' },
+    { id: 'general',  label: 'Général',  icon: Settings2  },
+    { id: 'payment',  label: 'Paiement', icon: CreditCard },
+    { id: 'email',    label: 'Email',    icon: Mail       },
+    { id: 'security', label: 'Sécurité', icon: Shield     },
   ];
   
   return (
@@ -24,21 +25,51 @@ const Settings = () => {
       <h2 className="text-2xl font-bold text-foreground">Paramètres</h2>
       
       {/* Tabs */}
-      <div className="bg-white rounded-lg shadow-md p-4 border border-border">
-        <div className="flex gap-2 border-b">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-                activeTab === tab.id
-                  ? 'border-primary text-primary'
-                  : 'border-transparent text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+      <div className="bg-white rounded-lg shadow-md border border-border">
+        {/* Mobile : icônes avec tooltip */}
+        <div className="sm:hidden px-2 py-3 flex items-center justify-around">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <div key={tab.id} className="relative group flex justify-center flex-1">
+                <button
+                  onClick={() => setActiveTab(tab.id)}
+                  aria-label={tab.label}
+                  className={cn(
+                    'flex items-center justify-center w-12 h-12 rounded-xl transition-colors',
+                    isActive
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                  )}
+                >
+                  <Icon className="h-5 w-5" />
+                </button>
+                <span className="pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 z-10 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
+                  {tab.label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Desktop : onglets texte */}
+        <div className="hidden sm:block px-4 pt-4">
+          <div className="flex gap-2 border-b">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                  activeTab === tab.id
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       
@@ -139,12 +170,12 @@ const Settings = () => {
         
         {activeTab === 'security' && (
           <div className="space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
                 <h3 className="text-lg font-semibold text-foreground">Authentification 2FA</h3>
                 <p className="text-sm text-muted-foreground">Activer l'authentification à deux facteurs pour les administrateurs</p>
               </div>
-              <label className="relative inline-flex items-center cursor-pointer">
+              <label className="relative inline-flex items-center cursor-pointer self-start sm:self-auto flex-shrink-0">
                 <input
                   type="checkbox"
                   checked={settings.security.twoFactorEnabled}
@@ -158,20 +189,20 @@ const Settings = () => {
               <div className="space-y-2">
                 {settings.security.loginHistory.map((login) => (
                   <div key={login.id} className="p-3 border rounded-lg">
-                    <div className="flex items-center justify-between">
-                      <div>
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0">
                         <p className="text-sm font-medium text-foreground">{login.location}</p>
                         <p className="text-xs text-muted-foreground">{login.ip}</p>
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {new Date(login.date).toLocaleString('fr-FR')}
+                        </p>
                       </div>
-                      <span className={`px-2 py-1 text-xs rounded-full ${
+                      <span className={`flex-shrink-0 px-2 py-1 text-xs rounded-full ${
                         login.success ? 'bg-accent/20 text-accent' : 'bg-destructive/20 text-destructive'
                       }`}>
                         {login.success ? 'Réussi' : 'Échoué'}
                       </span>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {new Date(login.date).toLocaleString('fr-FR')}
-                    </p>
                   </div>
                 ))}
               </div>
@@ -182,7 +213,7 @@ const Settings = () => {
         <div className="mt-6 pt-6 border-t flex justify-end">
           <button
             onClick={handleSave}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors w-full sm:w-auto"
           >
             <Save className="h-4 w-4" />
             Enregistrer les modifications

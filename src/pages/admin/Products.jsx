@@ -129,7 +129,7 @@ const Products = () => {
       
       {/* Filtres et recherche */}
       <div className="bg-white rounded-lg shadow-md p-4 border border-border space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <input
@@ -162,20 +162,20 @@ const Products = () => {
             <option value="unavailable">Indisponible</option>
           </select>
           
-          <div className="flex gap-2">
+          <div className="flex flex-col gap-2">
             <input
               type="number"
               value={priceRange.min}
               onChange={(e) => setPriceRange(prev => ({ ...prev, min: e.target.value }))}
-              placeholder="Prix min"
-              className="flex-1 px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+              placeholder="Prix min (€)"
+              className="w-full px-3 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
             />
             <input
               type="number"
               value={priceRange.max}
               onChange={(e) => setPriceRange(prev => ({ ...prev, max: e.target.value }))}
-              placeholder="Prix max"
-              className="flex-1 px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+              placeholder="Prix max (€)"
+              className="w-full px-3 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
             />
           </div>
         </div>
