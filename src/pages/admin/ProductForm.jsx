@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ArrowLeft, X, Plus } from 'lucide-react';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
+import { Switch } from '../../components/ui/switch';
 import { useToast } from '../../context/ToastContext';
 import { useProducts } from '../../context/ProductsContext';
 
@@ -345,10 +346,10 @@ const ProductForm = () => {
           </div>
         </div>
         
-        {/* Prix et disponibilité */}
+        {/* Prix et publication */}
         <div className="bg-white rounded-lg shadow-md p-6 border border-border space-y-4">
-          <h3 className="text-lg font-semibold text-foreground mb-4">Prix et disponibilité</h3>
-          
+          <h3 className="text-lg font-semibold text-foreground mb-4">Prix et publication</h3>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               label="Prix mensuel (€) *"
@@ -361,7 +362,7 @@ const ProductForm = () => {
               step="0.01"
               required
             />
-            
+
             <Input
               label="Prix annuel (€) *"
               type="number"
@@ -374,26 +375,18 @@ const ProductForm = () => {
               required
             />
           </div>
-          
-          <div className="flex items-center justify-between">
+
+          <div className="flex items-center justify-between py-3 px-4 bg-muted/50 rounded-lg">
             <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Disponibilité
-              </label>
-              <p className="text-xs text-muted-foreground">
-                Le produit sera visible sur le site si disponible
+              <p className="text-sm font-medium text-foreground">Publier le produit</p>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                {formData.available ? 'Visible sur le site' : 'Enregistré en brouillon'}
               </p>
             </div>
-            <label className="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                name="available"
-                checked={formData.available}
-                onChange={handleChange}
-                className="sr-only peer"
-              />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-            </label>
+            <Switch
+              checked={formData.available}
+              onCheckedChange={(val) => setFormData(prev => ({ ...prev, available: val }))}
+            />
           </div>
           
           <div>
