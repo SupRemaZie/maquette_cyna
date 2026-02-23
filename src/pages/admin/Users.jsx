@@ -85,14 +85,14 @@ const Users = () => {
       </div>
       
       {/* Mobile : cards */}
-      <div className="md:hidden space-y-3">
+      <div className="md:hidden space-y-4">
         {paginatedUsers.map((user, index) => (
-          <div key={user.id} className="bg-white rounded-lg shadow-sm border border-border p-4 space-y-2">
+          <div key={user.id} className="bg-white rounded-xl shadow-sm border border-border p-5 space-y-4">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     {index < 3 && (
-                      <span className={`text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${
+                      <span className={`text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
                         index === 0 ? 'bg-yellow-400 text-yellow-900' :
                         index === 1 ? 'bg-gray-300 text-gray-700' :
                         'bg-orange-300 text-orange-900'
@@ -100,13 +100,13 @@ const Users = () => {
                         {index + 1}
                       </span>
                     )}
-                    <span className="font-medium text-sm text-foreground truncate">
+                    <span className="font-semibold text-base text-foreground truncate">
                       {user.firstName} {user.lastName}
                     </span>
                   </div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{user.email}</div>
+                  <div className="text-sm text-muted-foreground mt-0.5">{user.email}</div>
                 </div>
-                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full flex-shrink-0 ${
+                <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full flex-shrink-0 ${
                   user.status === 'Actif' ? 'bg-accent/20 text-accent' :
                   user.status === 'Bloqué' ? 'bg-destructive/20 text-destructive' :
                   'bg-muted text-muted-foreground'
@@ -114,19 +114,19 @@ const Users = () => {
                   {user.status}
                 </span>
               </div>
-              <div className="flex items-center justify-between bg-muted/50 rounded-lg px-3 py-2">
+              <div className="flex items-center justify-between bg-muted/50 rounded-xl px-4 py-3">
                 <div>
                   <p className="text-xs text-muted-foreground">Total dépensé</p>
-                  <p className="text-base font-bold text-foreground">{formatCurrency(user.totalSpent)}</p>
+                  <p className="text-lg font-bold text-foreground">{formatCurrency(user.totalSpent)}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-xs text-muted-foreground">Commandes</p>
-                  <p className="text-base font-bold text-foreground">{user.orderCount}</p>
+                  <p className="text-lg font-bold text-foreground">{user.orderCount}</p>
                 </div>
               </div>
               <Link
                 to={`/admin/users/${user.id}`}
-                className="block text-center text-sm text-primary hover:text-primary/80 py-1.5 border border-primary/30 rounded-md"
+                className="block text-center text-sm font-medium text-primary hover:text-primary/80 py-2.5 border border-primary/30 rounded-lg min-h-[44px] flex items-center justify-center"
               >
                 Voir profil
               </Link>

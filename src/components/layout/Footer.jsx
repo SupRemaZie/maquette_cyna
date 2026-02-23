@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="bg-card border-t mt-auto">
       <div className="container-custom py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-12">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
@@ -40,7 +40,7 @@ const Footer = () => {
           {/* Links */}
           <div>
             <h3 className="text-foreground font-semibold mb-4">Liens utiles</h3>
-            <ul className="space-y-2 text-sm">
+            <ul className="space-y-3 text-sm">
               <li>
                 <Link to="/cgu" className="text-muted-foreground hover:text-foreground transition-colors">
                   CGU
@@ -67,7 +67,7 @@ const Footer = () => {
           {/* Contact */}
           <div>
             <h3 className="text-foreground font-semibold mb-4">Contact</h3>
-            <ul className="space-y-2 text-sm text-muted-foreground">
+            <ul className="space-y-3 text-sm text-muted-foreground">
               <li>Email: contact@cyna.fr</li>
               <li>Téléphone: +33 1 23 45 67 89</li>
               <li>Adresse: 123 Rue de la Sécurité<br />75001 Paris, France</li>

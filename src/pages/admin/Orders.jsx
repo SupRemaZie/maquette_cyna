@@ -102,13 +102,13 @@ const Orders = () => {
         </div>
       </div>
       
-      <div className="md:hidden space-y-3">
+      <div className="md:hidden space-y-4">
         {/* Mobile : cards */}
         {paginatedOrders.map((order) => (
-          <div key={order.id} className="bg-white rounded-lg shadow-sm border border-border p-4 space-y-2">
+          <div key={order.id} className="bg-white rounded-xl shadow-sm border border-border p-5 space-y-4">
               <div className="flex items-center justify-between">
-                <span className="font-medium text-sm text-foreground">{order.orderNumber}</span>
-                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                <span className="font-semibold text-base text-foreground">{order.orderNumber}</span>
+                <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full ${
                   order.status === 'Active' ? 'bg-accent/20 text-accent' :
                   order.status === 'Confirmée' ? 'bg-primary/20 text-primary' :
                   order.status === 'Terminée' ? 'bg-muted text-muted-foreground' :
@@ -119,19 +119,19 @@ const Orders = () => {
                 </span>
               </div>
               <div className="text-sm text-foreground">
-                {order.customer.firstName} {order.customer.lastName}
-                <span className="text-muted-foreground text-xs block">{order.customer.email}</span>
+                <span className="font-medium">{order.customer.firstName} {order.customer.lastName}</span>
+                <span className="text-muted-foreground text-sm block mt-0.5">{order.customer.email}</span>
               </div>
-              <div className="text-xs text-muted-foreground line-clamp-1">
+              <div className="text-sm text-muted-foreground line-clamp-1">
                 {order.items.map(item => item.productName).join(', ')}
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-muted-foreground">{new Date(order.date).toLocaleDateString('fr-FR')}</span>
-                <span className="font-semibold text-sm text-foreground">{formatCurrency(order.total)}</span>
+              <div className="flex items-center justify-between pt-1 border-t border-border">
+                <span className="text-sm text-muted-foreground">{new Date(order.date).toLocaleDateString('fr-FR')}</span>
+                <span className="font-bold text-base text-foreground">{formatCurrency(order.total)}</span>
               </div>
               <Link
                 to={`/admin/orders/${order.id}`}
-                className="block text-center text-sm text-primary hover:text-primary/80 py-1.5 border border-primary/30 rounded-md"
+                className="block text-center text-sm font-medium text-primary hover:text-primary/80 py-2.5 border border-primary/30 rounded-lg min-h-[44px] flex items-center justify-center"
               >
                 Voir détails
               </Link>

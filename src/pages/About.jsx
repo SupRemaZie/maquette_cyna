@@ -8,19 +8,19 @@ const About = () => {
         
         <div className="bg-white rounded-lg shadow-md p-6 md:p-8 max-w-4xl">
           <div className="prose max-w-none">
-            <section className="mb-8">
+            <section className="mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Notre mission</h2>
               <p className="text-gray-600 mb-4">
                 CYNA est une entreprise spécialisée dans les solutions de sécurité SaaS pour les entreprises. Notre mission est de protéger les organisations contre les cybermenaces grâce à des solutions innovantes et performantes.
               </p>
             </section>
             
-            <section className="mb-8">
+            <section className="mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Nos solutions</h2>
               <p className="text-gray-600 mb-4">
                 Nous proposons une gamme complète de solutions de sécurité :
               </p>
-              <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
+              <ul className="list-disc list-inside text-gray-600 space-y-3 mb-5">
                 <li><strong>EDR</strong> - Endpoint Detection & Response pour la protection des terminaux</li>
                 <li><strong>XDR</strong> - Extended Detection & Response pour une protection étendue</li>
                 <li><strong>SOC</strong> - Security Operations Center managé 24/7</li>
@@ -29,7 +29,7 @@ const About = () => {
               </ul>
             </section>
             
-            <section className="mb-8">
+            <section className="mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">Notre expertise</h2>
               <p className="text-gray-600 mb-4">
                 Notre équipe d'experts certifiés (CISSP, CEH, GCIH) travaille 24/7 pour assurer la sécurité de nos clients. Nous sommes certifiés ISO 27001 et conformes au RGPD.

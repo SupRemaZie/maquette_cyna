@@ -199,10 +199,10 @@ const Products = () => {
       <div className="bg-white rounded-lg shadow-md border border-border overflow-hidden">
 
         {/* Mobile : cards */}
-        <div className="md:hidden divide-y divide-border">
+        <div className="md:hidden space-y-4 p-4">
           {paginatedProducts.map((product) => (
-            <div key={product.id} className="p-4 space-y-3">
-              <div className="flex items-start gap-3">
+            <div key={product.id} className="border border-border rounded-xl p-5 space-y-4 shadow-sm bg-white">
+              <div className="flex items-start gap-4">
                 <input
                   type="checkbox"
                   checked={selectedProducts.includes(product.id)}
@@ -212,13 +212,13 @@ const Products = () => {
                 <img
                   src={product.images[0] || '/api/placeholder/50/50'}
                   alt={product.name}
-                  className="w-14 h-14 object-cover rounded flex-shrink-0"
+                  className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
                 />
                 <div className="flex-1 min-w-0">
-                  <div className="font-medium text-foreground text-sm">{product.name}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{product.category}</div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${
+                  <div className="font-semibold text-foreground text-base">{product.name}</div>
+                  <div className="text-sm text-muted-foreground mt-0.5">{product.category}</div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full ${
                       product.available ? 'bg-accent/20 text-accent' : 'bg-destructive/20 text-destructive'
                     }`}>
                       {product.available ? 'Disponible' : 'Indisponible'}
@@ -226,33 +226,35 @@ const Products = () => {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center justify-between">
-                <div className="text-sm text-foreground">
-                  <span className="font-medium">{product.priceMonthly}€</span>
-                  <span className="text-muted-foreground">/mois</span>
-                  <span className="text-muted-foreground text-xs ml-2">({product.priceYearly}€/an)</span>
+              <div className="flex items-center justify-between pt-1 border-t border-border">
+                <div className="text-base text-foreground">
+                  <div>
+                    <span className="font-semibold">{product.priceMonthly}€</span>
+                    <span className="text-muted-foreground">/mois</span>
+                  </div>
+                  <div className="text-sm text-muted-foreground">{product.priceYearly}€/an</div>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
                   <Link
                     to={`/admin/products/${product.id}`}
-                    className="p-2 text-primary hover:bg-primary/10 rounded transition-colors"
+                    className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center text-primary hover:bg-primary/10 rounded-lg transition-colors"
                     title="Voir détails"
                   >
-                    <Eye className="h-4 w-4" />
+                    <Eye className="h-5 w-5" />
                   </Link>
                   <Link
                     to={`/admin/products/${product.id}/edit`}
-                    className="p-2 text-primary hover:bg-primary/10 rounded transition-colors"
+                    className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center text-primary hover:bg-primary/10 rounded-lg transition-colors"
                     title="Modifier"
                   >
-                    <Edit className="h-4 w-4" />
+                    <Edit className="h-5 w-5" />
                   </Link>
                   <button
                     onClick={() => setDeleteModal({ open: true, productId: product.id })}
-                    className="p-2 text-destructive hover:bg-destructive/10 rounded transition-colors"
+                    className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                     title="Supprimer"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-5 w-5" />
                   </button>
                 </div>
               </div>

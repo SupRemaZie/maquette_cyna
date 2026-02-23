@@ -142,15 +142,6 @@ const Contact = () => {
                 </div>
               </div>
             </div>
-            
-            <Button
-              variant="accent"
-              fullWidth
-              size="lg"
-              onClick={() => setIsChatbotOpen(true)}
-            >
-              Contact Me
-            </Button>
           </div>
         </div>
       </div>
