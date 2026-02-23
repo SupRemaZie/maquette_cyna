@@ -228,6 +228,7 @@ const Checkout = () => {
                     value={formData.postalCode}
                     onChange={handleInputChange}
                     required
+                    inputMode="numeric"
                   />
                   <Input
                     label="Ville"
@@ -269,6 +270,7 @@ const Checkout = () => {
                   placeholder="1234 5678 9012 3456"
                   required
                   className="mb-4"
+                  inputMode="numeric"
                 />
                 <Input
                   label="Nom sur la carte"
@@ -294,6 +296,7 @@ const Checkout = () => {
                     onChange={handleInputChange}
                     placeholder="123"
                     required
+                    inputMode="numeric"
                   />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">

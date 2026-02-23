@@ -157,7 +157,7 @@ const Chatbot = () => {
   return (
     <div
       className={`fixed z-50 bg-white flex flex-col shadow-2xl border border-border transition-all duration-300
-        inset-0
+        top-0 left-0 right-0 h-[100dvh]
         sm:inset-auto sm:bottom-6 sm:right-6 sm:w-96 sm:rounded-lg
         ${isMinimized ? 'sm:h-16' : 'sm:h-[600px]'}
       `}
