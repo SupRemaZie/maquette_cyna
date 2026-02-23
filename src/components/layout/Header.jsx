@@ -111,7 +111,7 @@ const Header = ({ onSidebarToggle }) => {
                     <div className="py-1">
                       <Link
                         to="/account"
-                        className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-accent rounded-sm transition-colors"
+                        className="flex items-center gap-2 px-3 py-2 min-h-[44px] text-sm text-foreground hover:bg-accent rounded-sm transition-colors"
                       >
                         <User className="h-4 w-4" />
                         Mon compte
@@ -119,7 +119,7 @@ const Header = ({ onSidebarToggle }) => {
                       {isAdminUser && (
                         <button
                           onClick={handleSwitchToAdmin}
-                          className="w-full flex items-center gap-2 px-3 py-2 text-sm text-primary hover:bg-primary/10 rounded-sm transition-colors"
+                          className="w-full flex items-center gap-2 px-3 py-2 min-h-[44px] text-sm text-primary hover:bg-primary/10 rounded-sm transition-colors"
                         >
                           <LayoutDashboard className="h-4 w-4" />
                           Basculer en admin
@@ -130,7 +130,7 @@ const Header = ({ onSidebarToggle }) => {
                           logout();
                           navigate('/');
                         }}
-                        className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-accent rounded-sm transition-colors"
+                        className="w-full flex items-center gap-2 px-3 py-2 min-h-[44px] text-sm text-foreground hover:bg-accent rounded-sm transition-colors"
                       >
                         <LogOut className="h-4 w-4" />
                         Se déconnecter
