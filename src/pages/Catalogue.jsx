@@ -71,7 +71,7 @@ const Catalogue = () => {
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-4 sm:mb-6">
             Vue d'ensemble par catégorie
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {productsByCategory.map(({ category, products: categoryProducts }) => (
               <Card
                 key={category.id}
@@ -236,7 +236,7 @@ const Catalogue = () => {
         {sortedProducts.length > 0 ? (
           <div className={
             viewMode === 'grid'
-              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6'
+              ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8'
               : 'space-y-3 sm:space-y-4'
           }>
             {sortedProducts.map((product) => (

@@ -145,7 +145,7 @@ const Checkout = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="mb-4"
+                      className="mb-5"
                     />
                     <Input
                       label="Mot de passe"
@@ -154,7 +154,7 @@ const Checkout = () => {
                       value={formData.password}
                       onChange={handleInputChange}
                       required
-                      className="mb-4"
+                      className="mb-5"
                     />
                     <Input
                       label="Prénom"
@@ -162,7 +162,7 @@ const Checkout = () => {
                       name="firstName"
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      className="mb-4"
+                      className="mb-5"
                     />
                     <Input
                       label="Nom"
@@ -170,7 +170,7 @@ const Checkout = () => {
                       name="lastName"
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      className="mb-4"
+                      className="mb-5"
                     />
                   </>
                 ) : (
@@ -185,7 +185,7 @@ const Checkout = () => {
             {currentStep === 2 && (
               <form onSubmit={handleStep2Submit} className="bg-white rounded-lg shadow-md p-4 md:p-6">
                 <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">Adresse de facturation</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                   <Input
                     label="Prénom"
                     type="text"
@@ -209,7 +209,7 @@ const Checkout = () => {
                   name="company"
                   value={formData.company}
                   onChange={handleInputChange}
-                  className="mb-4"
+                  className="mb-5"
                 />
                 <Input
                   label="Adresse"
@@ -218,9 +218,9 @@ const Checkout = () => {
                   value={formData.address}
                   onChange={handleInputChange}
                   required
-                  className="mb-4"
+                  className="mb-5"
                 />
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
                   <Input
                     label="Code postal"
                     type="text"
@@ -269,7 +269,7 @@ const Checkout = () => {
                   onChange={handleInputChange}
                   placeholder="1234 5678 9012 3456"
                   required
-                  className="mb-4"
+                  className="mb-5"
                   inputMode="numeric"
                 />
                 <Input
@@ -279,9 +279,9 @@ const Checkout = () => {
                   value={formData.cardName}
                   onChange={handleInputChange}
                   required
-                  className="mb-4"
+                  className="mb-5"
                 />
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
                   <CardExpiryPicker
                     label="Date d'expiration"
                     value={formData.cardExpiry}

@@ -25,9 +25,9 @@ const OrdersTab = ({ orders = [] }) => {
       <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">
         Mes commandes
       </h2>
-      <div className="space-y-4">
+      <div className="space-y-5">
         {orders.map((order) => (
-          <div key={order.id} className="border border-gray-200 rounded-lg p-4">
+          <div key={order.id} className="border border-gray-200 rounded-lg p-5">
             <div className="flex justify-between items-start mb-2">
               <div>
                 <h3 className="font-semibold text-gray-900">Commande #{order.id}</h3>

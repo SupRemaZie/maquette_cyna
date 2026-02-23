@@ -1,19 +1,32 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { mockMessages } from '../../data/adminMockData';
-import { Search } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Messages = () => {
   const [messages] = useState(mockMessages);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
-  
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const filteredMessages = messages.filter(message => {
     const matchesSearch = message.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          message.subject.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesStatus = statusFilter === 'all' || message.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
+
+  const totalPages = Math.ceil(filteredMessages.length / pageSize);
+  const paginatedMessages = filteredMessages.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const handleFilterChange = (setter) => (e) => {
+    setter(e.target.value);
+    setCurrentPage(1);
+  };
   
   return (
     <div className="space-y-6">
@@ -40,7 +53,7 @@ const Messages = () => {
           </div>
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={handleFilterChange(setStatusFilter)}
             className="w-full px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
           >
             <option value="all">Tous les statuts</option>
@@ -54,7 +67,7 @@ const Messages = () => {
       
       {/* Mobile : cards */}
       <div className="md:hidden space-y-3">
-        {filteredMessages.map((message) => (
+        {paginatedMessages.map((message) => (
           <div key={message.id} className="bg-white rounded-lg shadow-sm border border-border p-4 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="font-medium text-sm text-foreground">{message.subject}</span>
@@ -92,7 +105,7 @@ const Messages = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredMessages.map((message) => (
+              {paginatedMessages.map((message) => (
                 <tr key={message.id} className="border-b hover:bg-muted/50">
                   <td className="px-4 py-3 text-sm text-foreground">
                     {new Date(message.date).toLocaleDateString('fr-FR')}
@@ -124,6 +137,44 @@ const Messages = () => {
               ))}
             </tbody>
           </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="bg-white rounded-lg shadow-sm border border-border px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center justify-between sm:justify-start gap-3">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Afficher :</span>
+            <select
+              value={pageSize}
+              onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }}
+              className="px-2 py-1.5 border border-input bg-background rounded text-sm"
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
+          <span className="text-sm text-muted-foreground">
+            {Math.min((currentPage - 1) * pageSize + 1, filteredMessages.length)}–{Math.min(currentPage * pageSize, filteredMessages.length)} sur {filteredMessages.length}
+          </span>
+        </div>
+        <div className="flex items-center justify-center gap-2">
+          <button onClick={() => setCurrentPage(1)} disabled={currentPage === 1}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded text-sm disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Première page">«</button>
+          <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Page précédente"><ChevronLeft className="h-4 w-4" /></button>
+          <span className="text-sm text-muted-foreground px-2 min-w-[80px] text-center">
+            {currentPage} / {totalPages || 1}
+          </span>
+          <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages || totalPages === 0}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Page suivante"><ChevronRight className="h-4 w-4" /></button>
+          <button onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages || totalPages === 0}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded text-sm disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Dernière page">»</button>
+        </div>
       </div>
     </div>
   );

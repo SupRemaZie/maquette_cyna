@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { mockUsers } from '../../data/adminMockData';
-import { Search } from 'lucide-react';
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Users = () => {
   const [users] = useState(mockUsers);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [sortBy, setSortBy] = useState('totalSpent');
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const filteredUsers = users
     .filter(user => {
@@ -21,6 +23,17 @@ const Users = () => {
       if (sortBy === 'orderCount') return b.orderCount - a.orderCount;
       return 0;
     });
+
+  const totalPages = Math.ceil(filteredUsers.length / pageSize);
+  const paginatedUsers = filteredUsers.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const handleFilterChange = (setter) => (e) => {
+    setter(e.target.value);
+    setCurrentPage(1);
+  };
   
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(value);
@@ -51,7 +64,7 @@ const Users = () => {
           </div>
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={handleFilterChange(setStatusFilter)}
             className="w-full px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
           >
             <option value="all">Tous les statuts</option>
@@ -62,7 +75,7 @@ const Users = () => {
           </select>
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
+            onChange={handleFilterChange(setSortBy)}
             className="w-full px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
           >
             <option value="totalSpent">Trier : Plus gros clients</option>
@@ -73,7 +86,7 @@ const Users = () => {
       
       {/* Mobile : cards */}
       <div className="md:hidden space-y-3">
-        {filteredUsers.map((user, index) => (
+        {paginatedUsers.map((user, index) => (
           <div key={user.id} className="bg-white rounded-lg shadow-sm border border-border p-4 space-y-2">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
@@ -137,7 +150,7 @@ const Users = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredUsers.map((user) => (
+              {paginatedUsers.map((user) => (
                 <tr key={user.id} className="border-b hover:bg-muted/50">
                   <td className="px-4 py-3 text-sm text-foreground">{user.id}</td>
                   <td className="px-4 py-3 text-sm font-medium text-foreground">
@@ -172,6 +185,56 @@ const Users = () => {
               ))}
             </tbody>
           </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="bg-white rounded-lg shadow-sm border border-border px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center justify-between sm:justify-start gap-3">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Afficher :</span>
+            <select
+              value={pageSize}
+              onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }}
+              className="px-2 py-1.5 border border-input bg-background rounded text-sm"
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
+          <span className="text-sm text-muted-foreground">
+            {Math.min((currentPage - 1) * pageSize + 1, filteredUsers.length)}–{Math.min(currentPage * pageSize, filteredUsers.length)} sur {filteredUsers.length}
+          </span>
+        </div>
+        <div className="flex items-center justify-center gap-2">
+          <button
+            onClick={() => setCurrentPage(1)}
+            disabled={currentPage === 1}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded text-sm disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Première page"
+          >«</button>
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+            disabled={currentPage === 1}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Page précédente"
+          ><ChevronLeft className="h-4 w-4" /></button>
+          <span className="text-sm text-muted-foreground px-2 min-w-[80px] text-center">
+            {currentPage} / {totalPages || 1}
+          </span>
+          <button
+            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            disabled={currentPage === totalPages || totalPages === 0}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Page suivante"
+          ><ChevronRight className="h-4 w-4" /></button>
+          <button
+            onClick={() => setCurrentPage(totalPages)}
+            disabled={currentPage === totalPages || totalPages === 0}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded text-sm disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Dernière page"
+          >»</button>
+        </div>
       </div>
     </div>
   );

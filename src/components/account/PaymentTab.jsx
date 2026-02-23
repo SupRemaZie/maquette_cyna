@@ -104,7 +104,7 @@ const PaymentTab = () => {
               value={newPaymentMethod.cardName}
               onChange={(e) => setNewPaymentMethod(prev => ({ ...prev, cardName: e.target.value }))}
               required
-              className="mb-4"
+              className="mb-5"
             />
             <Input
               label="Numéro de carte"
@@ -117,9 +117,9 @@ const PaymentTab = () => {
               }}
               placeholder="1234 5678 9012 3456"
               required
-              className="mb-4"
+              className="mb-5"
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
               <CardExpiryPicker
                 label="Date d'expiration"
                 value={newPaymentMethod.cardExpiry}
@@ -139,7 +139,7 @@ const PaymentTab = () => {
                 required
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-5">
               <Checkbox
                 id="isDefault"
                 label="Définir comme carte par défaut"
@@ -166,11 +166,11 @@ const PaymentTab = () => {
       
       {/* Liste des moyens de paiement */}
       {paymentMethods.length > 0 ? (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {paymentMethods.map((method) => (
             <div
               key={method.id}
-              className="border border-gray-200 rounded-lg p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+              className="border border-gray-200 rounded-lg p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
             >
               <div className="flex items-center gap-4 flex-1">
                 <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">

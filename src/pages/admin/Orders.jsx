@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { mockOrders } from '../../data/adminMockData';
-import { Search, Download } from 'lucide-react';
+import { Search, Download, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
 
 const Orders = () => {
@@ -9,6 +9,8 @@ const Orders = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [sortBy, setSortBy] = useState('date_desc');
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
   const { info } = useToast();
 
   const handleExportCSV = () => {
@@ -27,8 +29,19 @@ const Orders = () => {
       if (sortBy === 'total_desc')  return b.total - a.total;
       if (sortBy === 'total_asc')   return a.total - b.total;
       if (sortBy === 'date_asc')    return new Date(a.date) - new Date(b.date);
-      return new Date(b.date) - new Date(a.date); // date_desc par défaut
+      return new Date(b.date) - new Date(a.date);
     });
+
+  const totalPages = Math.ceil(filteredOrders.length / pageSize);
+  const paginatedOrders = filteredOrders.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const handleFilterChange = (setter) => (e) => {
+    setter(e.target.value);
+    setCurrentPage(1);
+  };
   
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(value);
@@ -59,7 +72,7 @@ const Orders = () => {
           </div>
           <select
             value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
+            onChange={handleFilterChange(setStatusFilter)}
             className="w-full px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
           >
             <option value="all">Tous les statuts</option>
@@ -71,7 +84,7 @@ const Orders = () => {
           </select>
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
+            onChange={handleFilterChange(setSortBy)}
             className="w-full px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
           >
             <option value="date_desc">Trier : Plus récentes</option>
@@ -91,7 +104,7 @@ const Orders = () => {
       
       <div className="md:hidden space-y-3">
         {/* Mobile : cards */}
-        {filteredOrders.map((order) => (
+        {paginatedOrders.map((order) => (
           <div key={order.id} className="bg-white rounded-lg shadow-sm border border-border p-4 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="font-medium text-sm text-foreground">{order.orderNumber}</span>
@@ -141,7 +154,7 @@ const Orders = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredOrders.map((order) => (
+              {paginatedOrders.map((order) => (
                 <tr key={order.id} className="border-b hover:bg-muted/50">
                   <td className="px-4 py-3 text-sm font-medium text-foreground">{order.orderNumber}</td>
                   <td className="px-4 py-3 text-sm text-foreground">
@@ -180,6 +193,56 @@ const Orders = () => {
               ))}
             </tbody>
           </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="bg-white rounded-lg shadow-sm border border-border px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center justify-between sm:justify-start gap-3">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Afficher :</span>
+            <select
+              value={pageSize}
+              onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }}
+              className="px-2 py-1.5 border border-input bg-background rounded text-sm"
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
+          <span className="text-sm text-muted-foreground">
+            {Math.min((currentPage - 1) * pageSize + 1, filteredOrders.length)}–{Math.min(currentPage * pageSize, filteredOrders.length)} sur {filteredOrders.length}
+          </span>
+        </div>
+        <div className="flex items-center justify-center gap-2">
+          <button
+            onClick={() => setCurrentPage(1)}
+            disabled={currentPage === 1}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded text-sm disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Première page"
+          >«</button>
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+            disabled={currentPage === 1}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Page précédente"
+          ><ChevronLeft className="h-4 w-4" /></button>
+          <span className="text-sm text-muted-foreground px-2 min-w-[80px] text-center">
+            {currentPage} / {totalPages || 1}
+          </span>
+          <button
+            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            disabled={currentPage === totalPages || totalPages === 0}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Page suivante"
+          ><ChevronRight className="h-4 w-4" /></button>
+          <button
+            onClick={() => setCurrentPage(totalPages)}
+            disabled={currentPage === totalPages || totalPages === 0}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded text-sm disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Dernière page"
+          >»</button>
+        </div>
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ const ProductCard = ({ product, onAddToCart }) => {
           )}
         </div>
         
-        <div className="p-4 flex-1 flex flex-col">
+        <div className="p-5 flex-1 flex flex-col">
           <div className="mb-2">
             <Badge variant="primary" className="mb-2">{product.category}</Badge>
             <h3 className="text-lg font-semibold text-gray-900 mb-1">{product.name}</h3>
@@ -56,7 +56,7 @@ const ProductCard = ({ product, onAddToCart }) => {
         </div>
       </Link>
       
-      <div className="px-4 pb-4">
+      <div className="px-5 pb-5">
         <Button
           variant="primary"
           fullWidth

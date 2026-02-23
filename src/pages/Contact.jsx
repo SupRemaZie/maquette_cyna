@@ -78,7 +78,7 @@ const Contact = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="mb-4"
+                className="mb-5"
               />
               <Input
                 label="Sujet"
@@ -87,7 +87,7 @@ const Contact = () => {
                 value={formData.subject}
                 onChange={handleInputChange}
                 required
-                className="mb-4"
+                className="mb-5"
               />
               <div className="mb-6">
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
@@ -113,7 +113,7 @@ const Contact = () => {
           <div>
             <div className="bg-white rounded-lg shadow-md p-6 md:p-8 mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Informations de contact</h2>
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
                   <a href="mailto:contact@cyna.fr" className="text-primary-600 hover:text-primary-700">

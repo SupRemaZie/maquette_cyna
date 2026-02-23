@@ -30,7 +30,7 @@ const ProfileTab = () => {
         Mes informations
       </h2>
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
           <Input
             label="Prénom"
             type="text"
@@ -52,7 +52,7 @@ const ProfileTab = () => {
           name="email"
           value={formData.email}
           onChange={(e) => updateField('email', e.target.value)}
-          className="mb-4"
+          className="mb-5"
         />
         <Input
           label="Téléphone"
@@ -60,7 +60,7 @@ const ProfileTab = () => {
           name="phone"
           value={formData.phone}
           onChange={(e) => updateField('phone', e.target.value)}
-          className="mb-4"
+          className="mb-5"
         />
         <Input
           label="Entreprise"
@@ -68,7 +68,7 @@ const ProfileTab = () => {
           name="company"
           value={formData.company}
           onChange={(e) => updateField('company', e.target.value)}
-          className="mb-4"
+          className="mb-5"
         />
         
         <Section title="Adresse de facturation" showBorder>
@@ -78,10 +78,10 @@ const ProfileTab = () => {
             onChange={(value) => updateField('address', value)}
             onAddressSelect={handleAddressSelect}
             placeholder="Commencez à taper votre adresse (ex: 123 rue de la République, Paris)"
-            className="mb-4"
+            className="mb-5"
           />
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
             <Input
               label="Code postal"
               type="text"

@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Eye, Edit, Trash2, Search, Filter } from 'lucide-react';
+import { Plus, Eye, Edit, Trash2, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 import Modal from '../../components/common/Modal';
 import { useToast } from '../../context/ToastContext';
 import { useProducts } from '../../context/ProductsContext';
@@ -370,39 +370,65 @@ const Products = () => {
         </div>
         
         {/* Pagination */}
-        <div className="px-4 py-3 border-t flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">Afficher:</span>
-            <select
-              value={pageSize}
-              onChange={(e) => {
-                setPageSize(Number(e.target.value));
-                setCurrentPage(1);
-              }}
-              className="px-2 py-1 border border-input bg-background rounded text-sm"
-            >
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={50}>50</option>
-            </select>
+        <div className="px-4 py-3 border-t flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          {/* Taille de page + compteur */}
+          <div className="flex items-center justify-between sm:justify-start gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-muted-foreground">Afficher :</span>
+              <select
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+                className="px-2 py-1.5 border border-input bg-background rounded text-sm"
+              >
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+                <option value={50}>50</option>
+              </select>
+            </div>
+            <span className="text-sm text-muted-foreground">
+              {Math.min((currentPage - 1) * pageSize + 1, filteredAndSortedProducts.length)}–{Math.min(currentPage * pageSize, filteredAndSortedProducts.length)} sur {filteredAndSortedProducts.length}
+            </span>
           </div>
-          <div className="flex items-center gap-2">
+
+          {/* Boutons de navigation */}
+          <div className="flex items-center justify-center gap-2">
+            <button
+              onClick={() => setCurrentPage(1)}
+              disabled={currentPage === 1}
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded text-sm disabled:opacity-40 hover:bg-accent transition-colors"
+              aria-label="Première page"
+            >
+              «
+            </button>
             <button
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
               disabled={currentPage === 1}
-              className="px-3 py-1 border border-input bg-background rounded text-sm disabled:opacity-50"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded disabled:opacity-40 hover:bg-accent transition-colors"
+              aria-label="Page précédente"
             >
-              Précédent
+              <ChevronLeft className="h-4 w-4" />
             </button>
-            <span className="text-sm text-muted-foreground">
-              Page {currentPage} sur {totalPages}
+            <span className="text-sm text-muted-foreground px-2 min-w-[80px] text-center">
+              {currentPage} / {totalPages || 1}
             </span>
             <button
               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-              disabled={currentPage === totalPages}
-              className="px-3 py-1 border border-input bg-background rounded text-sm disabled:opacity-50"
+              disabled={currentPage === totalPages || totalPages === 0}
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded disabled:opacity-40 hover:bg-accent transition-colors"
+              aria-label="Page suivante"
             >
-              Suivant
+              <ChevronRight className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setCurrentPage(totalPages)}
+              disabled={currentPage === totalPages || totalPages === 0}
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded text-sm disabled:opacity-40 hover:bg-accent transition-colors"
+              aria-label="Dernière page"
+            >
+              »
             </button>
           </div>
         </div>

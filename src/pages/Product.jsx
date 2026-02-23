@@ -181,7 +181,7 @@ const Product = () => {
         {/* Caractéristiques */}
         <div className="mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Caractéristiques techniques</h2>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {product.features.map((feature, index) => (
               <li key={index} className="flex items-start">
                 <svg className="w-5 h-5 text-accent-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -197,7 +197,7 @@ const Product = () => {
         {similarProducts.length > 0 && (
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Services similaires</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {similarProducts.map((similarProduct) => (
                 <ProductCard
                   key={similarProduct.id}

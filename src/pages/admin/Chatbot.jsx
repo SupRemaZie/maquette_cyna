@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { mockChatbotConversations } from '../../data/adminMockData';
-import { Search, MessageSquare } from 'lucide-react';
+import { Search, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Chatbot = () => {
   const [conversations] = useState(mockChatbotConversations);
   const [searchQuery, setSearchQuery] = useState('');
   const [escalatedFilter, setEscalatedFilter] = useState('all');
-  
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+
   const filteredConversations = conversations.filter(conv => {
     const matchesSearch = (conv.user?.name || 'Anonyme').toLowerCase().includes(searchQuery.toLowerCase()) ||
                          conv.firstMessage.toLowerCase().includes(searchQuery.toLowerCase());
@@ -16,6 +18,17 @@ const Chatbot = () => {
                             (escalatedFilter === 'no' && !conv.escalated);
     return matchesSearch && matchesEscalated;
   });
+
+  const totalPages = Math.ceil(filteredConversations.length / pageSize);
+  const paginatedConversations = filteredConversations.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
+  const handleFilterChange = (setter) => (e) => {
+    setter(e.target.value);
+    setCurrentPage(1);
+  };
   
   return (
     <div className="space-y-6">
@@ -42,7 +55,7 @@ const Chatbot = () => {
           </div>
           <select
             value={escalatedFilter}
-            onChange={(e) => setEscalatedFilter(e.target.value)}
+            onChange={handleFilterChange(setEscalatedFilter)}
             className="w-full px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
           >
             <option value="all">Toutes les conversations</option>
@@ -54,7 +67,7 @@ const Chatbot = () => {
       
       {/* Mobile : cards */}
       <div className="md:hidden space-y-3">
-        {filteredConversations.map((conv) => (
+        {paginatedConversations.map((conv) => (
           <div key={conv.id} className="bg-white rounded-lg shadow-sm border border-border p-4 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="font-medium text-sm text-foreground">
@@ -97,7 +110,7 @@ const Chatbot = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredConversations.map((conv) => (
+              {paginatedConversations.map((conv) => (
                 <tr key={conv.id} className="border-b hover:bg-muted/50">
                   <td className="px-4 py-3 text-sm text-foreground">
                     {new Date(conv.date).toLocaleDateString('fr-FR')}
@@ -133,6 +146,44 @@ const Chatbot = () => {
               ))}
             </tbody>
           </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="bg-white rounded-lg shadow-sm border border-border px-4 py-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center justify-between sm:justify-start gap-3">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Afficher :</span>
+            <select
+              value={pageSize}
+              onChange={(e) => { setPageSize(Number(e.target.value)); setCurrentPage(1); }}
+              className="px-2 py-1.5 border border-input bg-background rounded text-sm"
+            >
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+            </select>
+          </div>
+          <span className="text-sm text-muted-foreground">
+            {Math.min((currentPage - 1) * pageSize + 1, filteredConversations.length)}–{Math.min(currentPage * pageSize, filteredConversations.length)} sur {filteredConversations.length}
+          </span>
+        </div>
+        <div className="flex items-center justify-center gap-2">
+          <button onClick={() => setCurrentPage(1)} disabled={currentPage === 1}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded text-sm disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Première page">«</button>
+          <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Page précédente"><ChevronLeft className="h-4 w-4" /></button>
+          <span className="text-sm text-muted-foreground px-2 min-w-[80px] text-center">
+            {currentPage} / {totalPages || 1}
+          </span>
+          <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages || totalPages === 0}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Page suivante"><ChevronRight className="h-4 w-4" /></button>
+          <button onClick={() => setCurrentPage(totalPages)} disabled={currentPage === totalPages || totalPages === 0}
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center border border-input bg-background rounded text-sm disabled:opacity-40 hover:bg-accent transition-colors"
+            aria-label="Dernière page">»</button>
+        </div>
       </div>
     </div>
   );

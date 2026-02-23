@@ -25,7 +25,7 @@ const AccountLayout = ({
           Mon compte
         </h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Navigation par onglets */}
           <div className="lg:col-span-1">
             {/* Mobile : barre d'icônes sur une ligne */}
