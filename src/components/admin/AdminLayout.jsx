@@ -19,6 +19,7 @@ import {
   Menu,
   X,
   ChevronRight,
+  Store,
 } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
 import { mockOrders, mockMessages, mockChatbotConversations } from '../../data/adminMockData';
@@ -246,14 +247,21 @@ const AdminHeader = ({ onMenuToggle }) => {
                   <div className="py-1">
                     <Link
                       to="/admin/settings"
-                      className="flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-accent rounded-sm transition-colors"
+                      className="flex items-center gap-2 px-3 py-2 min-h-[44px] text-sm text-foreground hover:bg-accent rounded-sm transition-colors"
                     >
                       <User className="h-4 w-4" />
                       Mon profil
                     </Link>
+                    <Link
+                      to="/"
+                      className="flex items-center gap-2 px-3 py-2 min-h-[44px] text-sm text-primary hover:bg-primary/10 rounded-sm transition-colors"
+                    >
+                      <Store className="h-4 w-4" />
+                      Vue client
+                    </Link>
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-destructive/10 hover:text-destructive rounded-sm transition-colors"
+                      className="w-full flex items-center gap-2 px-3 py-2 min-h-[44px] text-sm text-foreground hover:bg-destructive/10 hover:text-destructive rounded-sm transition-colors"
                     >
                       <LogOut className="h-4 w-4" />
                       Se déconnecter
