@@ -80,7 +80,7 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-background">
       <div className="max-w-md w-full">
         <div className="bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">Inscription</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 text-center">Inscription</h1>
           <p className="text-gray-600 text-center mb-6">
             Créez votre compte CYNA
           </p>
@@ -92,7 +92,7 @@ const Register = () => {
           )}
           
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <Input
                 label="Prénom"
                 type="text"
@@ -147,7 +147,7 @@ const Register = () => {
                   name="acceptCGU"
                   checked={formData.acceptCGU}
                   onChange={(e) => setFormData(prev => ({ ...prev, acceptCGU: e.target.checked }))}
-                  className="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  className="mt-0.5 h-5 w-5 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
                   required
                 />
                 <label htmlFor="acceptCGU" className="ml-3 text-sm text-gray-700">
@@ -170,7 +170,7 @@ const Register = () => {
                   name="acceptPrivacy"
                   checked={formData.acceptPrivacy}
                   onChange={(e) => setFormData(prev => ({ ...prev, acceptPrivacy: e.target.checked }))}
-                  className="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                  className="mt-0.5 h-5 w-5 text-primary-600 focus:ring-primary-500 border-gray-300 rounded cursor-pointer"
                   required
                 />
                 <label htmlFor="acceptPrivacy" className="ml-3 text-sm text-gray-700">

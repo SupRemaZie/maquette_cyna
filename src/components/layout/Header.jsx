@@ -54,7 +54,7 @@ const Header = ({ onSidebarToggle }) => {
             {/* Search Icon - Mobile */}
             <Link
               to="/search"
-              className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="md:hidden p-3 min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Rechercher"
             >
               <Search className="h-6 w-6" />
@@ -63,7 +63,7 @@ const Header = ({ onSidebarToggle }) => {
             {/* Cart */}
             <Link
               to="/cart"
-              className="relative p-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="relative p-3 min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Panier"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +80,7 @@ const Header = ({ onSidebarToggle }) => {
             <Popover>
               <PopoverTrigger asChild>
                 <button
-                  className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="p-3 min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                   aria-label="Compte utilisateur"
                 >
                   <User className="h-6 w-6" />

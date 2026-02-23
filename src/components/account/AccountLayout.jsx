@@ -37,7 +37,7 @@ const AccountLayout = ({
                 <Tabs value={activeTab} onValueChange={onTabChange} orientation="horizontal">
                   <TabsList className="w-full grid grid-cols-2 gap-2">
                     {tabs.map((tab) => (
-                      <TabsTrigger key={tab.id} value={tab.id} className="text-xs">
+                      <TabsTrigger key={tab.id} value={tab.id} className="text-sm py-2.5">
                         {tab.label}
                       </TabsTrigger>
                     ))}

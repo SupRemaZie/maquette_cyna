@@ -110,19 +110,20 @@ const Products = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Gestion des Produits</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">Gestion des Produits</h2>
           <p className="text-sm text-muted-foreground mt-1">
             {filteredAndSortedProducts.length} produit(s) trouvé(s)
           </p>
         </div>
         <Link
           to="/admin/products/new"
-          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
+          className="flex items-center gap-2 px-3 py-2 md:px-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm flex-shrink-0"
         >
           <Plus className="h-5 w-5" />
-          Ajouter un nouveau produit
+          <span className="hidden sm:inline">Ajouter un nouveau produit</span>
+          <span className="sm:hidden">Ajouter</span>
         </Link>
       </div>
       
@@ -196,7 +197,71 @@ const Products = () => {
       
       {/* Tableau */}
       <div className="bg-white rounded-lg shadow-md border border-border overflow-hidden">
-        <div className="overflow-x-auto">
+
+        {/* Mobile : cards */}
+        <div className="md:hidden divide-y divide-border">
+          {paginatedProducts.map((product) => (
+            <div key={product.id} className="p-4 space-y-3">
+              <div className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={selectedProducts.includes(product.id)}
+                  onChange={() => handleSelectProduct(product.id)}
+                  className="mt-1 h-5 w-5 rounded"
+                />
+                <img
+                  src={product.images[0] || '/api/placeholder/50/50'}
+                  alt={product.name}
+                  className="w-14 h-14 object-cover rounded flex-shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="font-medium text-foreground text-sm">{product.name}</div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{product.category}</div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className={`inline-flex px-2 py-0.5 text-xs font-medium rounded-full ${
+                      product.available ? 'bg-accent/20 text-accent' : 'bg-destructive/20 text-destructive'
+                    }`}>
+                      {product.available ? 'Disponible' : 'Indisponible'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="text-sm text-foreground">
+                  <span className="font-medium">{product.priceMonthly}€</span>
+                  <span className="text-muted-foreground">/mois</span>
+                  <span className="text-muted-foreground text-xs ml-2">({product.priceYearly}€/an)</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Link
+                    to={`/admin/products/${product.id}`}
+                    className="p-2 text-primary hover:bg-primary/10 rounded transition-colors"
+                    title="Voir détails"
+                  >
+                    <Eye className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    to={`/admin/products/${product.id}/edit`}
+                    className="p-2 text-primary hover:bg-primary/10 rounded transition-colors"
+                    title="Modifier"
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Link>
+                  <button
+                    onClick={() => setDeleteModal({ open: true, productId: product.id })}
+                    className="p-2 text-destructive hover:bg-destructive/10 rounded transition-colors"
+                    title="Supprimer"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop : table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-muted">
               <tr>

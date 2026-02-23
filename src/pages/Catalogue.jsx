@@ -211,7 +211,7 @@ const Catalogue = () => {
               <button
                 onClick={() => setViewMode('grid')}
                 className={cn(
-                  "p-2 transition-colors",
+                  "p-3 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors",
                   viewMode === 'grid' ? "bg-primary text-primary-foreground" : "hover:bg-accent"
                 )}
                 aria-label="Vue grille"
@@ -221,7 +221,7 @@ const Catalogue = () => {
               <button
                 onClick={() => setViewMode('list')}
                 className={cn(
-                  "p-2 transition-colors",
+                  "p-3 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors",
                   viewMode === 'list' ? "bg-primary text-primary-foreground" : "hover:bg-accent"
                 )}
                 aria-label="Vue liste"

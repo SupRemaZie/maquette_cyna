@@ -61,13 +61,13 @@ const Home = () => {
         ))}
         
         {/* Indicateurs */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 items-center">
           {carouselSlides.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                index === currentSlide ? 'bg-white w-8' : 'bg-white bg-opacity-50'
+              className={`h-3 rounded-full transition-all ${
+                index === currentSlide ? 'bg-white w-8' : 'bg-white/60 w-3'
               }`}
               aria-label={`Aller au slide ${index + 1}`}
             />
@@ -107,7 +107,7 @@ const Home = () => {
               <Link
                 key={category.id}
                 to={`/category/${category.slug}`}
-                className="group relative h-32 md:h-48 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow"
+                className="group relative h-36 md:h-48 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow"
               >
                 <img
                   src={category.image}

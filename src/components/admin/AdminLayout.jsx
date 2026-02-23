@@ -61,7 +61,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
       
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-card border-r z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 left-0 h-full w-[85vw] max-w-xs sm:w-64 bg-card border-r z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -157,7 +157,7 @@ const AdminHeader = ({ onMenuToggle }) => {
           <div className="flex items-center gap-4">
             <button
               onClick={onMenuToggle}
-              className="lg:hidden p-2 rounded-lg hover:bg-accent transition-colors"
+              className="lg:hidden p-3 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-accent transition-colors"
               aria-label="Ouvrir le menu"
             >
               <Menu className="h-6 w-6" />
@@ -184,7 +184,7 @@ const AdminHeader = ({ onMenuToggle }) => {
             <Popover open={notificationsOpen} onOpenChange={setNotificationsOpen}>
               <PopoverTrigger asChild>
                 <button
-                  className="relative p-2 text-muted-foreground hover:text-foreground transition-colors"
+                  className="relative p-3 min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
                   aria-label="Notifications"
                 >
                   <Bell className="h-6 w-6" />

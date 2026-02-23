@@ -48,9 +48,9 @@ const Cart = () => {
           <div className="lg:col-span-2 space-y-4">
             {cart.map((item) => (
               <div key={`${item.productId}-${item.subscriptionType}`} className="bg-white rounded-lg shadow-md p-4 md:p-6">
-                <div className="flex flex-col md:flex-row gap-4">
+                <div className="flex flex-row gap-4">
                   {/* Image */}
-                  <div className="w-full md:w-32 h-32 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                  <div className="w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
                     <img
                       src={item.product.images[0]}
                       alt={item.product.name}
@@ -71,7 +71,7 @@ const Cart = () => {
                       </div>
                       <button
                         onClick={() => removeFromCart(item.productId, item.subscriptionType)}
-                        className="text-red-600 hover:text-red-700"
+                        className="min-w-[44px] min-h-[44px] flex items-center justify-center text-red-600 hover:text-red-700 -mr-2"
                         aria-label="Supprimer"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -110,15 +110,15 @@ const Cart = () => {
                         <div className="flex items-center border border-gray-300 rounded-lg">
                           <button
                             onClick={() => updateCartItem(item.productId, item.subscriptionType, item.quantity - 1)}
-                            className="px-3 py-1 text-gray-600 hover:bg-gray-100"
+                            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:bg-gray-100 text-lg font-medium"
                             disabled={item.quantity <= 1}
                           >
-                            -
+                            −
                           </button>
-                          <span className="px-4 py-1 text-gray-900">{item.quantity}</span>
+                          <span className="px-3 text-gray-900 font-medium">{item.quantity}</span>
                           <button
                             onClick={() => updateCartItem(item.productId, item.subscriptionType, item.quantity + 1)}
-                            className="px-3 py-1 text-gray-600 hover:bg-gray-100"
+                            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:bg-gray-100 text-lg font-medium"
                           >
                             +
                           </button>

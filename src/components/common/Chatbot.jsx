@@ -156,9 +156,11 @@ const Chatbot = () => {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 w-96 bg-white rounded-lg shadow-2xl border border-border z-50 flex flex-col transition-all duration-300 ${
-        isMinimized ? 'h-16' : 'h-[600px]'
-      }`}
+      className={`fixed z-50 bg-white flex flex-col shadow-2xl border border-border transition-all duration-300
+        inset-0
+        sm:inset-auto sm:bottom-6 sm:right-6 sm:w-96 sm:rounded-lg
+        ${isMinimized ? 'sm:h-16' : 'sm:h-[600px]'}
+      `}
     >
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b bg-primary text-primary-foreground rounded-t-lg">

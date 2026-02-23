@@ -71,7 +71,46 @@ const Orders = () => {
       </div>
       
       <div className="bg-white rounded-lg shadow-md border border-border overflow-hidden">
-        <div className="overflow-x-auto">
+
+        {/* Mobile : cards */}
+        <div className="md:hidden divide-y divide-border">
+          {filteredOrders.map((order) => (
+            <div key={order.id} className="p-4 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-sm text-foreground">{order.orderNumber}</span>
+                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                  order.status === 'Active' ? 'bg-accent/20 text-accent' :
+                  order.status === 'Confirmée' ? 'bg-primary/20 text-primary' :
+                  order.status === 'Terminée' ? 'bg-muted text-muted-foreground' :
+                  order.status === 'Annulée' ? 'bg-destructive/20 text-destructive' :
+                  'bg-yellow-100 text-yellow-800'
+                }`}>
+                  {order.status}
+                </span>
+              </div>
+              <div className="text-sm text-foreground">
+                {order.customer.firstName} {order.customer.lastName}
+                <span className="text-muted-foreground text-xs block">{order.customer.email}</span>
+              </div>
+              <div className="text-xs text-muted-foreground line-clamp-1">
+                {order.items.map(item => item.productName).join(', ')}
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">{new Date(order.date).toLocaleDateString('fr-FR')}</span>
+                <span className="font-semibold text-sm text-foreground">{formatCurrency(order.total)}</span>
+              </div>
+              <Link
+                to={`/admin/orders/${order.id}`}
+                className="block text-center text-sm text-primary hover:text-primary/80 py-1.5 border border-primary/30 rounded-md"
+              >
+                Voir détails
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop : table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-muted">
               <tr>

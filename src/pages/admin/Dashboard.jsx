@@ -66,7 +66,7 @@ const Dashboard = () => {
     const isPositive = evolution >= 0;
     
     return (
-      <div className="bg-white rounded-lg shadow-md p-6 border border-border">
+      <div className="bg-white rounded-lg shadow-md p-4 md:p-6 border border-border">
         <div className="flex items-center justify-between mb-4">
           <div className="p-3 bg-primary/10 rounded-lg">
             <Icon className="h-6 w-6 text-primary" />
@@ -119,8 +119,8 @@ const Dashboard = () => {
       
       {/* Contrôles de période */}
       <div className="bg-white rounded-lg shadow-md p-4 border border-border">
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-foreground">Période:</span>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-sm font-medium text-foreground">Période :</span>
           <button
             onClick={() => setPeriod('7days')}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -245,7 +245,40 @@ const Dashboard = () => {
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-        <div className="overflow-x-auto">
+        {/* Mobile : cards */}
+        <div className="md:hidden space-y-3">
+          {recentOrders.map((order) => (
+            <div key={order.id} className="border rounded-lg p-3 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-sm text-foreground">
+                  {order.customer.firstName} {order.customer.lastName}
+                </span>
+                <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                  order.status === 'Active' ? 'bg-accent/20 text-accent' :
+                  order.status === 'Confirmée' ? 'bg-primary/20 text-primary' :
+                  order.status === 'Terminée' ? 'bg-muted text-muted-foreground' :
+                  order.status === 'Annulée' ? 'bg-destructive/20 text-destructive' :
+                  'bg-yellow-100 text-yellow-800'
+                }`}>
+                  {order.status}
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">{new Date(order.date).toLocaleDateString('fr-FR')}</span>
+                <span className="font-semibold text-foreground">{formatCurrency(order.total)}</span>
+              </div>
+              <Link
+                to={`/admin/orders/${order.id}`}
+                className="block text-center text-sm text-primary hover:text-primary/80 py-1 border border-primary/30 rounded-md"
+              >
+                Voir détails
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop : table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b">

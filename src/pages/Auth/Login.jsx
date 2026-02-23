@@ -54,7 +54,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-background">
       <div className="max-w-md w-full">
         <div className="bg-white rounded-lg shadow-md p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2 text-center">Connexion</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2 text-center">Connexion</h1>
           <p className="text-gray-600 text-center mb-6">
             Connectez-vous à votre compte CYNA
           </p>

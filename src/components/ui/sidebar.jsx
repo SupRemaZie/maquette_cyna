@@ -174,7 +174,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
         )}
         <aside
           className={cn(
-            "fixed top-0 left-0 h-full w-64 bg-card border-r z-50 transform transition-transform duration-300 ease-in-out lg:hidden",
+            "fixed top-0 left-0 h-full w-[85vw] max-w-xs sm:w-64 bg-card border-r z-50 transform transition-transform duration-300 ease-in-out lg:hidden",
             isOpen ? "translate-x-0" : "-translate-x-full"
           )}
         >
@@ -198,7 +198,7 @@ export const SidebarTrigger = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className="lg:hidden p-2 rounded-lg hover:bg-accent transition-colors"
+      className="lg:hidden p-3 min-h-[44px] min-w-[44px] rounded-lg hover:bg-accent transition-colors flex items-center justify-center"
       aria-label="Ouvrir le menu"
     >
       <Menu className="h-6 w-6" />
