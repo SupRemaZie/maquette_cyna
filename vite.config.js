@@ -10,6 +10,6 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ['rima-uncaptured-nonprovidently.ngrok-free.dev'],
+    allowedHosts: ['ee2f-185-14-178-174.ngrok-free.app'],
   },
 })

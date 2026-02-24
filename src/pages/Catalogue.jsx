@@ -71,7 +71,7 @@ const Catalogue = () => {
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-4 sm:mb-6">
             Vue d'ensemble par catégorie
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 md:gap-8">
             {productsByCategory.map(({ category, products: categoryProducts }) => (
               <Card
                 key={category.id}
