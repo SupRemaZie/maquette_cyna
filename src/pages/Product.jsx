@@ -136,13 +136,13 @@ const Product = () => {
               </div>
               
               <Button
-                variant="accent"
+                variant=""
                 size="lg"
                 fullWidth
                 disabled={!product.available}
                 onClick={handleAddToCart}
               >
-                {product.available ? 'S\'ABONNER MAINTENANT' : 'Indisponible'}
+                {product.available ? 'AJOUTER AU PANIER' : 'Indisponible'}
               </Button>
             </div>
             
