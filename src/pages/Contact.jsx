@@ -29,13 +29,13 @@ const Contact = () => {
   const chatbotResponses = {
     'bonjour': 'Bonjour ! Comment puis-je vous aider aujourd\'hui ?',
     'salut': 'Bonjour ! Comment puis-je vous aider aujourd\'hui ?',
-    'prix': 'Nos prix varient selon les solutions. Nos produits EDR commencent à 79€/mois, XDR à 179€/mois, et SOC à 299€/mois. Souhaitez-vous plus de détails sur une solution spécifique ?',
-    'tarif': 'Nos prix varient selon les solutions. Nos produits EDR commencent à 79€/mois, XDR à 179€/mois, et SOC à 299€/mois. Souhaitez-vous plus de détails sur une solution spécifique ?',
+    'prix': 'Nos prix varient selon les solutions. Nos services EDR commencent à 79€/mois, XDR à 179€/mois, et SOC à 299€/mois. Souhaitez-vous plus de détails sur une solution spécifique ?',
+    'tarif': 'Nos prix varient selon les solutions. Nos services EDR commencent à 79€/mois, XDR à 179€/mois, et SOC à 299€/mois. Souhaitez-vous plus de détails sur une solution spécifique ?',
     'edr': 'CYNA EDR est notre solution de détection et réponse pour terminaux. Elle offre une protection avancée avec analyse comportementale en temps réel. Voulez-vous en savoir plus ?',
     'xdr': 'CYNA XDR étend la protection au-delà des terminaux pour couvrir endpoints, réseau, cloud et email. C\'est notre solution la plus complète. Souhaitez-vous une démonstration ?',
     'soc': 'CYNA SOC Managed est notre centre d\'opérations de sécurité managé 24/7. Nos experts certifiés surveillent votre infrastructure en continu. Intéressé par une consultation ?',
-    'aide': 'Je peux vous aider avec des questions sur nos produits, nos prix, ou nos services. Que souhaitez-vous savoir ?',
-    'help': 'Je peux vous aider avec des questions sur nos produits, nos prix, ou nos services. Que souhaitez-vous savoir ?',
+    'aide': 'Je peux vous aider avec des questions sur nos services, nos prix, ou nos services. Que souhaitez-vous savoir ?',
+    'help': 'Je peux vous aider avec des questions sur nos services, nos prix, ou nos services. Que souhaitez-vous savoir ?',
     'contact': 'Vous pouvez nous contacter par email à contact@cyna.fr ou par téléphone au +33 1 23 45 67 89. Nos horaires sont du lundi au vendredi, 9h-18h.',
     'default': 'Merci pour votre message. Pour des questions plus spécifiques, n\'hésitez pas à nous contacter par email à contact@cyna.fr ou remplir le formulaire de contact.',
   };

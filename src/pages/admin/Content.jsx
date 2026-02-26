@@ -34,7 +34,7 @@ const Content = () => {
   const handleSaveTop = () => {
     setFeaturedProducts(modalSelected);
     setTopModal(false);
-    success('Top produits mis à jour !');
+    success('Top services mis à jour !');
   };
 
   const filteredAvailable = availableProducts.filter(p =>
@@ -121,8 +121,8 @@ const Content = () => {
       <div className="bg-white rounded-lg shadow-sm border border-border overflow-hidden">
         <div className="flex items-center justify-between px-4 py-3">
           <div>
-            <h3 className="text-sm font-semibold text-foreground">Top Produits du Moment</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">{featuredProducts.length}/{MAX_TOP_PRODUCTS} produit(s)</p>
+            <h3 className="text-sm font-semibold text-foreground">Top Services du Moment</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">{featuredProducts.length}/{MAX_TOP_PRODUCTS} service(s)</p>
           </div>
           <button
             onClick={openTopModal}
@@ -153,10 +153,10 @@ const Content = () => {
       <Modal
         isOpen={topModal}
         onClose={() => setTopModal(false)}
-        title="Sélectionner les Top Produits"
+        title="Sélectionner les Top Services"
       >
         <p className="text-xs text-muted-foreground mb-3">
-          Sélectionnez jusqu'à {MAX_TOP_PRODUCTS} produits actifs à afficher sur la page d'accueil.
+          Sélectionnez jusqu'à {MAX_TOP_PRODUCTS} services actifs à afficher sur la page d'accueil.
           <span className="font-medium text-foreground ml-1">({modalSelected.length}/{MAX_TOP_PRODUCTS})</span>
         </p>
 
@@ -167,7 +167,7 @@ const Content = () => {
             type="text"
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Rechercher un produit..."
+            placeholder="Rechercher un service..."
             className="w-full pl-9 pr-3 py-2 text-sm border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
           />
         </div>
@@ -213,7 +213,7 @@ const Content = () => {
             );
           })}
           {filteredAvailable.length === 0 && (
-            <p className="text-sm text-muted-foreground text-center py-6">Aucun produit trouvé.</p>
+            <p className="text-sm text-muted-foreground text-center py-6">Aucun service trouvé.</p>
           )}
         </div>
 

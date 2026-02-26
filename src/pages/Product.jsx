@@ -21,8 +21,8 @@ const Product = () => {
   if (!product) {
     return (
       <div className="container-custom py-12 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">Produit introuvable</h1>
-        <p className="text-gray-600">Le produit demandé n'existe pas.</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">Service introuvable</h1>
+        <p className="text-gray-600">Le service demandé n'existe pas.</p>
       </div>
     );
   }

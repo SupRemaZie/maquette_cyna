@@ -160,10 +160,10 @@ const ProductForm = () => {
     // Sauvegarder le produit
     if (isEdit) {
       updateProduct(parseInt(id), productData);
-      success('Produit modifié avec succès !');
+      success('Service modifié avec succès !');
     } else {
       addProduct(productData);
-      success('Produit créé avec succès !');
+      success('Service créé avec succès !');
     }
     
     setTimeout(() => {
@@ -184,10 +184,10 @@ const ProductForm = () => {
           </Link>
           <div>
             <h2 className="text-2xl font-bold text-foreground">
-              {isEdit ? 'Modifier le produit' : 'Nouveau produit'}
+              {isEdit ? 'Modifier le service' : 'Nouveau service'}
             </h2>
             <p className="text-sm text-muted-foreground">
-              {isEdit ? `ID: ${id}` : 'Remplissez le formulaire pour créer un nouveau produit'}
+              {isEdit ? `ID: ${id}` : 'Remplissez le formulaire pour créer un nouveau service'}
             </p>
           </div>
         </div>
@@ -401,7 +401,7 @@ const ProductForm = () => {
 
           <div className="flex items-center justify-between py-3 px-4 bg-muted/50 rounded-lg">
             <div>
-              <p className="text-sm font-medium text-foreground">Publier le produit</p>
+              <p className="text-sm font-medium text-foreground">Publier le service</p>
               <p className="text-xs text-muted-foreground mt-0.5">
                 {formData.available ? 'Visible sur le site' : 'Enregistré en brouillon'}
               </p>
@@ -426,7 +426,7 @@ const ProductForm = () => {
               className="w-full px-4 py-2 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
             />
             <p className="text-xs text-muted-foreground mt-1">
-              Plus le nombre est élevé, plus le produit apparaîtra en premier
+              Plus le nombre est élevé, plus le service apparaîtra en premier
             </p>
           </div>
         </div>
@@ -440,7 +440,7 @@ const ProductForm = () => {
             Annuler
           </Link>
           <Button type="submit" variant="primary">
-            {isEdit ? 'Enregistrer les modifications' : 'Créer le produit'}
+            {isEdit ? 'Enregistrer les modifications' : 'Créer le service'}
           </Button>
         </div>
       </form>

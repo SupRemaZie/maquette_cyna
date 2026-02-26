@@ -174,7 +174,7 @@ const Home = () => {
         {topProducts.length > 0 && (
           <section>
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 md:mb-8">
-              Top Produits du moment
+              Top Services du moment
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
               {topProducts.map((product) => (

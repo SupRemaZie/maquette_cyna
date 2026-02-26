@@ -141,7 +141,7 @@ const Categories = () => {
           <div key={category.id} className="bg-white rounded-lg shadow-sm border border-border p-4 flex items-center justify-between gap-3">
             <div>
               <p className="font-medium text-foreground">{category.name}</p>
-              <p className="text-xs text-muted-foreground mt-0.5">{category.productCount} produit(s)</p>
+              <p className="text-xs text-muted-foreground mt-0.5">{category.productCount} service(s)</p>
             </div>
             <div className="flex items-center gap-1 flex-shrink-0">
               <button
@@ -167,7 +167,7 @@ const Categories = () => {
           <thead className="bg-muted">
             <tr>
               <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Nom</th>
-              <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Produits</th>
+              <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Services</th>
               <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Actions</th>
             </tr>
           </thead>
@@ -232,11 +232,11 @@ const Categories = () => {
             <Switch checked={isPublished} onCheckedChange={setIsPublished} />
           </div>
 
-          {/* Produits associés */}
+          {/* Services associés */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="text-sm font-medium text-foreground">
-                Produits associés
+                Services associés
               </label>
               {selectedProducts.length > 0 && (
                 <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
@@ -252,7 +252,7 @@ const Categories = () => {
                 type="text"
                 value={productSearch}
                 onChange={(e) => setProductSearch(e.target.value)}
-                placeholder="Filtrer les produits..."
+                placeholder="Filtrer les services..."
                 className="w-full pl-9 pr-4 py-2.5 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
               />
             </div>
@@ -260,7 +260,7 @@ const Categories = () => {
             {/* Liste */}
             <div className="border border-border rounded-lg overflow-y-auto max-h-52">
               {filteredProducts.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-6">Aucun produit trouvé</p>
+                <p className="text-sm text-muted-foreground text-center py-6">Aucun service trouvé</p>
               ) : (
                 filteredProducts.map((product, idx) => (
                   <label
@@ -314,7 +314,7 @@ const Categories = () => {
             <>
               <p className="text-sm text-muted-foreground">
                 La catégorie <span className="font-semibold text-foreground">« {confirmDelete?.name} »</span> contient{' '}
-                {categoryProducts.length} produit(s). Réassignez-les à une autre catégorie avant de supprimer.
+                {categoryProducts.length} service(s). Réassignez-les à une autre catégorie avant de supprimer.
               </p>
 
               {/* Liste des produits avec sélecteur de catégorie cible */}
@@ -344,7 +344,7 @@ const Categories = () => {
 
               {!allReassigned && (
                 <p className="text-xs text-destructive">
-                  Tous les produits doivent être réassignés avant de pouvoir supprimer la catégorie.
+                  Tous les services doivent être réassignés avant de pouvoir supprimer la catégorie.
                 </p>
               )}
             </>
@@ -409,11 +409,11 @@ const Categories = () => {
             <Switch checked={editPublished} onCheckedChange={setEditPublished} />
           </div>
 
-          {/* Produits associés */}
+          {/* Services associés */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="text-sm font-medium text-foreground">
-                Produits associés
+                Services associés
               </label>
               {editSelectedProducts.length > 0 && (
                 <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
@@ -429,7 +429,7 @@ const Categories = () => {
                 type="text"
                 value={editProductSearch}
                 onChange={(e) => setEditProductSearch(e.target.value)}
-                placeholder="Filtrer les produits..."
+                placeholder="Filtrer les services..."
                 className="w-full pl-9 pr-4 py-2.5 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
               />
             </div>
@@ -437,7 +437,7 @@ const Categories = () => {
             {/* Liste */}
             <div className="border border-border rounded-lg overflow-y-auto max-h-52">
               {editFilteredProducts.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-6">Aucun produit trouvé</p>
+                <p className="text-sm text-muted-foreground text-center py-6">Aucun service trouvé</p>
               ) : (
                 editFilteredProducts.map((product, idx) => (
                   <label

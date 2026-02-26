@@ -49,7 +49,7 @@ const Category = () => {
         {/* Options de vue et tri */}
         <div className="flex items-center justify-between mb-6">
           <p className="text-gray-600">
-            {categoryProducts.length} produit{categoryProducts.length > 1 ? 's' : ''} disponible{categoryProducts.length > 1 ? 's' : ''}
+            {categoryProducts.length} service{categoryProducts.length > 1 ? 's' : ''} disponible{categoryProducts.length > 1 ? 's' : ''}
           </p>
           <div className="flex items-center space-x-2">
             <button
@@ -90,7 +90,7 @@ const Category = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-gray-600">Aucun produit disponible dans cette catégorie.</p>
+            <p className="text-gray-600">Aucun service disponible dans cette catégorie.</p>
           </div>
         )}
       </div>

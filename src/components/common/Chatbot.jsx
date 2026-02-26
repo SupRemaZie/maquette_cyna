@@ -48,7 +48,7 @@ const Chatbot = () => {
     
     // Questions sur EDR
     if (message.includes('edr') || message.includes('endpoint')) {
-      return 'L\'EDR (Endpoint Detection and Response) est une solution de sécurité qui protège vos endpoints en temps réel. Nos solutions EDR offrent une détection avancée des menaces, une analyse comportementale et une réponse automatisée. Souhaitez-vous plus d\'informations sur nos produits EDR ?';
+      return 'L\'EDR (Endpoint Detection and Response) est une solution de sécurité qui protège vos endpoints en temps réel. Nos solutions EDR offrent une détection avancée des menaces, une analyse comportementale et une réponse automatisée. Souhaitez-vous plus d\'informations sur nos services EDR ?';
     }
     
     // Questions sur XDR

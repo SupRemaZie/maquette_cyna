@@ -33,7 +33,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
   
   const menuItems = [
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin/dashboard', badge: null },
-    { icon: Package, label: 'Produits', path: '/admin/products', badge: null },
+    { icon: Package, label: 'Services', path: '/admin/products', badge: null },
     { icon: Tag, label: 'Catégories', path: '/admin/categories', badge: null },
     { icon: ShoppingCart, label: 'Abonnements', path: '/admin/orders', badge: newOrders },
     { icon: Users, label: 'Utilisateurs', path: '/admin/users', badge: null },
@@ -133,7 +133,7 @@ const AdminHeader = ({ onMenuToggle }) => {
   
   const pageTitles = {
     '/admin/dashboard': 'Dashboard',
-    '/admin/products': 'Produits',
+    '/admin/products': 'Services',
     '/admin/categories': 'Catégories',
     '/admin/orders': 'Abonnements',
     '/admin/users': 'Utilisateurs',

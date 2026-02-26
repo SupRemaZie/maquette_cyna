@@ -18,7 +18,7 @@ const ProductDetail = () => {
   if (!product) {
     return (
       <div className="text-center py-12">
-        <p className="text-muted-foreground">Produit non trouvé</p>
+        <p className="text-muted-foreground">Service non trouvé</p>
         <Link to="/admin/products" className="text-primary hover:text-primary-600 mt-4 inline-block">
           Retour à la liste
         </Link>
@@ -50,7 +50,7 @@ const ProductDetail = () => {
   
   const handleDelete = () => {
     deleteProduct(parseInt(id));
-    success('Produit supprimé avec succès !');
+    success('Service supprimé avec succès !');
     setTimeout(() => {
       navigate('/admin/products');
     }, 1000);
@@ -234,7 +234,7 @@ const ProductDetail = () => {
         title="Confirmer la suppression"
       >
         <p className="text-sm text-foreground mb-4">
-          Êtes-vous sûr de vouloir supprimer le produit "{product.name}" ? Cette action est irréversible.
+          Êtes-vous sûr de vouloir supprimer le service "{product.name}" ? Cette action est irréversible.
         </p>
         <div className="flex justify-end gap-2">
           <button

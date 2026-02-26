@@ -168,7 +168,6 @@ const Products = () => {
             <option value="available">Publié</option>
             <option value="unavailable">Brouillon</option>
           </select>
-          
           <div className="flex flex-col gap-2">
             <input
               type="number"
