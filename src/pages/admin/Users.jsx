@@ -7,7 +7,7 @@ import { useToast } from '../../context/ToastContext';
 
 const Users = () => {
   const [users, setUsers] = useState(() =>
-    mockUsers.map(u => ({ ...u, suspended: u.status === 'Bloqué' }))
+    mockUsers.map(u => ({ ...u, suspended: false }))
   );
   const { success } = useToast();
 
@@ -90,9 +90,8 @@ const Users = () => {
           >
             <option value="all">Tous les statuts</option>
             <option value="Actif">Actif</option>
-            <option value="Inactif">Inactif</option>
-            <option value="Email non confirmé">Email non confirmé</option>
-            <option value="Bloqué">Bloqué</option>
+            <option value="En attente">En attente</option>
+            <option value="Suspendu">Suspendu</option>
           </select>
           <select
             value={sortBy}
@@ -129,8 +128,8 @@ const Users = () => {
                 </div>
                 <span className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-full flex-shrink-0 ${
                   user.status === 'Actif' ? 'bg-accent/20 text-accent' :
-                  user.status === 'Bloqué' ? 'bg-destructive/20 text-destructive' :
-                  'bg-muted text-muted-foreground'
+                  user.status === 'Suspendu' ? 'bg-destructive/20 text-destructive' :
+                  'bg-orange-100 text-orange-700'
                 }`}>
                   {user.status}
                 </span>
@@ -150,8 +149,11 @@ const Users = () => {
                   <Switch
                     checked={user.suspended}
                     onCheckedChange={() => handleToggleSuspend(user.id)}
+                    disabled={user.status === 'En attente'}
                   />
-                  <span className="text-xs text-muted-foreground">Suspendre</span>
+                  <span className={`text-xs ${user.status === 'En attente' ? 'text-muted-foreground/40' : 'text-muted-foreground'}`}>
+                    Suspendre
+                  </span>
                 </div>
                 <Link
                   to={`/admin/users/${user.id}`}
@@ -209,9 +211,14 @@ const Users = () => {
                       <Switch
                         checked={user.suspended}
                         onCheckedChange={() => handleToggleSuspend(user.id)}
+                        disabled={user.status === 'En attente'}
                       />
-                      <span className={`text-xs font-medium ${user.suspended ? 'text-destructive' : 'text-muted-foreground'}`}>
-                        {user.suspended ? 'Oui' : 'Non'}
+                      <span className={`text-xs font-medium ${
+                        user.status === 'Bloqué' && !user.suspended
+                          ? 'text-muted-foreground/40'
+                          : user.suspended ? 'text-destructive' : 'text-muted-foreground'
+                      }`}>
+                        {user.status === 'En attente' ? '—' : user.suspended ? 'Oui' : 'Non'}
                       </span>
                     </div>
                   </td>

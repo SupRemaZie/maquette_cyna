@@ -69,6 +69,7 @@ const ProductDetail = () => {
           </Link>
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-foreground">{product.name}</h2>
+            <p className="text-sm text-muted-foreground">ID : {product.id}</p>
             <p className="text-sm text-muted-foreground mt-1">{product.licensesRemaining} / {product.licensesTotal} licences</p>
     
           </div>

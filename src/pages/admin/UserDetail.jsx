@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { mockUsers, mockOrders } from '../../data/adminMockData';
-import { ArrowLeft, Edit, Lock, Unlock, Mail } from 'lucide-react';
-import Button from '../../components/common/Button';
+import { ArrowLeft, Mail, Archive } from 'lucide-react';
+import Modal from '../../components/common/Modal';
 import { useToast } from '../../context/ToastContext';
 
 const UserDetail = () => {
@@ -10,10 +10,12 @@ const UserDetail = () => {
   const navigate = useNavigate();
   const [users] = useState(mockUsers);
   const [orders] = useState(mockOrders);
-  
+  const [archiveModal, setArchiveModal] = useState(false);
+  const { success, info } = useToast();
+
   const user = users.find(u => u.id === parseInt(id));
   const userOrders = orders.filter(o => o.customer.id === parseInt(id));
-  
+
   if (!user) {
     return (
       <div className="text-center py-12">
@@ -24,11 +26,11 @@ const UserDetail = () => {
       </div>
     );
   }
-  
+
   const formatCurrency = (value) => {
     return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(value);
   };
-  
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('fr-FR', {
       year: 'numeric',
@@ -36,15 +38,15 @@ const UserDetail = () => {
       day: 'numeric',
     });
   };
-  
-  const { success, info } = useToast();
-  
-  const handleBlockToggle = () => {
-    success(user.status === 'Bloqué' ? 'Compte débloqué avec succès !' : 'Compte bloqué avec succès !');
-  };
-  
+
   const handleResetPassword = () => {
     info(`Email de réinitialisation envoyé à ${user.email}`);
+  };
+
+  const handleArchive = () => {
+    setArchiveModal(false);
+    success(`Compte de ${user.firstName} ${user.lastName} archivé.`);
+    navigate('/admin/users');
   };
   
   return (
@@ -59,24 +61,14 @@ const UserDetail = () => {
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground">
-              {user.firstName} {user.lastName}
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground space-x-2">
+              {user.firstName} {user.lastName} 
             </h2>
-            <p className="text-sm text-muted-foreground">ID : {user.id}</p>
+            <p className="text-sm text-muted-foreground mt-1">ID: {user.id}</p>
+
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={handleBlockToggle}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm ${
-              user.status === 'Bloqué'
-                ? 'bg-accent text-accent-foreground hover:bg-accent/90'
-                : 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
-            }`}
-          >
-            {user.status === 'Bloqué' ? <Unlock className="h-4 w-4" /> : <Lock className="h-4 w-4" />}
-            <span>{user.status === 'Bloqué' ? 'Débloquer' : 'Bloquer'}</span>
-          </button>
           <button
             onClick={handleResetPassword}
             className="flex items-center gap-2 px-3 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors text-sm"
@@ -84,6 +76,13 @@ const UserDetail = () => {
             <Mail className="h-4 w-4" />
             <span className="hidden sm:inline">Réinitialiser mot de passe</span>
             <span className="sm:hidden">Réinit. MDP</span>
+          </button>
+          <button
+            onClick={() => setArchiveModal(true)}
+            className="flex items-center gap-2 px-3 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors text-sm"
+          >
+            <Archive className="h-4 w-4" />
+            <span>Archiver</span>
           </button>
         </div>
       </div>
@@ -120,8 +119,8 @@ const UserDetail = () => {
                 <div className="mt-1">
                   <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
                     user.status === 'Actif' ? 'bg-accent/20 text-accent' :
-                    user.status === 'Bloqué' ? 'bg-destructive/20 text-destructive' :
-                    'bg-muted text-muted-foreground'
+                    user.status === 'Suspendu' ? 'bg-destructive/20 text-destructive' :
+                    'bg-orange-100 text-orange-700'
                   }`}>
                     {user.status}
                   </span>
@@ -291,6 +290,33 @@ const UserDetail = () => {
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={archiveModal}
+        onClose={() => setArchiveModal(false)}
+        title="Archiver le compte"
+      >
+        <p className="text-sm text-foreground mb-1">
+          Vous êtes sur le point d'archiver le compte de <span className="font-semibold">{user.firstName} {user.lastName}</span>.
+        </p>
+        <p className="text-sm text-muted-foreground mb-6">
+          Le compte sera désactivé définitivement. L'historique des commandes sera conservé. Cette action est irréversible.
+        </p>
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={() => setArchiveModal(false)}
+            className="px-4 py-2 border border-input bg-background rounded-lg hover:bg-accent transition-colors text-sm"
+          >
+            Annuler
+          </button>
+          <button
+            onClick={handleArchive}
+            className="px-4 py-2 bg-destructive text-destructive-foreground rounded-lg hover:bg-destructive/90 transition-colors text-sm"
+          >
+            Archiver définitivement
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

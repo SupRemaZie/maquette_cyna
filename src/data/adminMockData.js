@@ -330,7 +330,7 @@ const generateUsers = () => {
     const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
     const registrationDate = new Date();
     registrationDate.setDate(registrationDate.getDate() - Math.floor(Math.random() * 365));
-    const statuses = ['Actif', 'Inactif', 'Email non confirmé', 'Bloqué'];
+    const statuses = ['Actif', 'Actif', 'Actif', 'En attente'];
     const status = statuses[Math.floor(Math.random() * statuses.length)];
     
     const userOrders = mockOrders.filter(o => o.customer.id === i);

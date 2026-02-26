@@ -43,9 +43,7 @@ const Modal = ({
         </div>
         {showCloseButton && (
           <DialogFooter>
-            <Button variant="outline" onClick={onClose}>
-              Fermer
-            </Button>
+            
           </DialogFooter>
         )}
       </DialogContent>
