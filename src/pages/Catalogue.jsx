@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { categories, products } from '../data/mockData';
+import { categories } from '../data/mockData';
 import ProductCard from '../components/product/ProductCard';
 import { useCart } from '../context/CartContext';
+import { useProducts } from '../context/ProductsContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Shield, Filter, Grid, List, X } from 'lucide-react';
@@ -10,16 +11,17 @@ import { cn } from '../lib/utils';
 
 const Catalogue = () => {
   const { addToCart } = useCart();
+  const { clientProducts } = useProducts();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [viewMode, setViewMode] = useState('grid');
   const [sortBy, setSortBy] = useState('name');
   const [showFilters, setShowFilters] = useState(false);
-  
+
   // Filtrer les produits par catégorie
   const filteredProducts = selectedCategory
-    ? products.filter(p => p.categoryId === selectedCategory.id)
-    : products;
-  
+    ? clientProducts.filter(p => p.categoryId === selectedCategory.id)
+    : clientProducts;
+
   // Trier les produits
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     switch (sortBy) {
@@ -29,17 +31,15 @@ const Catalogue = () => {
         return b.price.monthly - a.price.monthly;
       case 'name':
         return a.name.localeCompare(b.name);
-      case 'newest':
-        return (b.newProduct ? 1 : 0) - (a.newProduct ? 1 : 0);
       default:
         return 0;
     }
   });
-  
+
   // Grouper les produits par catégorie pour la vue d'ensemble
   const productsByCategory = categories.map(category => ({
     category,
-    products: products.filter(p => p.categoryId === category.id),
+    products: clientProducts.filter(p => p.categoryId === category.id),
   }));
   
   return (

@@ -3,6 +3,21 @@ import { mockProducts } from '../data/adminMockData';
 
 const ProductsContext = createContext();
 
+/* Mapping catégorie → id (aligné avec mockData.js) */
+const CATEGORY_IDS = {
+  'EDR': 1, 'XDR': 2, 'SOC': 3,
+  'Threat Intelligence': 4, 'SIEM': 5, 'Compliance': 6,
+};
+
+/* Normalise un produit admin vers la structure attendue par les pages client */
+const toClientFormat = (p) => ({
+  ...p,
+  description: p.shortDescription,
+  longDescription: p.fullDescription,
+  price: { monthly: p.priceMonthly, annual: p.priceYearly },
+  categoryId: CATEGORY_IDS[p.category] ?? null,
+});
+
 export const useProducts = () => {
   const context = useContext(ProductsContext);
   if (!context) {
@@ -68,10 +83,16 @@ export const ProductsProvider = ({ children }) => {
     localStorage.setItem('cyna_products', JSON.stringify(mockProducts));
   };
 
+  /* Produits visibles côté client : publiés + normalisés */
+  const clientProducts = products
+    .filter(p => p.available)
+    .map(toClientFormat);
+
   return (
     <ProductsContext.Provider
       value={{
         products,
+        clientProducts,
         addProduct,
         updateProduct,
         deleteProduct,

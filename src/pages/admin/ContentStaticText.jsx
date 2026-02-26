@@ -28,7 +28,7 @@ const ContentStaticText = () => {
   const [localBanner, setLocalBanner] = useState(mockHomeContent.banner);
   const navigate = useNavigate();
   const { success } = useToast();
-  const { setBanner } = useContent();
+  const { setBanner, setStaticText } = useContent();
 
   /* Initialise l'éditeur au montage */
   useEffect(() => {
@@ -62,6 +62,7 @@ const ContentStaticText = () => {
 
   const handleSave = () => {
     setBanner(localBanner);
+    setStaticText(editorRef.current?.innerHTML || '');
     success('Texte enregistré avec succès !');
     navigate('/admin/content');
   };

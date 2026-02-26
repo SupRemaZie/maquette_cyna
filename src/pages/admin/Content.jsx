@@ -11,12 +11,11 @@ const availableProducts = mockProducts.filter(p => p.available);
 
 const Content = () => {
   const [staticText] = useState(mockHomeContent.staticText);
-  const [featuredProducts, setFeaturedProducts] = useState(mockHomeContent.featuredProducts);
   const [topModal, setTopModal] = useState(false);
   const [modalSelected, setModalSelected] = useState([]);
   const [search, setSearch] = useState('');
   const { success } = useToast();
-  const { banner } = useContent();
+  const { banner, featuredProducts, setFeaturedProducts } = useContent();
 
   const openTopModal = () => {
     setModalSelected([...featuredProducts]);

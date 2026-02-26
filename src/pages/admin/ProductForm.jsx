@@ -25,6 +25,8 @@ const ProductForm = () => {
     priceMonthly: existingProduct?.priceMonthly || '',
     priceYearly: existingProduct?.priceYearly || '',
     available: existingProduct?.available ?? true,
+    licensesTotal: existingProduct?.licensesTotal ?? 100,
+    licensesRemaining: existingProduct?.licensesRemaining ?? 100,
     priority: existingProduct?.priority || 0,
     images: existingProduct?.images || [],
   });
@@ -373,6 +375,27 @@ const ProductForm = () => {
               min="0"
               step="0.01"
               required
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              label="Licences totales"
+              type="number"
+              name="licensesTotal"
+              value={formData.licensesTotal}
+              onChange={handleChange}
+              min="0"
+              step="1"
+            />
+            <Input
+              label="Licences restantes"
+              type="number"
+              name="licensesRemaining"
+              value={formData.licensesRemaining}
+              onChange={handleChange}
+              min="0"
+              step="1"
             />
           </div>
 

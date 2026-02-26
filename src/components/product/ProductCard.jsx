@@ -52,6 +52,20 @@ const ProductCard = ({ product, onAddToCart }) => {
                 ou {formatPrice(product.price.annual)}/an
               </div>
             </div>
+            {product.licensesRemaining != null && (
+              <div className={`text-xs font-medium px-2 py-1 rounded-full text-center ${
+                product.licensesRemaining === 0
+                  ? 'bg-red-100 text-red-700'
+                  : product.licensesRemaining <= 10
+                    ? 'bg-orange-100 text-orange-700'
+                    : 'bg-green-100 text-green-700'
+              }`}>
+                {product.licensesRemaining === 0
+                  ? 'Plus de licences disponibles'
+                  : `${product.licensesRemaining} licence${product.licensesRemaining > 1 ? 's' : ''} restante${product.licensesRemaining > 1 ? 's' : ''}`
+                }
+              </div>
+            )}
           </div>
         </div>
       </Link>

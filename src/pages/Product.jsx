@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { products } from '../data/mockData';
 import { useCart } from '../context/CartContext';
+import { useProducts } from '../context/ProductsContext';
 import Button from '../components/common/Button';
 import Badge from '../components/common/Badge';
 import ProductCard from '../components/product/ProductCard';
@@ -11,9 +11,10 @@ const Product = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [subscriptionType, setSubscriptionType] = useState('monthly');
   const { addToCart } = useCart();
-  
-  const product = products.find(p => p.id === parseInt(id));
-  const similarProducts = products
+  const { clientProducts } = useProducts();
+
+  const product = clientProducts.find(p => p.id === parseInt(id));
+  const similarProducts = clientProducts
     .filter(p => p.categoryId === product?.categoryId && p.id !== product?.id)
     .slice(0, 6);
   
@@ -151,8 +152,8 @@ const Product = () => {
               <p className="text-gray-600">{product.description}</p>
             </div>
             
-            {/* Disponibilité */}
-            <div className="mb-6">
+            {/* Disponibilité + Licences */}
+            <div className="mb-6 space-y-3">
               {product.available ? (
                 <div className="flex items-center text-green-600">
                   <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -166,6 +167,38 @@ const Product = () => {
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                   </svg>
                   <span className="font-semibold">Stock épuisé</span>
+                </div>
+              )}
+              {product.licensesRemaining != null && product.licensesTotal != null && (
+                <div className={`flex items-center justify-between px-4 py-3 rounded-lg border ${
+                  product.licensesRemaining === 0
+                    ? 'bg-red-50 border-red-200 text-red-700'
+                    : product.licensesRemaining <= 10
+                      ? 'bg-orange-50 border-orange-200 text-orange-700'
+                      : 'bg-green-50 border-green-200 text-green-700'
+                }`}>
+                  <div>
+                    <p className="text-sm font-semibold">
+                      {product.licensesRemaining === 0
+                        ? 'Plus de licences disponibles'
+                        : `${product.licensesRemaining} licence${product.licensesRemaining > 1 ? 's' : ''} restante${product.licensesRemaining > 1 ? 's' : ''}`
+                      }
+                    </p>
+                    <p className="text-xs opacity-75 mt-0.5">
+                      sur {product.licensesTotal} au total
+                    </p>
+                  </div>
+                  <div className="w-24">
+                    <div className="h-2 bg-black/10 rounded-full overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-current transition-all"
+                        style={{ width: `${Math.round((product.licensesRemaining / product.licensesTotal) * 100)}%` }}
+                      />
+                    </div>
+                    <p className="text-xs text-right mt-0.5 opacity-75">
+                      {Math.round((product.licensesRemaining / product.licensesTotal) * 100)}%
+                    </p>
+                  </div>
                 </div>
               )}
             </div>

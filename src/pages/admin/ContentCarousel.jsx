@@ -3,14 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { mockHomeContent } from '../../data/adminMockData';
 import { ArrowLeft, Plus, Edit, Trash2, ChevronUp, ChevronDown, Image } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
+import { useContent } from '../../context/ContentContext';
 import Modal from '../../components/common/Modal';
 
 const EMPTY_SLIDE = { title: '', text: '', image: '', link: '', ctaText: '' };
 
 const ContentCarousel = () => {
-  const [slides, setSlides] = useState(
-    [...mockHomeContent.carousel].sort((a, b) => a.order - b.order)
-  );
+  const { carousel: contextCarousel, setCarousel: setContextCarousel } = useContent();
+  const [slides, setSlides] = useState([...contextCarousel]);
   const [editingSlide, setEditingSlide] = useState(null);
   const [isNew, setIsNew] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
@@ -89,7 +89,7 @@ const ContentCarousel = () => {
             Ajouter une slide
           </button>
           <button
-            onClick={() => { success('Carrousel enregistré !'); navigate('/admin/content'); }}
+            onClick={() => { setContextCarousel([...slides].sort((a, b) => a.order - b.order)); success('Carrousel enregistré !'); navigate('/admin/content'); }}
             className="flex-1 sm:flex-none flex items-center justify-center min-h-[44px] px-4 border border-input bg-background rounded-lg hover:bg-accent transition-colors text-sm font-medium"
           >
             Enregistrer
