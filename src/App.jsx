@@ -45,6 +45,8 @@ import MessageDetail from './pages/admin/MessageDetail';
 import Chatbot from './pages/admin/Chatbot';
 import ChatbotDetail from './pages/admin/ChatbotDetail';
 import Content from './pages/admin/Content';
+import ContentCarousel from './pages/admin/ContentCarousel';
+import ContentStaticText from './pages/admin/ContentStaticText';
 import Settings from './pages/admin/Settings';
 
 function AppContent() {
@@ -223,6 +225,26 @@ function AppContent() {
             <ProtectedRoute>
               <AdminLayout>
                 <Content />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/content/carousel"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <ContentCarousel />
+              </AdminLayout>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/content/static-text"
+          element={
+            <ProtectedRoute>
+              <AdminLayout>
+                <ContentStaticText />
               </AdminLayout>
             </ProtectedRoute>
           }

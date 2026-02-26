@@ -13,9 +13,9 @@ const OrdersTab = ({ orders = [] }) => {
     return (
       <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
         <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">
-          Mes commandes
+          Mes abonnements
         </h2>
-        <EmptyState description="Aucune commande." />
+        <EmptyState description="Aucun abonnement." />
       </div>
     );
   }
@@ -23,14 +23,14 @@ const OrdersTab = ({ orders = [] }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-4 md:p-6">
       <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">
-        Mes commandes
+        Mes abonnements
       </h2>
       <div className="space-y-5">
         {orders.map((order) => (
           <div key={order.id} className="border border-gray-200 rounded-lg p-5">
             <div className="flex justify-between items-start mb-2">
               <div>
-                <h3 className="font-semibold text-gray-900">Commande #{order.id}</h3>
+                <h3 className="font-semibold text-gray-900">Abonnement #{order.id}</h3>
                 <p className="text-sm text-gray-600">
                   {formatDate(order.date)}
                 </p>

@@ -18,7 +18,7 @@ const OrderDetail = () => {
   if (!order) {
     return (
       <div className="text-center py-12">
-        <p className="text-muted-foreground">Commande non trouvée</p>
+        <p className="text-muted-foreground">Abonnement non trouvé</p>
         <Link to="/admin/orders" className="text-primary hover:text-primary-600 mt-4 inline-block">
           Retour à la liste
         </Link>
@@ -46,14 +46,14 @@ const OrderDetail = () => {
   };
   
   const handleSendEmail = () => {
-    window.location.href = `mailto:${order.customer.email}?subject=Commande ${order.orderNumber}`;
+    window.location.href = `mailto:${order.customer.email}?subject=Abonnement ${order.orderNumber}`;
   };
   
   const handleStatusChange = () => {
     if (!selectedStatus) {
       return;
     }
-    success(`Statut de la commande modifié en "${selectedStatus}"`);
+    success(`Statut de l'abonnement modifié en "${selectedStatus}"`);
     setStatusModal(false);
   };
   
@@ -77,7 +77,7 @@ const OrderDetail = () => {
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-foreground">Commande {order.orderNumber}</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground">Abonnement {order.orderNumber}</h2>
             <p className="text-sm text-muted-foreground">
               {formatDate(order.date)}
             </p>
@@ -113,7 +113,7 @@ const OrderDetail = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* Statut */}
           <div className="bg-white rounded-lg shadow-md p-6 border border-border">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Statut de la commande</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-4">Statut de l'abonnement</h3>
             <div className="space-y-4">
               <div>
                 <span className={`inline-flex px-3 py-1 text-sm font-medium rounded-full ${
@@ -144,7 +144,7 @@ const OrderDetail = () => {
           
           {/* Services commandés */}
           <div className="bg-white rounded-lg shadow-md p-6 border border-border">
-            <h3 className="text-lg font-semibold text-foreground mb-4">Services commandés</h3>
+            <h3 className="text-lg font-semibold text-foreground mb-4">Services souscrits</h3>
             <div className="space-y-4">
               {order.items.map((item, index) => (
                 <div key={index} className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border rounded-lg gap-2">

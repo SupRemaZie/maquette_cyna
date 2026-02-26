@@ -97,7 +97,7 @@ const Dashboard = () => {
           format={formatCurrency}
         />
         <KPICard
-          title="Nombre de commandes"
+          title="Nombre d'abonnements"
           value={stats.kpis.orderCount.value}
           evolution={stats.kpis.orderCount.evolution}
           icon={ShoppingCart}
@@ -241,7 +241,7 @@ const Dashboard = () => {
             to="/admin/orders"
             className="text-sm text-primary hover:text-primary-600 flex items-center gap-1"
           >
-            Voir toutes les commandes
+            Voir tous les abonnements
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

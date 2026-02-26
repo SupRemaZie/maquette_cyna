@@ -7,14 +7,39 @@ import { useToast } from '../../context/ToastContext';
 const Orders = () => {
   const [orders] = useState(mockOrders);
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('Active');
   const [sortBy, setSortBy] = useState('date_desc');
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
-  const { info } = useToast();
+  const { success } = useToast();
 
   const handleExportCSV = () => {
-    info('Export CSV démarré');
+    const headers = ['N° Abonnement', 'Date', 'Client', 'Email', 'Services', 'Montant (€)', 'Statut'];
+    const rows = filteredOrders.map(order => [
+      order.orderNumber,
+      new Date(order.date).toLocaleDateString('fr-FR'),
+      `${order.customer.firstName} ${order.customer.lastName}`,
+      order.customer.email,
+      order.items.map(item => item.productName).join(' | '),
+      order.total.toFixed(2).replace('.', ','),
+      order.status,
+    ]);
+
+    const csv = [headers, ...rows]
+      .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(';'))
+      .join('\n');
+
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `abonnements-${new Date().toISOString().slice(0, 10)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    success(`${filteredOrders.length} abonnement(s) exporté(s)`);
   };
 
   const filteredOrders = orders
@@ -51,9 +76,9 @@ const Orders = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-foreground">Gestion des Commandes</h2>
+          <h2 className="text-2xl font-bold text-foreground">Gestion des Abonnements</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            {filteredOrders.length} commande(s) trouvée(s)
+            {filteredOrders.length} abonnement(s) trouvé(s)
           </p>
         </div>
       </div>
@@ -144,7 +169,7 @@ const Orders = () => {
           <table className="w-full">
             <thead className="bg-muted">
               <tr>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">N° Commande</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">N° Abonnement</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Date</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Client</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Services</th>

@@ -317,12 +317,12 @@ const Checkout = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Commande confirmée !</h2>
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Abonnement confirmé !</h2>
                 <p className="text-sm md:text-base text-gray-600 mb-6">
-                  Merci pour votre commande. Vous recevrez un email de confirmation sous peu.
+                  Merci pour votre souscription. Vous recevrez un email de confirmation sous peu.
                 </p>
                 <Button onClick={() => navigate('/account?tab=orders')} variant="primary" className="w-full sm:w-auto">
-                  Accéder à ma commande
+                  Voir mon abonnement
                 </Button>
               </div>
             )}

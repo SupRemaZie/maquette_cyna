@@ -14,7 +14,7 @@ const AccountLayout = ({
   const tabs = [
     { id: 'profile',       label: 'Mes informations',      icon: User },
     { id: 'subscriptions', label: 'Mes abonnements',        icon: null, img: addToCartIcon },
-    { id: 'orders',        label: 'Mes commandes',          icon: Package },
+    { id: 'orders',        label: 'Mes abonnements',         icon: Package },
     { id: 'payment',       label: 'Méthodes de paiement',   icon: CreditCard },
   ];
 

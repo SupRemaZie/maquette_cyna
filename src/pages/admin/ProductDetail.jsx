@@ -75,7 +75,7 @@ const ProductDetail = () => {
         <div className="flex flex-wrap items-center gap-2">
           <Link
             to={`/admin/products/${product.id}/edit`}
-            className="flex items-center gap-2 px-3 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm"
+            className="flex items-center gap-2 min-h-[44px] px-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm font-medium"
           >
             <Edit className="h-4 w-4" />
             <span>Modifier</span>

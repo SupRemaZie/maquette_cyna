@@ -83,7 +83,7 @@ const ToastProvider = ({ children }) => {
 
 const ToastContainer = ({ toasts, removeToast }) => {
   return (
-    <div className="fixed bottom-4 right-4 z-[60] flex flex-col gap-2 max-w-md w-full">
+    <div className="fixed bottom-4 inset-x-4 sm:left-auto sm:right-4 sm:w-full sm:max-w-sm z-[60] flex flex-col gap-2">
       {toasts.map((toast) => (
         <Toast key={toast.id} toast={toast} removeToast={removeToast} />
       ))}
@@ -152,7 +152,7 @@ const Toast = ({ toast, removeToast }) => {
       </div>
       <button
         onClick={() => removeToast(toast.id)}
-        className={`${colorScheme.text} hover:opacity-70 transition-opacity flex-shrink-0`}
+        className={`${colorScheme.text} hover:opacity-70 transition-opacity flex-shrink-0 min-h-[44px] min-w-[44px] flex items-center justify-center -mr-2 -mt-1`}
         aria-label="Fermer"
       >
         <X className="h-4 w-4" />

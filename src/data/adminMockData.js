@@ -635,6 +635,11 @@ export const mockHomeContent = {
   ],
   staticText: '<h2>Bienvenue sur CYNA</h2><p>CYNA est votre partenaire de confiance pour la sécurité informatique. Nous proposons des solutions SaaS innovantes pour protéger votre entreprise.</p>',
   featuredProducts: [1, 2, 3, 4, 5, 6], // IDs des produits
+  banner: {
+    enabled: false,
+    type: 'info', // 'info' | 'alert'
+    message: '',
+  },
 };
 
 // Paramètres
