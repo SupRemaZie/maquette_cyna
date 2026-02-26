@@ -2,9 +2,30 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { mockUsers } from '../../data/adminMockData';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Switch } from '../../components/ui/switch';
+import { useToast } from '../../context/ToastContext';
 
 const Users = () => {
-  const [users] = useState(mockUsers);
+  const [users, setUsers] = useState(() =>
+    mockUsers.map(u => ({ ...u, suspended: u.status === 'Bloqué' }))
+  );
+  const { success } = useToast();
+
+  const handleToggleSuspend = (userId) => {
+    const user = users.find(u => u.id === userId);
+    if (!user) return;
+    const next = !user.suspended;
+    success(`Compte ${next ? 'suspendu' : 'réactivé'} : ${user.firstName} ${user.lastName}`);
+    setUsers(prev => prev.map(u => {
+      if (u.id !== userId) return u;
+      if (next) {
+        return { ...u, suspended: true, statusBeforeSuspension: u.status, status: 'Bloqué' };
+      } else {
+        const restored = u.statusBeforeSuspension ?? 'Actif';
+        return { ...u, suspended: false, statusBeforeSuspension: undefined, status: restored };
+      }
+    }));
+  };
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [sortBy, setSortBy] = useState('totalSpent');
@@ -124,12 +145,21 @@ const Users = () => {
                   <p className="text-lg font-bold text-foreground">{user.orderCount}</p>
                 </div>
               </div>
-              <Link
-                to={`/admin/users/${user.id}`}
-                className="block text-center text-sm font-medium text-primary hover:text-primary/80 py-2.5 border border-primary/30 rounded-lg min-h-[44px] flex items-center justify-center"
-              >
-                Voir profil
-              </Link>
+              <div className="flex items-center justify-between pt-1 border-t border-border">
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={user.suspended}
+                    onCheckedChange={() => handleToggleSuspend(user.id)}
+                  />
+                  <span className="text-xs text-muted-foreground">Suspendre</span>
+                </div>
+                <Link
+                  to={`/admin/users/${user.id}`}
+                  className="text-sm font-medium text-primary hover:text-primary/80 py-2.5 px-4 border border-primary/30 rounded-lg min-h-[44px] flex items-center justify-center"
+                >
+                  Voir profil
+                </Link>
+              </div>
           </div>
         ))}
       </div>
@@ -146,6 +176,7 @@ const Users = () => {
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Statut</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Commandes</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Total dépensé</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Suspendu</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Actions</th>
               </tr>
             </thead>
@@ -172,6 +203,17 @@ const Users = () => {
                   <td className="px-4 py-3 text-sm text-foreground">{user.orderCount}</td>
                   <td className="px-4 py-3 text-sm font-semibold text-foreground">
                     {formatCurrency(user.totalSpent)}
+                  </td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        checked={user.suspended}
+                        onCheckedChange={() => handleToggleSuspend(user.id)}
+                      />
+                      <span className={`text-xs font-medium ${user.suspended ? 'text-destructive' : 'text-muted-foreground'}`}>
+                        {user.suspended ? 'Oui' : 'Non'}
+                      </span>
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <Link
