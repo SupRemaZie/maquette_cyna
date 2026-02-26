@@ -50,12 +50,12 @@ npm run preview   # prévisualise le build
 
 | Page | Description |
 |---|---|
-| **Accueil** | Carrousel hero, catégories en grille, produits mis en avant |
-| **Catalogue** | Liste paginée, vues grille/liste, filtres |
-| **Catégorie** | Produits filtrés par catégorie |
-| **Produit** | Galerie d'images, description, ajout au panier |
+| **Accueil** | Bannière dynamique (info/alerte), carrousel configurable, catégories, top services |
+| **Catalogue** | Liste paginée, vues grille/liste, filtres, badge licences restantes |
+| **Catégorie** | Services filtrés par catégorie |
+| **Service** | Galerie d'images, description, barre de licences disponibles, ajout au panier |
 | **Recherche** | Recherche full-text avec filtres avancés |
-| **Panier** | Ajout/modification/suppression, calcul du total |
+| **Panier** | Ajout/modification/suppression, quantité limitée au stock de licences, calcul du total |
 | **Checkout** | Parcours 4 étapes (adresse → livraison → paiement → confirmation) |
 | **Contact** | Formulaire + chatbot interactif |
 | **Pages statiques** | CGU, Mentions légales, Politique de confidentialité, À propos |
@@ -84,13 +84,14 @@ Password : Admin123!
 | Section | Fonctionnalités |
 |---|---|
 | **Dashboard** | KPIs, graphiques Recharts (CA, commandes, abonnements) |
-| **Produits** | Liste paginée, création/édition/suppression, statut publié/brouillon |
-| **Catégories** | Gestion des catégories de produits |
+| **Services** | Liste paginée/triable/filtrable, toggle publié en direct, suppression en masse, colonne licences colorée |
+| **Formulaire service** | Tous les champs dont `licensesTotal` / `licensesRemaining` |
+| **Catégories** | Gestion des catégories |
 | **Commandes** | Liste avec filtres, détail par commande |
 | **Utilisateurs** | Liste clients, détail par profil |
 | **Messages** | Messages reçus via le formulaire contact |
 | **Chatbot** | Historique des conversations chatbot |
-| **Contenus** | Gestion des contenus éditoriaux (carrousel, etc.) |
+| **Contenus** | Carrousel, texte fixe (WYSIWYG live), bannière info/alerte, top services du moment |
 | **Paramètres** | Configuration de la plateforme |
 
 ---
@@ -104,9 +105,10 @@ src/
 ├── index.css                  # Styles globaux Tailwind
 │
 ├── context/
-│   ├── CartContext.jsx         # Panier + auth utilisateur
+│   ├── CartContext.jsx         # Panier + auth utilisateur (quantité cappée au stock)
 │   ├── AdminContext.jsx        # Auth admin
-│   ├── ProductsContext.jsx     # Gestion des produits (partagée)
+│   ├── ProductsContext.jsx     # Gestion des services — expose clientProducts (publiés + normalisés)
+│   ├── ContentContext.jsx      # Contenu page d'accueil (bannière, carrousel, texte, top services)
 │   └── ToastContext.jsx        # Notifications toast globales
 │
 ├── data/
@@ -197,10 +199,36 @@ L'intégralité du projet a été adapté mobile-first :
 
 ---
 
+## Propagation temps réel admin → client
+
+Les modifications du back-office sont reflétées immédiatement côté client via React Context :
+
+| Context | Ce qui est propagé |
+|---|---|
+| `ProductsContext` | État publié/brouillon, `licensesRemaining`, tous les champs service |
+| `ContentContext` | Bannière, carrousel, texte fixe, top services du moment |
+
+`ProductsContext` expose `clientProducts` : liste des services publiés, normalisés au format attendu par les pages client (mapping `priceMonthly → price.monthly`, `shortDescription → description`, etc.).
+
+Au démarrage, les données du `localStorage` sont fusionnées avec `adminMockData` pour garantir que les nouveaux champs (ex. `licensesRemaining`) sont toujours présents même si le localStorage contient une ancienne version.
+
+---
+
+## Gestion des licences
+
+Chaque service possède `licensesTotal` et `licensesRemaining`.
+
+- **Admin** : colonne triable avec badge coloré (vert >10, orange ≤10, rouge épuisé), champs éditables dans le formulaire
+- **Catalogue / Fiche service** : badge et barre de progression visuelle
+- **Panier** : bouton `+` bloqué à `licensesRemaining`, message d'avertissement affiché
+- **CartContext** : `addToCart` et `updateCartItem` capent la quantité au stock disponible côté code
+
+---
+
 ## Limitations connues
 
 - Pas de backend : aucune API réelle, tout est mocké
-- Les deux sources de données (`mockData.js` / `adminMockData.js`) ne sont pas synchronisées
+- `mockData.js` (legacy) et `adminMockData.js` restent deux sources distinctes — les pages client utilisent désormais `ProductsContext.clientProducts`
 - Les commandes passées en checkout ne sont pas persistées entre les sessions
 - Routes client `/account` et `/checkout` non protégées (auth non vérifiée)
 - Pas de vraie passerelle de paiement
