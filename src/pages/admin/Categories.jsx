@@ -10,36 +10,84 @@ const Categories = () => {
   const [editingCategory, setEditingCategory] = useState(null);
   const [editName, setEditName] = useState('');
   const [editPublished, setEditPublished] = useState(true);
+  const [editSelectedProducts, setEditSelectedProducts] = useState([]);
+  const [editInitialSelected, setEditInitialSelected] = useState([]);
+  const [editProductSearch, setEditProductSearch] = useState('');
   const [isAdding, setIsAdding] = useState(false);
   const [newName, setNewName] = useState('');
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [productSearch, setProductSearch] = useState('');
   const [isPublished, setIsPublished] = useState(true);
-  const { success, error: showError } = useToast();
+  const [confirmDelete, setConfirmDelete] = useState(null);
+  const [reassignMap, setReassignMap] = useState({});
+  const { success } = useToast();
 
-  const handleDelete = (category) => {
-    if (category.productCount > 0) {
-      showError('Impossible de supprimer une catégorie contenant des produits');
-      return;
-    }
-    setCategories(prev => prev.filter(c => c.id !== category.id));
+  const openConfirmDelete = (category) => {
+    setConfirmDelete(category);
+    setReassignMap({});
+  };
+
+  const categoryProducts = mockProducts.filter(p => p.category === confirmDelete?.name);
+  const allReassigned = categoryProducts.length === 0 || categoryProducts.every(p => reassignMap[p.id]);
+
+  const handleDelete = () => {
+    // Calcule les deltas de productCount par catégorie cible
+    const targetDeltas = {};
+    Object.values(reassignMap).forEach(targetName => {
+      targetDeltas[targetName] = (targetDeltas[targetName] || 0) + 1;
+    });
+    setCategories(prev =>
+      prev
+        .filter(c => c.id !== confirmDelete.id)
+        .map(c => targetDeltas[c.name]
+          ? { ...c, productCount: c.productCount + targetDeltas[c.name] }
+          : c
+        )
+    );
     success('Catégorie supprimée avec succès !');
+    setConfirmDelete(null);
+    setReassignMap({});
   };
 
   const handleEdit = (category) => {
     setEditingCategory(category);
     setEditName(category.name);
     setEditPublished(category.published ?? true);
+    const preSelected = mockProducts
+      .filter(p => p.category === category.name)
+      .map(p => p.id);
+    setEditSelectedProducts(preSelected);
+    setEditInitialSelected(preSelected);
+    setEditProductSearch('');
   };
 
   const handleSave = () => {
     if (!editName.trim()) return;
     setCategories(prev => prev.map(c =>
-      c.id === editingCategory.id ? { ...c, name: editName.trim(), published: editPublished } : c
+      c.id === editingCategory.id
+        ? { ...c, name: editName.trim(), published: editPublished, productCount: editSelectedProducts.length }
+        : c
     ));
     success(`Catégorie ${editPublished ? 'publiée' : 'enregistrée en brouillon'} avec succès !`);
     setEditingCategory(null);
   };
+
+  const toggleEditProduct = (productId) => {
+    setEditSelectedProducts(prev =>
+      prev.includes(productId) ? prev.filter(id => id !== productId) : [...prev, productId]
+    );
+  };
+
+  const editFilteredProducts = mockProducts
+    .filter(p =>
+      p.name.toLowerCase().includes(editProductSearch.toLowerCase()) ||
+      p.category.toLowerCase().includes(editProductSearch.toLowerCase())
+    )
+    .sort((a, b) => {
+      const aSelected = editInitialSelected.includes(a.id);
+      const bSelected = editInitialSelected.includes(b.id);
+      return aSelected === bSelected ? 0 : aSelected ? -1 : 1;
+    });
 
   const handleAdd = () => {
     if (!newName.trim()) return;
@@ -102,14 +150,12 @@ const Categories = () => {
               >
                 <Edit className="h-4 w-4" />
               </button>
-              {category.productCount === 0 && (
-                <button
-                  onClick={() => handleDelete(category)}
-                  className="p-2 text-destructive hover:bg-destructive/10 rounded transition-colors"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              )}
+              <button
+                onClick={() => openConfirmDelete(category)}
+                className="p-2 text-destructive hover:bg-destructive/10 rounded transition-colors"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
             </div>
           </div>
         ))}
@@ -138,14 +184,12 @@ const Categories = () => {
                     >
                       <Edit className="h-4 w-4" />
                     </button>
-                    {category.productCount === 0 && (
-                      <button
-                        onClick={() => handleDelete(category)}
-                        className="p-2 text-destructive hover:bg-destructive/10 rounded transition-colors"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    )}
+                    <button
+                      onClick={() => openConfirmDelete(category)}
+                      className="p-2 text-destructive hover:bg-destructive/10 rounded transition-colors"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -257,6 +301,79 @@ const Categories = () => {
         </div>
       </Modal>
 
+      {/* Modale confirmation suppression */}
+      <Modal
+        isOpen={!!confirmDelete}
+        onClose={() => setConfirmDelete(null)}
+        title="Supprimer la catégorie"
+        showCloseButton={false}
+        size={categoryProducts.length > 0 ? 'lg' : 'sm'}
+      >
+        <div className="space-y-5">
+          {categoryProducts.length > 0 ? (
+            <>
+              <p className="text-sm text-muted-foreground">
+                La catégorie <span className="font-semibold text-foreground">« {confirmDelete?.name} »</span> contient{' '}
+                {categoryProducts.length} produit(s). Réassignez-les à une autre catégorie avant de supprimer.
+              </p>
+
+              {/* Liste des produits avec sélecteur de catégorie cible */}
+              <div className="border border-border rounded-lg divide-y divide-border overflow-y-auto max-h-64">
+                {categoryProducts.map(product => (
+                  <div key={product.id} className="flex items-center gap-3 px-4 py-3">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">{product.name}</p>
+                      <p className="text-xs text-muted-foreground">{product.category}</p>
+                    </div>
+                    <select
+                      value={reassignMap[product.id] || ''}
+                      onChange={(e) => setReassignMap(prev => ({ ...prev, [product.id]: e.target.value }))}
+                      className="text-sm border border-input rounded-md px-2 py-1.5 bg-background focus:outline-none focus:ring-2 focus:ring-ring flex-shrink-0"
+                    >
+                      <option value="">Déplacer vers...</option>
+                      {categories
+                        .filter(c => c.id !== confirmDelete?.id)
+                        .map(c => (
+                          <option key={c.id} value={c.name}>{c.name}</option>
+                        ))
+                      }
+                    </select>
+                  </div>
+                ))}
+              </div>
+
+              {!allReassigned && (
+                <p className="text-xs text-destructive">
+                  Tous les produits doivent être réassignés avant de pouvoir supprimer la catégorie.
+                </p>
+              )}
+            </>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              Êtes-vous sûr de vouloir supprimer la catégorie{' '}
+              <span className="font-semibold text-foreground">« {confirmDelete?.name} »</span> ?
+              Cette action est irréversible.
+            </p>
+          )}
+
+          <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+            <button
+              onClick={() => setConfirmDelete(null)}
+              className="min-h-[44px] w-full sm:w-auto px-5 border border-input rounded-lg text-base hover:bg-muted transition-colors"
+            >
+              Annuler
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={!allReassigned}
+              className="min-h-[44px] w-full sm:w-auto px-5 bg-destructive text-destructive-foreground rounded-lg text-base hover:bg-destructive/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Supprimer
+            </button>
+          </div>
+        </div>
+      </Modal>
+
       {/* Modale édition */}
       <Modal
         isOpen={!!editingCategory}
@@ -290,6 +407,57 @@ const Categories = () => {
               </p>
             </div>
             <Switch checked={editPublished} onCheckedChange={setEditPublished} />
+          </div>
+
+          {/* Produits associés */}
+          <div>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-sm font-medium text-foreground">
+                Produits associés
+              </label>
+              {editSelectedProducts.length > 0 && (
+                <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                  {editSelectedProducts.length} sélectionné(s)
+                </span>
+              )}
+            </div>
+
+            {/* Recherche produits */}
+            <div className="relative mb-2">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <input
+                type="text"
+                value={editProductSearch}
+                onChange={(e) => setEditProductSearch(e.target.value)}
+                placeholder="Filtrer les produits..."
+                className="w-full pl-9 pr-4 py-2.5 border border-input bg-background rounded-lg focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+              />
+            </div>
+
+            {/* Liste */}
+            <div className="border border-border rounded-lg overflow-y-auto max-h-52">
+              {editFilteredProducts.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-6">Aucun produit trouvé</p>
+              ) : (
+                editFilteredProducts.map((product, idx) => (
+                  <label
+                    key={product.id}
+                    className={`flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-muted/50 transition-colors ${idx !== editFilteredProducts.length - 1 ? 'border-b border-border' : ''}`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={editSelectedProducts.includes(product.id)}
+                      onChange={() => toggleEditProduct(product.id)}
+                      className="h-5 w-5 rounded border-input accent-primary flex-shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">{product.name}</p>
+                      <p className="text-xs text-muted-foreground">{product.category}</p>
+                    </div>
+                  </label>
+                ))
+              )}
+            </div>
           </div>
 
           {/* Boutons */}

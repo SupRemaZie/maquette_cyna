@@ -1,148 +1,212 @@
-# CYNA - Maquette Front-End SaaS Platform
+# CYNA — Maquette Front-End SaaS Platform
 
-Maquette visuelle interactive pour présenter au client une plateforme e-commerce SaaS de solutions de sécurité (SOC, EDR, XDR).
+Maquette visuelle interactive pour présenter une plateforme e-commerce SaaS de solutions de cybersécurité (SOC, EDR, XDR, SIEM, Threat Intelligence, Compliance).
 
-## 🚀 Technologies utilisées
+> Projet 100 % front-end, sans backend ni API réelle — données mockées + localStorage.
 
-- **React 18** avec hooks
-- **React Router** pour la navigation
-- **Tailwind CSS** pour le styling responsive
-- **shadcn/ui** pour les composants UI modernes
-- **Lucide React** pour les icônes
-- **Vite** comme build tool
+---
 
-## 📋 Fonctionnalités
+## Technologies
 
-### Pages principales
-- ✅ Page d'accueil avec carrousel et catégories
-- ✅ Page catalogue/catégorie avec filtres
-- ✅ Page produit détaillée avec carrousel d'images
-- ✅ Page de recherche avec filtres avancés
-- ✅ Page panier avec gestion des quantités
-- ✅ Processus de checkout en 4 étapes
-- ✅ Pages d'authentification (Login/Register)
-- ✅ Espace utilisateur avec onglets
-- ✅ Page contact avec chatbot
-- ✅ Pages statiques (CGU, Mentions légales, À propos)
+| Catégorie | Outil |
+|---|---|
+| Framework | React 18 + Vite |
+| Routing | React Router 6 |
+| Styling | Tailwind CSS v3 |
+| Composants UI | shadcn/ui (Radix UI) |
+| Icônes | Lucide React |
+| Graphiques | Recharts |
+| Utilitaires | clsx, tailwind-merge, date-fns |
 
-### Fonctionnalités
-- 🛒 Gestion du panier (ajout, modification, suppression)
-- 🔐 Authentification simulée (localStorage)
-- 📱 Design responsive mobile-first
-- 🎨 Design system moderne avec shadcn/ui
-- 📊 Sidebar de navigation moderne (fixe sur desktop, drawer sur mobile)
-- 🔍 Recherche et filtres de produits
-- 💬 Chatbot interactif sur la page contact
-- 🎯 UI moderne avec variables CSS et thème cohérent
+---
 
-## 🛠️ Installation
+## Démarrage rapide
 
 ### Prérequis
-- Node.js 16+ et npm
 
-### Étapes d'installation
+- Node.js 18+
 
-1. **Installer les dépendances**
+### Installation
+
 ```bash
 npm install
-```
-
-2. **Lancer le serveur de développement**
-```bash
 npm run dev
 ```
 
-3. **Ouvrir dans le navigateur**
-```
-http://localhost:5173
-```
+Ouvrir [http://localhost:5173](http://localhost:5173)
 
-## 📦 Build de production
+### Build de production
 
 ```bash
-npm run build
+npm run build     # génère /dist
+npm run preview   # prévisualise le build
 ```
 
-Les fichiers de production seront générés dans le dossier `dist/`.
+---
 
-## 📁 Structure du projet
+## Fonctionnalités
+
+### Vitrine client
+
+| Page | Description |
+|---|---|
+| **Accueil** | Carrousel hero, catégories en grille, produits mis en avant |
+| **Catalogue** | Liste paginée, vues grille/liste, filtres |
+| **Catégorie** | Produits filtrés par catégorie |
+| **Produit** | Galerie d'images, description, ajout au panier |
+| **Recherche** | Recherche full-text avec filtres avancés |
+| **Panier** | Ajout/modification/suppression, calcul du total |
+| **Checkout** | Parcours 4 étapes (adresse → livraison → paiement → confirmation) |
+| **Contact** | Formulaire + chatbot interactif |
+| **Pages statiques** | CGU, Mentions légales, Politique de confidentialité, À propos |
+
+### Espace utilisateur (`/account`)
+
+- Profil & informations personnelles
+- Historique des commandes
+- Abonnements actifs
+- Moyens de paiement
+
+### Authentification client
+
+- Connexion / Inscription / Mot de passe oublié
+- Session simulée via localStorage
+
+### Back-office admin (`/admin`)
+
+Accès protégé par route — identifiants de démo :
+
+```
+Email    : admin@cyna-it.fr
+Password : Admin123!
+```
+
+| Section | Fonctionnalités |
+|---|---|
+| **Dashboard** | KPIs, graphiques Recharts (CA, commandes, abonnements) |
+| **Produits** | Liste paginée, création/édition/suppression, statut publié/brouillon |
+| **Catégories** | Gestion des catégories de produits |
+| **Commandes** | Liste avec filtres, détail par commande |
+| **Utilisateurs** | Liste clients, détail par profil |
+| **Messages** | Messages reçus via le formulaire contact |
+| **Chatbot** | Historique des conversations chatbot |
+| **Contenus** | Gestion des contenus éditoriaux (carrousel, etc.) |
+| **Paramètres** | Configuration de la plateforme |
+
+---
+
+## Structure du projet
 
 ```
 src/
-├── components/
-│   ├── common/          # Composants réutilisables (Button, Input, Card, Badge, Modal)
-│   ├── ui/               # Composants shadcn/ui (Button, Card, Sidebar)
-│   ├── layout/           # Header, Footer
-│   └── product/          # ProductCard
-├── lib/
-│   └── utils.js          # Utilitaires (cn function pour Tailwind)
-├── pages/
-│   ├── Auth/            # Login, Register
-│   ├── Account.jsx      # Espace utilisateur
-│   ├── Cart.jsx         # Panier
-│   ├── Category.jsx     # Page catégorie
-│   ├── Checkout.jsx     # Processus de commande
-│   ├── Contact.jsx      # Contact avec chatbot
-│   ├── Home.jsx         # Page d'accueil
-│   ├── Product.jsx      # Page produit
-│   ├── Search.jsx       # Recherche
-│   ├── CGU.jsx          # Conditions générales
-│   ├── MentionsLegales.jsx
-│   └── About.jsx
+├── App.jsx                    # Définition des routes
+├── main.jsx                   # Point d'entrée
+├── index.css                  # Styles globaux Tailwind
+│
 ├── context/
-│   └── CartContext.jsx   # Context pour panier et auth
+│   ├── CartContext.jsx         # Panier + auth utilisateur
+│   ├── AdminContext.jsx        # Auth admin
+│   ├── ProductsContext.jsx     # Gestion des produits (partagée)
+│   └── ToastContext.jsx        # Notifications toast globales
+│
 ├── data/
-│   └── mockData.js      # Données fictives (produits, catégories)
-├── App.jsx              # Routes principales
-├── main.jsx             # Point d'entrée
-└── index.css            # Styles Tailwind
+│   ├── mockData.js             # Données vitrine (produits, catégories, slides)
+│   └── adminMockData.js        # Données back-office (commandes, users, messages…)
+│
+├── components/
+│   ├── common/                 # Composants réutilisables métier
+│   │   ├── Chatbot.jsx
+│   │   ├── AddressAutocomplete.jsx
+│   │   ├── Badge.jsx / Button.jsx / Card.jsx
+│   │   ├── Checkbox.jsx / Input.jsx / FormField.jsx
+│   │   ├── EmptyState.jsx / Modal.jsx
+│   │   ├── Section.jsx / Tabs.jsx
+│   │   └── ...
+│   ├── layout/                 # Shell de l'application
+│   │   ├── Header.jsx
+│   │   ├── Footer.jsx
+│   │   └── BurgerMenu.jsx
+│   ├── account/                # Onglets de l'espace utilisateur
+│   │   ├── AccountLayout.jsx
+│   │   ├── ProfileTab.jsx
+│   │   ├── OrdersTab.jsx
+│   │   ├── SubscriptionsTab.jsx
+│   │   └── PaymentTab.jsx
+│   ├── admin/                  # Shell back-office
+│   │   ├── AdminLayout.jsx
+│   │   └── ProtectedRoute.jsx
+│   ├── product/
+│   │   └── ProductCard.jsx
+│   └── ui/                     # Composants shadcn/ui (Radix)
+│       ├── button.jsx / card.jsx / badge.jsx / input.jsx
+│       ├── dialog.jsx / checkbox.jsx / label.jsx / tabs.jsx
+│       ├── sidebar.jsx / switch.jsx
+│       ├── popover.jsx / calendar.jsx / date-picker.jsx
+│       └── ...
+│
+├── pages/
+│   ├── Home.jsx / Catalogue.jsx / Category.jsx
+│   ├── Product.jsx / Search.jsx
+│   ├── Cart.jsx / Checkout.jsx / Contact.jsx
+│   ├── Account.jsx / About.jsx
+│   ├── CGU.jsx / MentionsLegales.jsx / PrivacyPolicy.jsx
+│   ├── Auth/
+│   │   ├── Login.jsx / Register.jsx / ForgotPassword.jsx
+│   └── admin/
+│       ├── Login.jsx / Dashboard.jsx
+│       ├── Products.jsx / ProductDetail.jsx / ProductForm.jsx
+│       ├── Categories.jsx
+│       ├── Orders.jsx / OrderDetail.jsx
+│       ├── Users.jsx / UserDetail.jsx
+│       ├── Messages.jsx / MessageDetail.jsx
+│       ├── Chatbot.jsx / ChatbotDetail.jsx
+│       ├── Content.jsx
+│       └── Settings.jsx
+│
+└── lib/
+    └── utils.js                # Fonction cn() pour Tailwind
 ```
 
-## 🎨 Design System
+---
 
-### Couleurs
-- **Primary**: Bleu (#0073e6) - Couleur principale
-- **Accent**: Vert (#00802f) - Actions et badges
-- **Gray**: Nuances de gris pour textes et backgrounds
+## Design System
+
+### Couleurs principales
+
+| Token | Valeur | Usage |
+|---|---|---|
+| `--primary` | Bleu `#0073e6` | Actions principales, liens |
+| `--accent` | Vert `#00802f` | Badges, succès |
+| Gris | Palette Tailwind | Textes, fonds |
 
 ### Breakpoints
-- Mobile: < 768px
-- Tablet: 768px - 1024px
-- Desktop: > 1024px
 
-## 📝 Données mockées
+```
+mobile   < 640px   (sm)
+tablet   640–1024px
+desktop  > 1024px
+```
 
-Le projet utilise des données fictives stockées dans `src/data/mockData.js` :
-- 10 produits SaaS (EDR, XDR, SOC, SIEM, Threat Intelligence, Compliance)
-- 6 catégories
-- 3 slides pour le carrousel
+### Mobile-first
 
-## 🔐 Authentification
+L'intégralité du projet a été adapté mobile-first :
+- Sidebar client et admin : drawer sur mobile, fixe sur desktop
+- Tableaux admin transformés en cards empilées sur mobile
+- Chatbot : plein écran sur mobile, flottant sur sm+
+- Tap targets ≥ 44px sur tous les éléments interactifs
 
-L'authentification est simulée via localStorage. Aucune vraie API n'est utilisée.
+---
 
-## 🛒 Panier
+## Limitations connues
 
-Le panier est géré via React Context et persisté dans localStorage.
-
-## 📱 Responsive
-
-Le design est mobile-first avec :
-- Menu burger sur mobile
-- Grilles adaptatives (1 col mobile, 2-3 cols tablet, 3-4 cols desktop)
-- Navigation optimisée pour mobile
-
-## 🚧 Limitations
-
-- Pas de backend ni d'API réelle
-- Authentification simulée (localStorage)
+- Pas de backend : aucune API réelle, tout est mocké
+- Les deux sources de données (`mockData.js` / `adminMockData.js`) ne sont pas synchronisées
+- Les commandes passées en checkout ne sont pas persistées entre les sessions
+- Routes client `/account` et `/checkout` non protégées (auth non vérifiée)
 - Pas de vraie passerelle de paiement
-- Données statiques (pas de base de données)
 
-## 📄 Licence
+---
 
-Ce projet est une maquette de démonstration pour présentation client.
+## Licence
 
-## 👤 Contact
-
-Pour toute question, contactez l'équipe de développement.
+Maquette de démonstration — usage interne, présentation client.
