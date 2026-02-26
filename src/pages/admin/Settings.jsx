@@ -60,7 +60,7 @@ const Settings = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
+                className={`px-4 py-2 text-lgfont-medium border-b-2 transition-colors ${
                   activeTab === tab.id
                     ? 'border-primary text-primary'
                     : 'border-transparent text-muted-foreground hover:text-foreground'
@@ -170,6 +170,7 @@ const Settings = () => {
         
         {activeTab === 'security' && (
           <div className="space-y-4">
+            {/* 2FA et historique des connexions 
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
                 <h3 className="text-lg font-semibold text-foreground">Authentification 2FA</h3>
@@ -184,6 +185,7 @@ const Settings = () => {
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
+              */}
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-4">Historique des connexions</h3>
               <div className="space-y-2">

@@ -378,7 +378,7 @@ const Categories = () => {
       <Modal
         isOpen={!!editingCategory}
         onClose={() => setEditingCategory(null)}
-        title="Modifier la catégorie"
+        title={`Modifier la catégorie ${editingCategory?.name || ''}`}
         showCloseButton={false}
         size="lg"
       >
