@@ -3,11 +3,25 @@ import { Link } from 'react-router-dom';
 import { carouselSlides, homePresentation, categories, products } from '../data/mockData';
 import ProductCard from '../components/product/ProductCard';
 import { useCart } from '../context/CartContext';
+import { useContent } from '../context/ContentContext';
 import Button from '../components/common/Button';
+import { Info, AlertTriangle } from 'lucide-react';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [bannerVisible, setBannerVisible] = useState(false);
   const { addToCart } = useCart();
+  const { banner } = useContent();
+
+  useEffect(() => {
+    if (banner.enabled && banner.message) {
+      setBannerVisible(false);
+      const t = setTimeout(() => setBannerVisible(true), 150);
+      return () => clearTimeout(t);
+    } else {
+      setBannerVisible(false);
+    }
+  }, [banner.enabled, banner.message]);
   
   // Top produits (les 6 premiers)
   const topProducts = products.slice(0, 6);
@@ -75,6 +89,31 @@ const Home = () => {
         </div>
       </div>
       
+      {/* Banderole */}
+      {banner.enabled && banner.message && (
+        <div
+          className={`overflow-hidden transition-all duration-700 ease-out ${
+            bannerVisible ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          <div className={`flex items-center gap-3 px-4 py-3 text-sm font-medium ${
+            banner.type === 'alert'
+              ? 'bg-red-500 text-white'
+              : 'bg-blue-500 text-white'
+          }`}>
+            {banner.type === 'alert'
+              ? <AlertTriangle className="h-4 w-4 flex-shrink-0 animate-pulse" />
+              : <Info className="h-4 w-4 flex-shrink-0" />
+            }
+            <div className="flex-1 overflow-hidden">
+              <p className="whitespace-nowrap animate-marquee">
+                {banner.message}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="container-custom py-8 md:py-12">
         {/* Texte de présentation */}
         <section className="mb-12 text-center">

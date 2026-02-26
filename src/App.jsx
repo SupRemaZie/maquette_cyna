@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { CartProvider } from './context/CartContext';
 import { AdminProvider } from './context/AdminContext';
 import { ProductsProvider } from './context/ProductsContext';
+import { ContentProvider } from './context/ContentContext';
 import ToastProvider from './context/ToastContext';
 import Header from './components/layout/Header';
 import Sidebar from './components/ui/sidebar';
@@ -319,9 +320,11 @@ function App() {
       <CartProvider>
         <AdminProvider>
           <ProductsProvider>
-            <Router>
-              <AppContent />
-            </Router>
+            <ContentProvider>
+              <Router>
+                <AppContent />
+              </Router>
+            </ContentProvider>
           </ProductsProvider>
         </AdminProvider>
       </CartProvider>

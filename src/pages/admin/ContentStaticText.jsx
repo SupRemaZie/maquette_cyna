@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { mockHomeContent } from '../../data/adminMockData';
 import { ArrowLeft, Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight, Info, AlertTriangle } from 'lucide-react';
 import { useToast } from '../../context/ToastContext';
+import { useContent } from '../../context/ContentContext';
 import { Switch } from '../../components/ui/switch';
 
 /* ── Bouton de la barre d'outils ── */
@@ -24,9 +25,10 @@ const ToolbarBtn = ({ onMouseDown, active, title, children }) => (
 const ContentStaticText = () => {
   const editorRef = useRef(null);
   const [formats, setFormats] = useState({ bold: false, italic: false, underline: false });
-  const [banner, setBanner] = useState(mockHomeContent.banner);
+  const [localBanner, setLocalBanner] = useState(mockHomeContent.banner);
   const navigate = useNavigate();
   const { success } = useToast();
+  const { setBanner } = useContent();
 
   /* Initialise l'éditeur au montage */
   useEffect(() => {
@@ -59,6 +61,7 @@ const ContentStaticText = () => {
   };
 
   const handleSave = () => {
+    setBanner(localBanner);
     success('Texte enregistré avec succès !');
     navigate('/admin/content');
   };
@@ -91,21 +94,21 @@ const ContentStaticText = () => {
             <p className="text-xs text-muted-foreground mt-0.5">Affiché en haut de la page d'accueil</p>
           </div>
           <Switch
-            checked={banner.enabled}
-            onCheckedChange={(v) => setBanner(b => ({ ...b, enabled: v }))}
+            checked={localBanner.enabled}
+            onCheckedChange={(v) => setLocalBanner(b => ({ ...b, enabled: v }))}
             aria-label="Activer la banderole"
           />
         </div>
 
-        {banner.enabled && (
+        {localBanner.enabled && (
           <div className="p-4 space-y-4">
             {/* Sélecteur de type */}
             <div className="flex gap-2">
               <button
                 type="button"
-                onClick={() => setBanner(b => ({ ...b, type: 'info' }))}
+                onClick={() => setLocalBanner(b => ({ ...b, type: 'info' }))}
                 className={`flex-1 flex items-center justify-center gap-2 min-h-[44px] rounded-lg border-2 text-sm font-medium transition-colors ${
-                  banner.type === 'info'
+                  localBanner.type === 'info'
                     ? 'border-blue-500 bg-blue-50 text-blue-700'
                     : 'border-border text-muted-foreground hover:border-blue-300 hover:bg-blue-50/50'
                 }`}
@@ -115,9 +118,9 @@ const ContentStaticText = () => {
               </button>
               <button
                 type="button"
-                onClick={() => setBanner(b => ({ ...b, type: 'alert' }))}
+                onClick={() => setLocalBanner(b => ({ ...b, type: 'alert' }))}
                 className={`flex-1 flex items-center justify-center gap-2 min-h-[44px] rounded-lg border-2 text-sm font-medium transition-colors ${
-                  banner.type === 'alert'
+                  localBanner.type === 'alert'
                     ? 'border-red-500 bg-red-50 text-red-700'
                     : 'border-border text-muted-foreground hover:border-red-300 hover:bg-red-50/50'
                 }`}
@@ -130,24 +133,24 @@ const ContentStaticText = () => {
             {/* Message */}
             <input
               type="text"
-              value={banner.message}
-              onChange={(e) => setBanner(b => ({ ...b, message: e.target.value }))}
+              value={localBanner.message}
+              onChange={(e) => setLocalBanner(b => ({ ...b, message: e.target.value }))}
               placeholder="Saisir le message de la banderole..."
               className="w-full border border-input rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
             />
 
             {/* Aperçu */}
-            {banner.message && (
+            {localBanner.message && (
               <div className={`flex items-center gap-2.5 px-4 py-3 rounded-lg text-sm font-medium ${
-                banner.type === 'alert'
+                localBanner.type === 'alert'
                   ? 'bg-red-50 text-red-800 border border-red-200'
                   : 'bg-blue-50 text-blue-800 border border-blue-200'
               }`}>
-                {banner.type === 'alert'
+                {localBanner.type === 'alert'
                   ? <AlertTriangle className="h-4 w-4 flex-shrink-0" />
                   : <Info className="h-4 w-4 flex-shrink-0" />
                 }
-                <span>{banner.message}</span>
+                <span>{localBanner.message}</span>
               </div>
             )}
           </div>
