@@ -107,21 +107,29 @@ const Cart = () => {
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                       <div className="flex items-center space-x-2">
                         <label className="text-sm font-medium text-gray-700">Quantité:</label>
-                        <div className="flex items-center border border-gray-300 rounded-lg">
-                          <button
-                            onClick={() => updateCartItem(item.productId, item.subscriptionType, item.quantity - 1)}
-                            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:bg-gray-100 text-lg font-medium"
-                            disabled={item.quantity <= 1}
-                          >
-                            −
-                          </button>
-                          <span className="px-3 text-gray-900 font-medium">{item.quantity}</span>
-                          <button
-                            onClick={() => updateCartItem(item.productId, item.subscriptionType, item.quantity + 1)}
-                            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:bg-gray-100 text-lg font-medium"
-                          >
-                            +
-                          </button>
+                        <div className="flex flex-col">
+                          <div className="flex items-center border border-gray-300 rounded-lg">
+                            <button
+                              onClick={() => updateCartItem(item.productId, item.subscriptionType, item.quantity - 1)}
+                              className="min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:bg-gray-100 text-lg font-medium"
+                              disabled={item.quantity <= 1}
+                            >
+                              −
+                            </button>
+                            <span className="px-3 text-gray-900 font-medium">{item.quantity}</span>
+                            <button
+                              onClick={() => updateCartItem(item.productId, item.subscriptionType, item.quantity + 1)}
+                              className="min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-600 hover:bg-gray-100 text-lg font-medium disabled:opacity-40 disabled:cursor-not-allowed"
+                              disabled={item.product.licensesRemaining != null && item.quantity >= item.product.licensesRemaining}
+                            >
+                              +
+                            </button>
+                          </div>
+                          {item.product.licensesRemaining != null && item.quantity >= item.product.licensesRemaining && (
+                            <p className="text-xs text-orange-600 mt-1">
+                              Max : {item.product.licensesRemaining} licence{item.product.licensesRemaining > 1 ? 's' : ''} disponible{item.product.licensesRemaining > 1 ? 's' : ''}
+                            </p>
+                          )}
                         </div>
                       </div>
                       <div className="text-left sm:text-right">

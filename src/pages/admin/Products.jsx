@@ -316,7 +316,12 @@ const Products = () => {
                   Catégorie <SortIcon columnKey="category" />
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Prix</th>
-                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Licences</th>
+                <th
+                  className="px-4 py-3 text-left text-sm font-semibold text-foreground cursor-pointer hover:bg-accent"
+                  onClick={() => handleSort('licensesRemaining')}
+                >
+                  Licences <SortIcon columnKey="licensesRemaining" />
+                </th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Publié</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Priorité</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Actions</th>

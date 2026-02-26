@@ -140,10 +140,10 @@ const Product = () => {
                 variant=""
                 size="lg"
                 fullWidth
-                disabled={!product.available}
+                disabled={!product.available || product.licensesRemaining === 0}
                 onClick={handleAddToCart}
               >
-                {product.available ? 'AJOUTER AU PANIER' : 'Indisponible'}
+                {!product.available || product.licensesRemaining === 0 ? 'Indisponible' : 'AJOUTER AU PANIER'}
               </Button>
             </div>
             

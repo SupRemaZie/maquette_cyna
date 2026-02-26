@@ -379,6 +379,15 @@ const ProductForm = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+             <Input
+              label="Licences restantes"
+              type="number"
+              name="licensesRemaining"
+              value={formData.licensesRemaining}
+              onChange={handleChange}
+              min="0"
+              step="1"
+            />
             <Input
               label="Licences totales"
               type="number"
@@ -388,15 +397,7 @@ const ProductForm = () => {
               min="0"
               step="1"
             />
-            <Input
-              label="Licences restantes"
-              type="number"
-              name="licensesRemaining"
-              value={formData.licensesRemaining}
-              onChange={handleChange}
-              min="0"
-              step="1"
-            />
+           
           </div>
 
           <div className="flex items-center justify-between py-3 px-4 bg-muted/50 rounded-lg">

@@ -30,26 +30,31 @@ export const CartProvider = ({ children }) => {
   }, [cart]);
   
   const addToCart = (product, subscriptionType = 'monthly', quantity = 1) => {
+    const maxQty = product.licensesRemaining ?? Infinity;
     setCart(prevCart => {
       const existingItem = prevCart.find(
         item => item.productId === product.id && item.subscriptionType === subscriptionType
       );
-      
+
       if (existingItem) {
+        const newQty = Math.min(existingItem.quantity + quantity, maxQty);
         return prevCart.map(item =>
           item.productId === product.id && item.subscriptionType === subscriptionType
-            ? { ...item, quantity: item.quantity + quantity }
+            ? { ...item, quantity: newQty }
             : item
         );
       }
-      
+
+      const cappedQty = Math.min(quantity, maxQty);
+      if (cappedQty <= 0) return prevCart;
+
       return [
         ...prevCart,
         {
           productId: product.id,
           product: product,
           subscriptionType,
-          quantity,
+          quantity: cappedQty,
           price: product.price[subscriptionType],
         },
       ];
@@ -69,14 +74,17 @@ export const CartProvider = ({ children }) => {
       removeFromCart(productId, subscriptionType);
       return;
     }
-    
-    setCart(prevCart =>
-      prevCart.map(item =>
-        item.productId === productId && item.subscriptionType === subscriptionType
-          ? { ...item, quantity }
-          : item
-      )
-    );
+
+    setCart(prevCart => {
+      const item = prevCart.find(i => i.productId === productId && i.subscriptionType === subscriptionType);
+      const maxQty = item?.product?.licensesRemaining ?? Infinity;
+      const cappedQty = Math.min(quantity, maxQty);
+      return prevCart.map(i =>
+        i.productId === productId && i.subscriptionType === subscriptionType
+          ? { ...i, quantity: cappedQty }
+          : i
+      );
+    });
   };
   
   const clearCart = () => {

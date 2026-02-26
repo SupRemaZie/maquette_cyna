@@ -32,7 +32,12 @@ export const ProductsProvider = ({ children }) => {
     const saved = localStorage.getItem('cyna_products');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        // Fusionner avec mockProducts pour ajouter les champs manquants (ex: licensesTotal/Remaining)
+        return parsed.map(savedProduct => {
+          const mock = mockProducts.find(m => m.id === savedProduct.id);
+          return mock ? { ...mock, ...savedProduct } : savedProduct;
+        });
       } catch (e) {
         console.error('Erreur lors du chargement des produits:', e);
         return mockProducts;

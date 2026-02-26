@@ -69,7 +69,8 @@ const ProductDetail = () => {
           </Link>
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-foreground">{product.name}</h2>
-            <p className="text-sm text-muted-foreground">ID : {product.id}</p>
+            <p className="text-sm text-muted-foreground mt-1">{product.licensesRemaining} / {product.licensesTotal} licences</p>
+    
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2">
@@ -183,6 +184,9 @@ const ProductDetail = () => {
                   }`}>
                     {product.available ? 'Disponible' : 'Indisponible'}
                   </span>
+                </div>
+                <div className="mt-2">
+                  {product.licensesRemaining} licence(s) restante(s)
                 </div>
               </div>
               <div>
