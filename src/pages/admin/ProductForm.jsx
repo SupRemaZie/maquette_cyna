@@ -187,7 +187,7 @@ const ProductForm = () => {
               {isEdit ? 'Modifier le service' : 'Nouveau service'}
             </h2>
             <p className="text-sm text-muted-foreground">
-              {isEdit ? `ID: ${id}` : 'Remplissez le formulaire pour créer un nouveau service'}
+              {isEdit ? `` : 'Remplissez le formulaire pour créer un nouveau service'}
             </p>
           </div>
         </div>
