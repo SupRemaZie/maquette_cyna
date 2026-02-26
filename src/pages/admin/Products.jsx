@@ -90,7 +90,7 @@ const Products = () => {
     deleteProduct(productId);
     setDeleteModal({ open: false, productId: null });
     setSelectedProducts(prev => prev.filter(id => id !== productId));
-    success('Produit supprimé avec succès !');
+    success('Service supprimé avec succès !');
   };
   
   const handleToggleAvailable = (product) => {
@@ -101,12 +101,12 @@ const Products = () => {
 
   const handleBulkDelete = () => {
     if (selectedProducts.length === 0) {
-      showError('Aucun produit sélectionné');
+      showError('Aucun service sélectionné');
       return;
     }
     deleteProducts(selectedProducts);
     setSelectedProducts([]);
-    success(`${selectedProducts.length} produit(s) supprimé(s) avec succès !`);
+    success(`${selectedProducts.length} service(s) supprimé(s) avec succès !`);
   };
   
   const SortIcon = ({ columnKey }) => {
@@ -119,9 +119,9 @@ const Products = () => {
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground">Gestion des Produits</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-foreground">Gestion des Services</h2>
           <p className="text-sm text-muted-foreground mt-1">
-            {filteredAndSortedProducts.length} produit(s) trouvé(s)
+            {filteredAndSortedProducts.length} service(s) trouvé(s)
           </p>
         </div>
         <Link
@@ -129,7 +129,7 @@ const Products = () => {
           className="flex items-center gap-2 px-3 py-2 md:px-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-sm flex-shrink-0"
         >
           <Plus className="h-5 w-5" />
-          <span className="hidden sm:inline">Ajouter un nouveau produit</span>
+          <span className="hidden sm:inline">Ajouter un nouveau service</span>
           <span className="sm:hidden">Ajouter</span>
         </Link>
       </div>
@@ -189,7 +189,7 @@ const Products = () => {
         {selectedProducts.length > 0 && (
           <div className="flex items-center gap-2 pt-2 border-t">
             <span className="text-sm text-muted-foreground">
-              {selectedProducts.length} produit(s) sélectionné(s)
+              {selectedProducts.length} service(s) sélectionné(s)
             </span>
             <button
               onClick={handleBulkDelete}
@@ -241,6 +241,19 @@ const Products = () => {
                     <span className="text-muted-foreground">/mois</span>
                   </div>
                   <div className="text-sm text-muted-foreground">{product.priceYearly}€/an</div>
+                  {product.licensesRemaining != null && (
+                    <div className={`mt-1 text-xs font-medium px-2 py-0.5 rounded-full inline-block ${
+                      product.licensesRemaining === 0
+                        ? 'bg-red-100 text-red-700'
+                        : product.licensesRemaining <= 10
+                          ? 'bg-orange-100 text-orange-700'
+                          : 'bg-green-100 text-green-700'
+                    }`}>
+                      {product.licensesRemaining === 0
+                        ? 'Épuisé'
+                        : `${product.licensesRemaining}/${product.licensesTotal} licences`}
+                    </div>
+                  )}
                 </div>
                 <div className="flex items-center gap-2">
                   <Link
@@ -303,6 +316,7 @@ const Products = () => {
                   Catégorie <SortIcon columnKey="category" />
                 </th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Prix</th>
+                <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Licences</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Publié</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Priorité</th>
                 <th className="px-4 py-3 text-left text-sm font-semibold text-foreground">Actions</th>
@@ -337,6 +351,25 @@ const Products = () => {
                   <td className="px-4 py-3 text-sm text-foreground">
                     <div>{product.priceMonthly}€/mois</div>
                     <div className="text-xs text-muted-foreground">{product.priceYearly}€/an</div>
+                  </td>
+                  <td className="px-4 py-3">
+                    {product.licensesRemaining != null ? (
+                      <div>
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+                          product.licensesRemaining === 0
+                            ? 'bg-red-100 text-red-700'
+                            : product.licensesRemaining <= 10
+                              ? 'bg-orange-100 text-orange-700'
+                              : 'bg-green-100 text-green-700'
+                        }`}>
+                          {product.licensesRemaining === 0
+                            ? 'Épuisé'
+                            : `${product.licensesRemaining}/${product.licensesTotal}`}
+                        </span>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
@@ -453,7 +486,7 @@ const Products = () => {
         title="Confirmer la suppression"
       >
         <p className="text-sm text-foreground mb-4">
-          Êtes-vous sûr de vouloir supprimer ce produit ? Cette action est irréversible.
+          Êtes-vous sûr de vouloir supprimer ce service ? Cette action est irréversible.
         </p>
         <div className="flex justify-end gap-2">
           <button
