@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAdmin } from '../../context/AdminContext';
-import { Search, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { Search, User, LogOut, LayoutDashboard, Shield } from 'lucide-react';
 import { SidebarTrigger } from '../ui/sidebar';
 import { Popover, PopoverTrigger, PopoverContent } from '../ui/popover';
+import { cn } from '../../lib/utils';
 
 const Header = ({ onSidebarToggle }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -16,17 +17,27 @@ const Header = ({ onSidebarToggle }) => {
 
   const isAdminUser = user?.email === 'admin@cyna-it.fr';
 
+  const navItems = [
+    { label: 'Accueil', path: '/' },
+    { label: 'Catalogue', path: '/catalogue' },
+    { label: 'Contact', path: '/contact' },
+  ];
+
+  const isActive = (path) => {
+    if (path === '/') return location.pathname === '/';
+    return location.pathname.startsWith(path);
+  };
+
   const handleSwitchToAdmin = () => {
     if (!isAdminAuthenticated) {
       adminLogin('admin@cyna-it.fr', 'Admin123!');
     }
     navigate('/admin/dashboard');
   };
-  
-  // Routes qui ne doivent pas avoir le bouton sidebar
+
   const noSidebarRoutes = ['/login', '/register', '/forgot-password'];
   const showSidebarTrigger = !noSidebarRoutes.includes(location.pathname);
-  
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -34,18 +45,45 @@ const Header = ({ onSidebarToggle }) => {
       setSearchQuery('');
     }
   };
-  
+
   return (
     <header className="bg-card border-b sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-card/95">
       <div className="container-custom">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <div className="flex items-center gap-4">
-            {/* Sidebar Trigger - Mobile */}
+
+          {/* Left: Mobile trigger + Desktop Logo + Desktop Nav */}
+          <div className="flex items-center gap-3">
             {showSidebarTrigger && <SidebarTrigger onClick={onSidebarToggle} />}
+
+            {/* Logo - Desktop seulement */}
+            <Link to="/" className="hidden lg:flex items-center gap-2">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                <Shield className="h-5 w-5 text-primary-foreground" />
+              </div>
+              <span className="text-xl font-bold text-foreground">CYNA</span>
+            </Link>
+
+            {/* Nav links - Desktop */}
+            <nav className="hidden lg:flex items-center gap-1 ml-2">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={cn(
+                    "px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                    isActive(item.path)
+                      ? "bg-primary text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
           </div>
-          
+
           {/* Search Bar - Desktop */}
-          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-2xl mx-8">
+          <form onSubmit={handleSearch} className="hidden md:flex flex-1 max-w-xl mx-8">
             <div className="relative w-full">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
               <input
@@ -59,8 +97,8 @@ const Header = ({ onSidebarToggle }) => {
               />
             </div>
           </form>
-          
-          {/* Right side - Cart & Account */}
+
+          {/* Right: Cart & Account */}
           <div className="flex items-center space-x-4">
             {/* Search Icon - Mobile */}
             <Link
@@ -70,7 +108,7 @@ const Header = ({ onSidebarToggle }) => {
             >
               <Search className="h-6 w-6" />
             </Link>
-            
+
             {/* Cart */}
             <Link
               to="/cart"
@@ -86,7 +124,7 @@ const Header = ({ onSidebarToggle }) => {
                 </span>
               )}
             </Link>
-            
+
             {/* Account Menu */}
             <Popover>
               <PopoverTrigger asChild>
@@ -157,7 +195,7 @@ const Header = ({ onSidebarToggle }) => {
             </Popover>
           </div>
         </div>
-        
+
         {/* Search Bar - Mobile (when focused) */}
         {isSearchFocused && (
           <form onSubmit={handleSearch} className="md:hidden pb-4">

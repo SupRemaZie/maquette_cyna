@@ -10,7 +10,6 @@ import Sidebar from './components/ui/sidebar';
 import ClientChatbot from './components/common/Chatbot';
 import { AdminLayout } from './components/admin/AdminLayout';
 import ProtectedRoute from './components/admin/ProtectedRoute';
-import { cn } from './lib/utils';
 
 // Pages
 import Home from './pages/Home';
@@ -53,16 +52,6 @@ import Settings from './pages/admin/Settings';
 function AppContent() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
-    const saved = localStorage.getItem('cyna_sidebar_collapsed');
-    return saved ? JSON.parse(saved) : false;
-  });
-
-  const handleToggleCollapse = () => {
-    const newState = !sidebarCollapsed;
-    setSidebarCollapsed(newState);
-    localStorage.setItem('cyna_sidebar_collapsed', JSON.stringify(newState));
-  };
 
   // Routes qui ne doivent pas avoir la sidebar
   const noSidebarRoutes = ['/login', '/register', '/forgot-password'];
@@ -279,17 +268,12 @@ function AppContent() {
   return (
     <div className="flex flex-col min-h-[100dvh] bg-background">
       {showSidebar && (
-        <Sidebar 
-          isOpen={sidebarOpen} 
+        <Sidebar
+          isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
-          isCollapsed={sidebarCollapsed}
-          onToggleCollapse={handleToggleCollapse}
         />
       )}
-      <div className={cn(
-        "flex-1 flex flex-col transition-all duration-300",
-        showSidebar && (sidebarCollapsed ? "lg:pl-16" : "lg:pl-64")
-      )}>
+      <div className="flex-1 flex flex-col">
         <Header onSidebarToggle={() => setSidebarOpen(!sidebarOpen)} />
         <main className="flex-1">
           <Routes>
