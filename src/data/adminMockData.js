@@ -259,18 +259,53 @@ export const mockCategories = [
 // Commandes
 const generateOrders = () => {
   const orders = [];
-  const statuses = ['En attente', 'Confirmée', 'Active', 'Terminée', 'Annulée'];
+  const subStatuses = ['En attente', 'Active', 'Active', 'Active', 'Suspendue', 'Terminée', 'Annulée'];
   const products = mockProducts;
-  
+  let globalSubId = 1;
+
   for (let i = 1; i <= 50; i++) {
     const date = new Date();
-    date.setDate(date.getDate() - Math.floor(Math.random() * 30));
-    const status = statuses[Math.floor(Math.random() * statuses.length)];
-    const product = products[Math.floor(Math.random() * products.length)];
-    const subscriptionType = Math.random() > 0.5 ? 'monthly' : 'yearly';
-    const price = subscriptionType === 'monthly' ? product.priceMonthly : product.priceYearly;
-    const total = price * 1.20; // TVA 20%
-    
+    date.setDate(date.getDate() - Math.floor(Math.random() * 90));
+
+    // 1 à 3 abonnements distincts par commande
+    const numSubs = Math.floor(Math.random() * 3) + 1;
+    const shuffled = [...products].sort(() => Math.random() - 0.5);
+    const selectedProducts = shuffled.slice(0, numSubs);
+
+    const subscriptions = selectedProducts.map((product) => {
+      const subStatus = subStatuses[Math.floor(Math.random() * subStatuses.length)];
+      const subType = Math.random() > 0.5 ? 'monthly' : 'yearly';
+      const price = subType === 'monthly' ? product.priceMonthly : product.priceYearly;
+      const startDate = new Date(date);
+      const nextBilling = subStatus === 'Active'
+        ? new Date(startDate.getTime() + (subType === 'monthly' ? 30 : 365) * 86400000).toISOString()
+        : null;
+
+      const sub = {
+        id: globalSubId,
+        subscriptionNumber: `ABO-${String(globalSubId).padStart(6, '0')}`,
+        productId: product.id,
+        productName: product.name,
+        category: product.category,
+        subscriptionType: subType,
+        unitPrice: price,
+        subtotal: price,
+        status: subStatus,
+        statusHistory: [
+          { status: 'En attente', date: date.toISOString(), user: 'Système' },
+          ...(subStatus !== 'En attente' ? [{ status: subStatus, date: new Date(date.getTime() + 3600000).toISOString(), user: 'Admin' }] : []),
+        ],
+        startDate: startDate.toISOString(),
+        nextBilling,
+      };
+      globalSubId++;
+      return sub;
+    });
+
+    const subtotal = subscriptions.reduce((sum, s) => sum + s.subtotal, 0);
+    const tax = subtotal * 0.20;
+    const total = subtotal + tax;
+
     orders.push({
       id: i,
       orderNumber: `CMD-${String(i).padStart(6, '0')}`,
@@ -288,32 +323,19 @@ const generateOrders = () => {
           country: 'France',
         },
       },
-      items: [{
-        productId: product.id,
-        productName: product.name,
-        category: product.category,
-        subscriptionType,
-        quantity: 1,
-        unitPrice: price,
-        subtotal: price,
-      }],
-      subtotal: price,
-      tax: price * 0.20,
+      subscriptions,
+      subtotal,
+      tax,
       total,
-      status,
-      statusHistory: [
-        { status: 'En attente', date: date.toISOString(), user: 'Système' },
-        ...(status !== 'En attente' ? [{ status, date: new Date(date.getTime() + 3600000).toISOString(), user: 'Admin' }] : []),
-      ],
       payment: {
         method: 'Carte bancaire',
         cardLast4: String(Math.floor(Math.random() * 9000) + 1000),
-        paymentDate: status !== 'En attente' ? new Date(date.getTime() + 3600000).toISOString() : null,
-        paymentStatus: status === 'En attente' ? 'En attente' : 'Payé',
+        paymentDate: new Date(date.getTime() + 3600000).toISOString(),
+        paymentStatus: Math.random() > 0.1 ? 'Payé' : 'En attente',
       },
     });
   }
-  
+
   return orders.sort((a, b) => new Date(b.date) - new Date(a.date));
 };
 
@@ -354,14 +376,16 @@ const generateUsers = () => {
         country: 'France',
         isDefault: true,
       }],
-      subscriptions: userOrders.filter(o => o.status === 'Active').map(o => ({
-        id: o.id,
-        productName: o.items[0].productName,
-        startDate: o.date,
-        nextBilling: new Date(new Date(o.date).setMonth(new Date(o.date).getMonth() + (o.items[0].subscriptionType === 'monthly' ? 1 : 12))).toISOString(),
-        price: o.items[0].unitPrice,
-        type: o.items[0].subscriptionType,
-      })),
+      subscriptions: userOrders.flatMap(o =>
+        o.subscriptions.filter(s => s.status === 'Active').map(s => ({
+          id: s.id,
+          productName: s.productName,
+          startDate: s.startDate,
+          nextBilling: s.nextBilling,
+          price: s.unitPrice,
+          type: s.subscriptionType,
+        }))
+      ),
     });
   }
   
@@ -481,9 +505,9 @@ export const generateDashboardStats = () => {
       return orderDate.toDateString() === date.toDateString();
     });
     
-    const edrOrders = dayOrders.filter(o => o.items[0].category === 'EDR');
-    const xdrOrders = dayOrders.filter(o => o.items[0].category === 'XDR');
-    const socOrders = dayOrders.filter(o => o.items[0].category === 'SOC');
+    const edrOrders = dayOrders.filter(o => o.subscriptions[0].category === 'EDR');
+    const xdrOrders = dayOrders.filter(o => o.subscriptions[0].category === 'XDR');
+    const socOrders = dayOrders.filter(o => o.subscriptions[0].category === 'SOC');
     
     last7Days.push({
       date: date.toISOString().split('T')[0],
@@ -517,9 +541,9 @@ export const generateDashboardStats = () => {
       return orderDate >= weekStart && orderDate <= weekEnd;
     });
     
-    const edrOrders = weekOrders.filter(o => o.items[0].category === 'EDR');
-    const xdrOrders = weekOrders.filter(o => o.items[0].category === 'XDR');
-    const socOrders = weekOrders.filter(o => o.items[0].category === 'SOC');
+    const edrOrders = weekOrders.filter(o => o.subscriptions[0].category === 'EDR');
+    const xdrOrders = weekOrders.filter(o => o.subscriptions[0].category === 'XDR');
+    const socOrders = weekOrders.filter(o => o.subscriptions[0].category === 'SOC');
     
     last5Weeks.push({
       week: `Semaine ${5 - i}`,

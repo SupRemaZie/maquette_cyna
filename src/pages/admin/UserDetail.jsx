@@ -197,11 +197,9 @@ const UserDetail = () => {
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-foreground">{order.orderNumber}</span>
                         <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                          order.status === 'Active' ? 'bg-accent/20 text-accent' :
-                          order.status === 'Confirmée' ? 'bg-primary/20 text-primary' :
-                          'bg-muted text-muted-foreground'
+                          order.payment.paymentStatus === 'Payé' ? 'bg-accent/20 text-accent' : 'bg-yellow-100 text-yellow-800'
                         }`}>
-                          {order.status}
+                          {order.payment.paymentStatus}
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
@@ -239,11 +237,9 @@ const UserDetail = () => {
                           </td>
                           <td className="py-2">
                             <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                              order.status === 'Active' ? 'bg-accent/20 text-accent' :
-                              order.status === 'Confirmée' ? 'bg-primary/20 text-primary' :
-                              'bg-muted text-muted-foreground'
+                              order.payment.paymentStatus === 'Payé' ? 'bg-accent/20 text-accent' : 'bg-yellow-100 text-yellow-800'
                             }`}>
-                              {order.status}
+                              {order.payment.paymentStatus}
                             </span>
                           </td>
                           <td className="py-2">

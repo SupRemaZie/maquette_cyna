@@ -254,13 +254,9 @@ const Dashboard = () => {
                   {order.customer.firstName} {order.customer.lastName}
                 </span>
                 <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                  order.status === 'Active' ? 'bg-accent/20 text-accent' :
-                  order.status === 'Confirmée' ? 'bg-primary/20 text-primary' :
-                  order.status === 'Terminée' ? 'bg-muted text-muted-foreground' :
-                  order.status === 'Annulée' ? 'bg-destructive/20 text-destructive' :
-                  'bg-yellow-100 text-yellow-800'
+                  order.payment.paymentStatus === 'Payé' ? 'bg-accent/20 text-accent' : 'bg-yellow-100 text-yellow-800'
                 }`}>
-                  {order.status}
+                  {order.payment.paymentStatus}
                 </span>
               </div>
               <div className="flex items-center justify-between text-sm">
@@ -303,13 +299,9 @@ const Dashboard = () => {
                   </td>
                   <td className="py-3 px-4">
                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
-                      order.status === 'Active' ? 'bg-accent/20 text-accent' :
-                      order.status === 'Confirmée' ? 'bg-primary/20 text-primary' :
-                      order.status === 'Terminée' ? 'bg-muted text-muted-foreground' :
-                      order.status === 'Annulée' ? 'bg-destructive/20 text-destructive' :
-                      'bg-yellow-100 text-yellow-800'
+                      order.payment.paymentStatus === 'Payé' ? 'bg-accent/20 text-accent' : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                      {order.status}
+                      {order.payment.paymentStatus}
                     </span>
                   </td>
                   <td className="py-3 px-4">

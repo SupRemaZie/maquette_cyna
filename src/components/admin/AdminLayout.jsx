@@ -28,7 +28,7 @@ const AdminSidebar = ({ isOpen, onClose }) => {
   const location = useLocation();
   
   const unreadMessages = mockMessages.filter(m => m.status === 'Non lu').length;
-  const newOrders = mockOrders.filter(o => o.status === 'En attente').length;
+  const newOrders = mockOrders.filter(o => o.payment.paymentStatus === 'En attente').length;
   const escalatedChats = mockChatbotConversations.filter(c => c.escalated).length;
   
   const menuItems = [
